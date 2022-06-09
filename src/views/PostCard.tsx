@@ -24,7 +24,9 @@ const Clients = styled.div`
 `;
 
 const Client = styled.p`
-
+margin-bottom: 8px;
+text-decoration: underline;
+color: ${colors.graphite_4};
 `
 
 const Title = styled.h2`
@@ -86,6 +88,12 @@ const EmailsCard = () => {
       </Content>
       <Clients>
           <Client>Client Name 1</Client>
+          <Client>Client Name 2</Client>
+          <Client>Client Name 3</Client>
+          <Client>Client Name 4</Client>
+          <Client>Client Name 5</Client>
+          <Client>Client Name 6</Client>
+
       </Clients>
     </Card>
   );

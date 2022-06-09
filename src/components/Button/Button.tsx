@@ -3,7 +3,7 @@ import styled from "styled-components";
 import email from "../../assets/svg/btn-email.svg";
 import edit from "../../assets/svg/btn-edit.svg";
 import { colors } from "../../assets/styles/colors";
-import del from '../../assets/svg/btn-del.svg'
+import del from "../../assets/svg/btn-del.svg";
 
 const Btn = styled.button`
   display: flex;
@@ -35,18 +35,19 @@ const EmailBtn = styled(Btn)`
 `;
 
 const EditBtn = styled(Btn)`
-border-color: ${colors.orange_5};
-background-color: #fff;
-color: ${colors.orange_5};
-`
+  border-color: ${colors.orange_5};
+  background-color: #fff;
+  color: ${colors.orange_5};
+`;
 
 const DelBtn = styled(Btn)`
-border-color: ${colors.red};
-background-color: #fff;
-color: ${colors.red};
-`
+  border-color: ${colors.red};
+  background-color: #fff;
+  color: ${colors.red};
+`;
 
-const Button = ({ type }: IButton) => {
+
+const Button = ({ type  }: IButton) => {
   switch (type) {
     case "email":
       return (

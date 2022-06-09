@@ -1,0 +1,19 @@
+input[type="checkbox"] {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.checkbox {
+    display: inline-block;
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+    background: #fff;
+    border: 2px #ddd solid;
+    border-radius: 5px;
+}
