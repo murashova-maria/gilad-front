@@ -21,9 +21,15 @@ const StyledTitle = styled(Title)`
   margin-bottom: 20px;
 `;
 
+const DirectLink = styled.a`
+  color: #000;
+  margin-left: 35px;
+`
+
 const TemplatesDropdown = styled(Dropdown)`
   margin: 0 30px 20px;
   width: calc(100% - 60px);
+  margin-top: 25px;
 `;
 
 const Content = styled.div`
@@ -101,6 +107,8 @@ const EditModel = (props: any) => {
   return (
     <StyledModal>
       <StyledTitle>Edit model</StyledTitle>
+      <DirectLink href="#">Direct Link</DirectLink>
+
       <TemplatesDropdown
         placeholder=""
         onSelect={(e) => console.log(e)}
