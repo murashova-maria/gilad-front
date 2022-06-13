@@ -1,5 +1,4 @@
 export interface IMainButton {
+    color: 'orange' | 'blue'
     children?: string
-    wide?: boolean
-    centered?: boolean
 }

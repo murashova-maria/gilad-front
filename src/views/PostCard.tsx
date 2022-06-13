@@ -31,7 +31,7 @@ const Client = styled.p`
 `;
 
 const Title = styled.h2`
-  font-weight: 700;
+font-family: 'Gilroy-B';
   font-size: 24px;
   line-height: 30px;
   margin-bottom: 10px;

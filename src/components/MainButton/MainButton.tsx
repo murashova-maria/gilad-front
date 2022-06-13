@@ -1,4 +1,5 @@
 import { IMainButton } from "./types";
+import { colors } from "../../assets/styles/colors";
 import styled from "styled-components";
 
 const Btn = styled.button`
@@ -8,10 +9,7 @@ const Btn = styled.button`
   text-align: center;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #ffffff;
-  padding: 12px 30px;
-  background: #f06543;
-  box-shadow: 0px 10px 20px rgba(240, 101, 67, 0.2);
+  padding: 12px 57px;
   border-radius: 36px;
   border: 0;
   cursor: pointer;
@@ -21,26 +19,26 @@ const Btn = styled.button`
   }
 `;
 
-const CenteredBtn = styled(Btn)`
-  display: block;
-  margin: 0 auto;
-`;
+const OrangeBtn = styled(Btn)`
+color: #ffffff;
+background: #f06543;
+box-shadow: 0px 10px 20px rgba(240, 101, 67, 0.2);
+`
 
-const WideBtn = styled(Btn)`
-  min-width: 242px;
-`;
+const BlueBtn = styled(Btn)`
+background: #FFFFFF;
+padding-top: 10px;
+padding-bottom: 10px;
+color: ${colors.cyan_3};
+border: 2px solid ${colors.cyan_3};
+box-shadow: 0px 10px 20px rgba(${colors.cyan_3}, 0.2);
+`
 
-const CenteredWide = styled(Btn)`
-  display: block;
-  margin: 0 auto;
-  min-width: 242px;
-`;
 
-const MainButton = ({ children, centered, wide }: IMainButton) => {
-  if (centered && wide) return <CenteredWide>{children}</CenteredWide>;
-  if (centered) return <CenteredBtn>{children}</CenteredBtn>;
-  if (wide) return <WideBtn>{children}</WideBtn>;
-  return <Btn>{children}</Btn>;
+const MainButton = ({ children, color }: IMainButton) => {
+  if (color === 'orange') return <OrangeBtn>{children}</OrangeBtn>;
+  if (color === 'blue') return <BlueBtn>{children}</BlueBtn>;
+  return <Btn>{children}</Btn>
 };
 
 export default MainButton;
