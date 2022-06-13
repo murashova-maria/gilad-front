@@ -23,6 +23,7 @@ const colors = {
     cyan_6: "#0D6064",
     red: "#DA191C",
     menu: "#113D47",
+    grey_4: "#999999",
 }
 
 export {colors}
