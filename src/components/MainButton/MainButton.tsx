@@ -17,28 +17,34 @@ const Btn = styled.button`
   &:hover {
     opacity: 0.8;
   }
+  &:disabled {
+    background-color: #d0d9de;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
 `;
 
 const OrangeBtn = styled(Btn)`
-color: #ffffff;
-background: #f06543;
-box-shadow: 0px 10px 20px rgba(240, 101, 67, 0.2);
-`
+  color: #ffffff;
+  background: #f06543;
+  box-shadow: 0px 10px 20px rgba(240, 101, 67, 0.2);
+`;
 
 const BlueBtn = styled(Btn)`
-background: #FFFFFF;
-padding-top: 10px;
-padding-bottom: 10px;
-color: ${colors.cyan_3};
-border: 2px solid ${colors.cyan_3};
-box-shadow: 0px 10px 20px rgba(${colors.cyan_3}, 0.2);
-`
+  background: #ffffff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: ${colors.cyan_3};
+  border: 2px solid ${colors.cyan_3};
+  box-shadow: 0px 10px 20px rgba(${colors.cyan_3}, 0.2);
+`;
 
-
-const MainButton = ({ children, color }: IMainButton) => {
-  if (color === 'orange') return <OrangeBtn>{children}</OrangeBtn>;
-  if (color === 'blue') return <BlueBtn>{children}</BlueBtn>;
-  return <Btn>{children}</Btn>
+const MainButton = ({ children, color, className, disabled }: IMainButton) => {
+  if (color === "orange")
+    return <OrangeBtn className={className} disabled={disabled}>{children}</OrangeBtn>;
+  if (color === "blue")
+    return <BlueBtn className={className} disabled={disabled}>{children}</BlueBtn>;
+  return <Btn className={className} disabled={disabled}>{children}</Btn>;
 };
 
 export default MainButton;

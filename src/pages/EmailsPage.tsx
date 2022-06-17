@@ -40,7 +40,7 @@ const EmailsPage = () => {
           </div>
         </Content>
       </Emails>
-      <EditModel />
+     <EditModel />
     </>
   );
 };

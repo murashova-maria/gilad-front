@@ -19,6 +19,7 @@ const Checkbox = ({
   checked = false,
   setIsCheckedCreate,
   disabled,
+  className
 }: ICheckbox) => {
   const [isChecked, setIsChecked] = useState<boolean>(checked);
   const checkboxAnimationStyle = useSpring({
@@ -41,7 +42,7 @@ const Checkbox = ({
   }, [checked]);
 
   return (
-    <label>
+    <label className={className}>
       <Input
         type="checkbox"
         disabled={disabled}

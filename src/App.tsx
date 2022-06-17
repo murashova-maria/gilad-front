@@ -1,10 +1,17 @@
 import React from 'react';
-import { EmailsPage } from './pages';
+import { EmailsPage, SignIn } from './pages';
+import {
+  Routes,
+  Route
+} from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <EmailsPage />
+      <Routes>
+        <Route path="/" element={<EmailsPage />} />
+        <Route path="/sign-in" element={<SignIn />} />
+      </Routes>
     </div>
   );
 }
