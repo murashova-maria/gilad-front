@@ -11,7 +11,7 @@ const StyledModal = styled.div`
   top: 50px;
   transform: translate(-50%);
   border-radius: 20px;
-  width: 1090px;
+  width: 80%;
   background-color: #fff;
   height: 115vh;
 `;
@@ -23,7 +23,7 @@ const StyledTitle = styled(Title)`
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 2fr;
 `;
 
 const DirectLink = styled.a`
@@ -109,20 +109,18 @@ const BtnBox = styled.div`
 `;
 
 const InitialPost = styled.div`
-  padding: 10px;
-`
+  padding: 20px;
+`;
 
 const PostTitle = styled.p`
-  font-family: 'Gilroy-B';
+  font-family: "Gilroy-B";
   font-size: 30px;
   margin-bottom: 10px;
-`
+`;
 
 const PostText = styled.p`
   font-size: 20px;
-`
-
-
+`;
 
 const EditModel = (props: any) => {
   return (
@@ -130,6 +128,13 @@ const EditModel = (props: any) => {
       <StyledTitle>Edit model</StyledTitle>
 
       <Container>
+        <InitialPost>
+          <PostTitle>יתקיים דיון בוועדת</PostTitle>
+          <PostText>
+          שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח – כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית. כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי ( הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור ושיוך המידע.
+          </PostText>
+        </InitialPost>
+
         <div>
           <DirectLink href="#">Direct Link</DirectLink>
 
@@ -257,10 +262,6 @@ const EditModel = (props: any) => {
             </BtnBox>
           </Selector>
         </div>
-        <InitialPost>
-          <PostTitle>Post Title</PostTitle>
-          <PostText>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse, velit!</PostText>
-        </InitialPost>
       </Container>
     </StyledModal>
   );
