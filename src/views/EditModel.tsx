@@ -21,10 +21,15 @@ const StyledTitle = styled(Title)`
   margin-bottom: 20px;
 `;
 
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+`;
+
 const DirectLink = styled.a`
   color: #000;
   margin-left: 35px;
-`
+`;
 
 const TemplatesDropdown = styled(Dropdown)`
   margin: 0 30px 20px;
@@ -81,7 +86,7 @@ const ClientBox = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin:0 10px 20px 0;
+  margin: 0 10px 20px 0;
 `;
 
 const ClientName = styled.p`
@@ -93,141 +98,170 @@ const ClientName = styled.p`
 `;
 
 const ClientDropdown = styled(Dropdown)`
-margin-bottom: 20px;
-`
+  margin-bottom: 20px;
+`;
 
 const BtnBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
+`;
+
+const InitialPost = styled.div`
+  padding: 10px;
 `
+
+const PostTitle = styled.p`
+  font-family: 'Gilroy-B';
+  font-size: 30px;
+  margin-bottom: 10px;
+`
+
+const PostText = styled.p`
+  font-size: 20px;
+`
+
+
 
 const EditModel = (props: any) => {
   return (
     <StyledModal>
       <StyledTitle>Edit model</StyledTitle>
-      <DirectLink href="#">Direct Link</DirectLink>
 
-      <TemplatesDropdown
-        placeholder=""
-        onSelect={(e) => console.log(e)}
-        value=" "
-        options={[
-          { item: " ", value: " " },
-          { item: "First", value: "first" },
-          { item: "First", value: "third" },
-          { item: "First", value: "fourth" },
-        ]}
-        label="Content formats dropdown"
-      />
-      <Content>
-        <h2>
-          <span>כותרת: עדכון מהכנסת – ועדת</span>
-        </h2>
-        <p>
-          שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת __________בנושא:
-          (נושא הדיון) לצרף חומרי רקע המצויים בפורטל הוועדה( הצ"ח, ניירות עמדה,
-          מצגות) חשוב לפרט בדיון על סטטוס הצ"ח – כלומר באיזה שלב הכנה נמצאת–
-          קריאה טרומית /ראשונה/ שנייה ושלישית. כמו – כן יש לפרט אודות תמצית
-          התיקון של הצ"ח, הסבר מדיון האחרון בעניינה ( באם פורסם פרוטוקול הדיון)
-          או ע"ב הודעה לעיתונות. לטובת צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש
-          לשמור את הקבצים בשם הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 –
-          הצ"ח ביטוח לאומי ( הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך
-          בעת איתור ושיוך המידע.
-        </p>
-        <h2>
-          {" "}
-          <span> :הפצת לו"ז הוועדות</span> – יותר מדיון אחד
-        </h2>
-        <p>
-          כדאי לנסות לרכז את לו"ז הדיונים בוועדות במייל אחד לכל לקוח תוך שמירה
-          על סדר כרונולוגי (כלומר – קודם את כל הדיונים של יום שני, לאחר מכן יום,
-          שלישי, רביעי וכך הלאה).
-        </p>
-        <p>
-          שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת __________בנושא:
-          (נושא הדיון) לצרף חומרי רקע המצויים בפורטל הוועדה( הצ"ח, ניירות עמדה,
-          מצגות) חשוב לפרט בדיון על סטטוס הצ"ח – כלומר באיזה שלב הכנה נמצאת–
-          קריאה טרומית /ראשונה/ שנייה ושלישית. כמו – כן יש לפרט אודות תמצית
-          התיקון של הצ"ח, הסבר מדיון האחרון בעניינה ( באם פורסם פרוטוקול הדיון)
-          או ע"ב הודעה לעיתונות. לטובת צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש
-          לשמור את הקבצים בשם הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 –
-          הצ"ח ביטוח לאומי ( הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך
-          בעת איתור ושיוך המידע.
-        </p>
-        <p>
-          שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת __________בנושא:
-          (נושא הדיון) לצרף חומרי רקע המצויים בפורטל הוועדה( הצ"ח, ניירות עמדה,
-          מצגות) חשוב לפרט בדיון על סטטוס הצ"ח – כלומר באיזה שלב הכנה נמצאת–
-          קריאה טרומית /ראשונה/ שנייה ושלישית. כמו – כן יש לפרט אודות תמצית
-          התיקון של הצ"ח, הסבר מדיון האחרון בעניינה ( באם פורסם פרוטוקול הדיון)
-          או ע"ב הודעה לעיתונות. לטובת צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש
-          לשמור את הקבצים בשם הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 –
-          הצ"ח ביטוח לאומי ( הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך
-          בעת איתור ושיוך המידע.
-        </p>{" "}
-        <p>
-          שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת __________בנושא:
-          (נושא הדיון) לצרף חומרי רקע המצויים בפורטל הוועדה( הצ"ח, ניירות עמדה,
-          מצגות) חשוב לפרט בדיון על סטטוס הצ"ח – כלומר באיזה שלב הכנה נמצאת–
-          קריאה טרומית /ראשונה/ שנייה ושלישית. כמו – כן יש לפרט אודות תמצית
-          התיקון של הצ"ח, הסבר מדיון האחרון בעניינה ( באם פורסם פרוטוקול הדיון)
-          או ע"ב הודעה לעיתונות. לטובת צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש
-          לשמור את הקבצים בשם הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 –
-          הצ"ח ביטוח לאומי ( הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך
-          בעת איתור ושיוך המידע.
-        </p>
-      </Content>
-      <Selector>
-        <SelectorTitle>Select clients</SelectorTitle>
-        <SelectorLabel>Suggested clients</SelectorLabel>
-        <ClientBox>
-          <Checkbox
-            checked={false}
-            setIsCheckedCreate={(value) => console.log(value)}
+      <Container>
+        <div>
+          <DirectLink href="#">Direct Link</DirectLink>
+
+          <TemplatesDropdown
+            placeholder=""
+            onSelect={(e) => console.log(e)}
+            value=" "
+            options={[
+              { item: " ", value: " " },
+              { item: "First", value: "first" },
+              { item: "First", value: "third" },
+              { item: "First", value: "fourth" },
+            ]}
+            label="Content formats dropdown"
           />
-          <ClientName>Client Name 1</ClientName>
-        </ClientBox>
-        <ClientBox>
-          <Checkbox
-            checked={false}
-            setIsCheckedCreate={(value) => console.log(value)}
-          />
-          <ClientName>Client Name 1</ClientName>
-        </ClientBox>
-        <ClientBox>
-          <Checkbox
-            checked={false}
-            setIsCheckedCreate={(value) => console.log(value)}
-          />
-          <ClientName>Client Name 1</ClientName>
-        </ClientBox>
-        <ClientBox>
-          <Checkbox
-            checked={false}
-            setIsCheckedCreate={(value) => console.log(value)}
-          />
-          <ClientName>Client Name 1</ClientName>
-        </ClientBox>
-        <ClientDropdown
-        placeholder=""
-        isMultiSelect={true}
-        onSelect={(e) => console.log(e)}
-        value=" "
-        options={[
-          { item: " ", value: " " },
-          { item: "First", value: "first" },
-          { item: "First", value: "third" },
-          { item: "First", value: "fourth" },
-        ]}
-        label="Clients"
-      />
-      <BtnBox>
-      <MainButton color="blue">Next</MainButton>
-      <MainButton color="orange" >Send</MainButton>
-      </BtnBox>
-      </Selector>
+          <Content>
+            <h2>
+              <span>כותרת: עדכון מהכנסת – ועדת</span>
+            </h2>
+            <p>
+              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
+              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
+              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
+              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
+              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
+              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
+              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
+              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
+              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
+              ושיוך המידע.
+            </p>
+            <h2>
+              {" "}
+              <span> :הפצת לו"ז הוועדות</span> – יותר מדיון אחד
+            </h2>
+            <p>
+              כדאי לנסות לרכז את לו"ז הדיונים בוועדות במייל אחד לכל לקוח תוך
+              שמירה על סדר כרונולוגי (כלומר – קודם את כל הדיונים של יום שני,
+              לאחר מכן יום, שלישי, רביעי וכך הלאה).
+            </p>
+            <p>
+              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
+              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
+              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
+              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
+              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
+              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
+              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
+              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
+              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
+              ושיוך המידע.
+            </p>
+            <p>
+              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
+              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
+              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
+              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
+              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
+              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
+              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
+              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
+              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
+              ושיוך המידע.
+            </p>{" "}
+            <p>
+              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
+              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
+              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
+              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
+              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
+              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
+              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
+              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
+              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
+              ושיוך המידע.
+            </p>
+          </Content>
+          <Selector>
+            <SelectorTitle>Select clients</SelectorTitle>
+            <SelectorLabel>Suggested clients</SelectorLabel>
+            <ClientBox>
+              <Checkbox
+                checked={false}
+                setIsCheckedCreate={(value) => console.log(value)}
+              />
+              <ClientName>Client Name 1</ClientName>
+            </ClientBox>
+            <ClientBox>
+              <Checkbox
+                checked={false}
+                setIsCheckedCreate={(value) => console.log(value)}
+              />
+              <ClientName>Client Name 1</ClientName>
+            </ClientBox>
+            <ClientBox>
+              <Checkbox
+                checked={false}
+                setIsCheckedCreate={(value) => console.log(value)}
+              />
+              <ClientName>Client Name 1</ClientName>
+            </ClientBox>
+            <ClientBox>
+              <Checkbox
+                checked={false}
+                setIsCheckedCreate={(value) => console.log(value)}
+              />
+              <ClientName>Client Name 1</ClientName>
+            </ClientBox>
+            <ClientDropdown
+              placeholder=""
+              isMultiSelect={true}
+              onSelect={(e) => console.log(e)}
+              value=" "
+              options={[
+                { item: " ", value: " " },
+                { item: "First", value: "first" },
+                { item: "First", value: "third" },
+                { item: "First", value: "fourth" },
+              ]}
+              label="Clients"
+            />
+            <BtnBox>
+              <MainButton color="blue">Next</MainButton>
+              <MainButton color="orange">Send</MainButton>
+            </BtnBox>
+          </Selector>
+        </div>
+        <InitialPost>
+          <PostTitle>Post Title</PostTitle>
+          <PostText>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse, velit!</PostText>
+        </InitialPost>
+      </Container>
     </StyledModal>
   );
 };
