@@ -8,6 +8,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import './i18';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

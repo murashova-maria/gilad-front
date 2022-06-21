@@ -4,6 +4,7 @@ import { Dropdown } from "../components/Dropdown";
 import { colors } from "../assets/styles/colors";
 import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 const StyledModal = styled.div`
   position: absolute;
@@ -123,6 +124,7 @@ const PostText = styled.p`
 `;
 
 const EditModel = (props: any) => {
+  const {t} = useTranslation()
   return (
     <StyledModal>
       <Container>

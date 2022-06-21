@@ -1,0 +1,62 @@
+{
+    "tag": "מקור",
+    "cat": " סוג",
+    "subcategory":"סוג משנה",
+    "title": " שם",
+  
+  
+    "date": " תאריך",
+    "link": " לינק ישיר",
+    "description": "טקסט",
+  
+  
+  
+    "committee": " וועדה",
+    "recommend_committee": "וועדה ממליצה",
+    "files": "קבצים",
+    "last_name_initiator": "יוזם - שם משפחה",
+    "first_name_initiator": "יוזם - שם פרטי",
+    "email_initiator": "יוזם - מייל",
+    "email_minister": "שר - מייל",
+    "last_name_minister": "שר - שם משפחה",
+    "first_name_minister": "שר - שם פרטי",
+    "last_updated_date": " תאריך עדכון אחרון",
+    "number": "מספר הצעה לסדר-יום",
+    "status": "סטאטוס",
+    "gov_recommendation_desc": "תיאור עמדת הממשלה",
+    "president_decision_date": " תאריך החלטת נשיאות הכנסת",
+    "postopenment_reason_desc": " תיאור סיבת הדחייה",
+  
+  
+    "location": " מיקום הישיבה",
+    "start_date": "תאריך התחלה",
+    "finish_date": "תאריך סיום",
+    "cmt_session_items": "הפריטים ששובצו לישיבת ועדה",
+    
+  
+  
+    "is_special_meeting": "ישיבה מיוחדת?",
+    "plenum_session_items": "הפריטים ששובצו לישיבת מליאה",
+  
+  
+  
+    "submit_date": " תאריך הגשת השאילתה",
+    "gov_ministry_id": " קוד המשרד הממשלתי שאליו הופנתה השאילתה",
+    "reply_ministry_date": "תאריך תשובה בפועל",
+    "reply_date_planed": "תאריך תשובה מתוכנן",
+  
+  
+    "gov_ministry_name": "שם המשרד הממשלתי",
+    "duty_desc": "תיאור התפקיד",
+    "faction_name": "שם הסיעה",
+    "is_current": "האם פעיל?",
+    "last_name": "שם משפחה",
+    "first_name": "שם פרטי",
+    "email": "מייל",
+    "gender_desc": "מין",
+    "position_description": "תיאור התפקיד"
+  
+  
+  
+  }
+  
