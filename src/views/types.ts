@@ -1,3 +1,3 @@
-export interface IEmailsCard {
-    
+export interface IPostCard {
+    onEmail: ()=> void
 }

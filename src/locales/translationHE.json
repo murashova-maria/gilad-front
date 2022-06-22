@@ -54,7 +54,16 @@
     "first_name": "שם פרטי",
     "email": "מייל",
     "gender_desc": "מין",
-    "position_description": "תיאור התפקיד"
+    "position_description": "תיאור התפקיד",
+
+
+
+    "/// Front-End": "/// Front-end below",
+    "/// Front": "/// Front-end below"
+
+
+
+    
   
   
   

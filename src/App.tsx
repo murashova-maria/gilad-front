@@ -13,6 +13,7 @@ function App() {
     document.body.dir = pageDirection
     console.log(document.body.dir)
   }, [pageDirection])
+  
   return (
     <div className="App">
       <Routes>

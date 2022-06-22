@@ -3,6 +3,7 @@ import { colors } from "../assets/styles/colors";
 import { PostKeyword } from "../components/PostKeyword";
 import { Button } from "../components/Button";
 import SourceLogo from "../assets/svg/card-src.svg";
+import { IPostCard } from "./types";
 
 const Card = styled.div`
   width: 640px;
@@ -91,7 +92,7 @@ const Btns = styled.div`
   gap: 15px;
 `;
 
-const EmailsCard = () => {
+const PostCard = ({onEmail}: IPostCard) => {
   return (
     <Card>
       <Content>
@@ -117,7 +118,7 @@ const EmailsCard = () => {
           <PostKeyword keyword="Word" />
         </Keywords>
         <Btns>
-          <Button type="email" />
+          <Button type="email" onClick={onEmail}/>
           <Button type="del" />
         </Btns>
       </Content>
@@ -133,4 +134,4 @@ const EmailsCard = () => {
   );
 };
 
-export default EmailsCard;
+export default PostCard;

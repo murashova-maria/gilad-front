@@ -2,6 +2,8 @@ import styled from "styled-components";
 import bg from "../assets/img/bg.png";
 import { EditModel, PostsCard } from "../views";
 import { Title } from "../components/Title";
+import { Modal } from "../components/Modal";
+import { useState } from "react";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -26,21 +28,24 @@ const StyledTitle = styled(Title)`
 `;
 
 const EmailsPage = () => {
+  const [showEditModel, setShowEditModel] = useState(false)
   return (
     <>
       <Emails>
         <Content>
           <div>
             <StyledTitle>Gov publications</StyledTitle>
-            <PostsCard />
+            <PostsCard onEmail={()=> setShowEditModel(true)} />
           </div>
           <div>
             <StyledTitle>News by Google</StyledTitle>
-            <PostsCard />
+            <PostsCard onEmail={()=> setShowEditModel(true)} />
           </div>
         </Content>
       </Emails>
-     <EditModel />
+      <Modal show={showEditModel} onClose={() => setShowEditModel(false)}>
+        <EditModel />
+      </Modal>
     </>
   );
 };

@@ -7,14 +7,9 @@ import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 
 const StyledModal = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 50px;
-  transform: translate(-50%);
   border-radius: 20px;
   width: 80%;
   background-color: #fff;
-  height: 115vh;
 `;
 
 const StyledTitle = styled(Title)`

@@ -47,23 +47,23 @@ const DelBtn = styled(Btn)`
 `;
 
 
-const Button = ({ type  }: IButton) => {
+const Button = ({ type, ...props  }: IButton) => {
   switch (type) {
     case "email":
       return (
-        <EmailBtn>
+        <EmailBtn {...props}>
           Email <Pic src={email} />
         </EmailBtn>
       );
     case "edit":
       return (
-        <EditBtn>
+        <EditBtn {...props}>
           Edit <Pic src={edit} />
         </EditBtn>
       );
     case "del":
       return (
-        <DelBtn>
+        <DelBtn {...props}>
           Delete
           <Pic src={del} />
         </DelBtn>
