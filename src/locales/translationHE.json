@@ -58,8 +58,47 @@
 
 
 
-    "/// Front-End": "/// Front-end below",
-    "/// Front": "/// Front-end below"
+    "/// Front-End ///": "/// Front-end below ///",
+
+    "sign-in_title": "Sign in",
+    "sign-in_login-label": "Login",
+    "sign-in_login-placeholder": "Login",
+    "sign-in_password-label": "Password",
+    "sign-in_password-placeholder": "Password",
+    "sign-in_sign-in": "Sign in",
+
+    "emails_title1": "News by Google",
+    "emails_title2": "Gov publications",
+    "emails_keywords": "Keywords",
+
+
+    "emails_data-from-db": "Data from DB",
+    "emails_edit-title": "Edit Mail",
+    "emails_direct-link": "Direct Link",
+    "emails_content-formats": "Content formats",
+    "emails_select-clients": "Select clients",
+    "emails_suggested-clients": "Suggested clients",
+    "emails_clients-label": "Clients",
+    "emails_edit-next": "Next",
+    "emails_edit-send": "Send",
+
+
+
+
+
+
+
+
+
+
+    "btn_email": "Email",
+    "btn_edit": "Edit",
+    "btn_delete": "Delete"
+
+
+
+
+
 
 
 

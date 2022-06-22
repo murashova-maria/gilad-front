@@ -4,6 +4,8 @@ import { PostKeyword } from "../components/PostKeyword";
 import { Button } from "../components/Button";
 import SourceLogo from "../assets/svg/card-src.svg";
 import { IPostCard } from "./types";
+import { useTranslation } from "react-i18next";
+
 
 const Card = styled.div`
   width: 640px;
@@ -22,7 +24,7 @@ const Content = styled.div`
 const Clients = styled.div`
   padding: 20px;
   flex-shrink: 0;
-  border-left: 1px solid #cccccc;
+  border-inline-start: 1px solid #cccccc;
 `;
 
 const Client = styled.p`
@@ -93,6 +95,7 @@ const Btns = styled.div`
 `;
 
 const PostCard = ({onEmail}: IPostCard) => {
+  const {t} = useTranslation()
   return (
     <Card>
       <Content>
@@ -111,11 +114,11 @@ const PostCard = ({onEmail}: IPostCard) => {
           imperdiet tellus vitae dictum accumsan faucibus blandit. Sapien,
           cursus ...
         </Text>
-        <KeywordsTitle>Keywords</KeywordsTitle>
+        <KeywordsTitle>{t('emails_keywords')}</KeywordsTitle>
         <Keywords>
-          <PostKeyword keyword="Word" />
-          <PostKeyword keyword="Word" />
-          <PostKeyword keyword="Word" />
+          <PostKeyword>Word</PostKeyword>
+          <PostKeyword>Word</PostKeyword>
+          <PostKeyword>Word</PostKeyword>
         </Keywords>
         <Btns>
           <Button type="email" onClick={onEmail}/>

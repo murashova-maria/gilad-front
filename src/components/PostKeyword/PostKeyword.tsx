@@ -26,10 +26,10 @@ const Pic = styled.img`
   object-position: center;
 `;
 
-const PostKeyword = ({ keyword }: IProps) => {
+const PostKeyword = ({ children }: IProps) => {
   return (
     <Keyword>
-      {keyword}
+      {children}
       <Pic src={closePic} />
     </Keyword>
   );

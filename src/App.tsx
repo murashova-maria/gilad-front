@@ -11,7 +11,6 @@ function App() {
   const pageDirection = i18next.dir()
   useEffect(() => {
     document.body.dir = pageDirection
-    console.log(document.body.dir)
   }, [pageDirection])
   
   return (

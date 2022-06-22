@@ -4,6 +4,7 @@ import email from "../../assets/svg/btn-email.svg";
 import edit from "../../assets/svg/btn-edit.svg";
 import { colors } from "../../assets/styles/colors";
 import del from "../../assets/svg/btn-del.svg";
+import { useTranslation } from "react-i18next";
 
 const Btn = styled.button`
   display: flex;
@@ -48,23 +49,24 @@ const DelBtn = styled(Btn)`
 
 
 const Button = ({ type, ...props  }: IButton) => {
+  const {t} = useTranslation()
   switch (type) {
     case "email":
       return (
         <EmailBtn {...props}>
-          Email <Pic src={email} />
+          {t('btn_email')} <Pic src={email} />
         </EmailBtn>
       );
     case "edit":
       return (
         <EditBtn {...props}>
-          Edit <Pic src={edit} />
+          {t('btn_edit')} <Pic src={edit} />
         </EditBtn>
       );
     case "del":
       return (
         <DelBtn {...props}>
-          Delete
+          {t('btn_delete')}
           <Pic src={del} />
         </DelBtn>
       );

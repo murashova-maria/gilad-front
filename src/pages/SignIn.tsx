@@ -4,6 +4,7 @@ import { colors } from "../assets/styles/colors";
 import { MainButton } from "../components/MainButton";
 import { TextInput } from "../components/TextInput";
 import { ILoginData } from "./types";
+import { useTranslation } from "react-i18next";
 
 const SignInPage = styled.div`
   height: 100vh;
@@ -44,6 +45,7 @@ const StyledBtn = styled(MainButton)`
 `;
 
 const SignIn = () => {
+  const { t } = useTranslation()
   const [loginData, setLoginData]: [ILoginData, any] = useState({
     login: "",
     password: "",
@@ -52,29 +54,29 @@ const SignIn = () => {
   return (
     <SignInPage>
       <div>
-        <Title>Sign in</Title>
+        <Title>{t('sign-in_title')}</Title>
         <Box>
           <StyledInput
-            placeholder="Login"
+            placeholder={t('sign-in_login-placeholder')}
             value={loginData.login}
             onChange={(e) =>
               setLoginData((prev: ILoginData) => ({ ...prev, login: e }))
             }
-            label="Log in"
+            label={t('sign-in_login-label')}
           />
           <StyledInput
-            placeholder="Password"
+            placeholder={t('sign-in_password-placeholder')}
             value={loginData.password}
             onChange={(e) =>
               setLoginData((prev: ILoginData) => ({ ...prev, password: e }))
             }
-            label="Password"
+            label={t('sign-in_password-label')}
           />
           <StyledBtn
             color="orange"
             disabled={!loginData.login || !loginData.password}
           >
-            Sign In
+            {t('sign-in_sign-in')}
           </StyledBtn>
         </Box>
       </div>

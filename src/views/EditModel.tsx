@@ -124,7 +124,7 @@ const EditModel = (props: any) => {
     <StyledModal>
       <Container>
         <InitialPost>
-          <StyledTitle>Data from DB</StyledTitle>
+          <StyledTitle>{t('emails_data-from-db')}</StyledTitle>
           <PostTitle>יתקיים דיון בוועדת</PostTitle>
           <PostText>
             שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת __________בנושא:
@@ -140,8 +140,8 @@ const EditModel = (props: any) => {
         </InitialPost>
 
         <div>
-          <StyledTitle>Edit Mail</StyledTitle>
-          <DirectLink href="#">Direct Link</DirectLink>
+          <StyledTitle>{t('emails_edit-title')}</StyledTitle>
+          <DirectLink href="#">{t('emails_direct-link')}</DirectLink>
 
           <TemplatesDropdown
             placeholder=""
@@ -153,7 +153,7 @@ const EditModel = (props: any) => {
               { item: "First", value: "third" },
               { item: "First", value: "fourth" },
             ]}
-            label="Content formats dropdown"
+            label={t('emails_content-formats')}
           />
           <Content>
             <h2>
@@ -218,8 +218,8 @@ const EditModel = (props: any) => {
             </p>
           </Content>
           <Selector>
-            <SelectorTitle>Select clients</SelectorTitle>
-            <SelectorLabel>Suggested clients</SelectorLabel>
+            <SelectorTitle>{t('emails_select-clients')}</SelectorTitle>
+            <SelectorLabel>{t('emails_suggested-clients')}</SelectorLabel>
             <ClientBox>
               <Checkbox
                 checked={false}
@@ -259,11 +259,11 @@ const EditModel = (props: any) => {
                 { item: "First", value: "third" },
                 { item: "First", value: "fourth" },
               ]}
-              label="Clients"
+              label={t('emails_clients-label')}
             />
             <BtnBox>
-              <MainButton color="blue">Next</MainButton>
-              <MainButton color="orange">Send</MainButton>
+              <MainButton color="blue">{t('emails_edit-next')}</MainButton>
+              <MainButton color="orange">{t('emails_edit-send')}</MainButton>
             </BtnBox>
           </Selector>
         </div>

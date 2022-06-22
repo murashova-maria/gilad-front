@@ -32,14 +32,14 @@ const RowItemStyled = styled.div`
   margin-bottom: 0;
 `;
 
-const IconStyled = styled.img`
+const IconStyled = styled.img<{rtl: boolean}>`
   height: 6px;
   width: 12px;
-  margin-left: 8px;
+  margin-inline-start: 8px;
   position: absolute;
   top: 50%;
-  right: 17px;
-  transform: translate(-50%, -50%);
+  ${({rtl}) => rtl ? 'left' : 'right'}: 17px;
+  transform: translateY(-50%);
 `;
 
 const Menu = styled.div<{ showMenu: boolean }>`
@@ -200,7 +200,7 @@ function Dropdown({
             value={"-"}
           />
         )}
-        <IconStyled src={arrow} />
+        <IconStyled rtl={document.body.dir === 'rtl'} src={arrow} />
       </RowItemStyled>
 
       <Menu showMenu={showMenu}>

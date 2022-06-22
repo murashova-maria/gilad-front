@@ -4,6 +4,7 @@ import { EditModel, PostsCard } from "../views";
 import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -28,17 +29,18 @@ const StyledTitle = styled(Title)`
 `;
 
 const EmailsPage = () => {
+  const {t} = useTranslation()
   const [showEditModel, setShowEditModel] = useState(false)
   return (
     <>
       <Emails>
         <Content>
           <div>
-            <StyledTitle>Gov publications</StyledTitle>
+            <StyledTitle>{t('emails_title2')}</StyledTitle>
             <PostsCard onEmail={()=> setShowEditModel(true)} />
           </div>
           <div>
-            <StyledTitle>News by Google</StyledTitle>
+            <StyledTitle>{t('emails_title1')}</StyledTitle>
             <PostsCard onEmail={()=> setShowEditModel(true)} />
           </div>
         </Content>
