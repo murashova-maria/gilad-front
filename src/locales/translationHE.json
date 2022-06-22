@@ -57,52 +57,49 @@
     "position_description": "תיאור התפקיד",
 
 
+    "private_number": "מספר ה-פ' של הצעת החוק",
+    "bill_number": " מספר ה-כ' או ה-מ' של הצעת החוק",
+    "bill_postopenment_reason_desc": " תיאור סיבת העצירה (אם ההצעה נעצרה)",
+    "publication_date": "תאריך פרסום בספר החוקים",
+    "magazine_number": " מספר חוברת בספר החוקים",
+    "page_number": "מספר עמוד בספר החוקים",
+    "is_continuation_bill": " האם הוחל על הצעת החוק דין רציפות",
+    "summary_law": "תקציר החוק",
+    "publication_series_desc": "תיאור סדרת הפרסום של החוק",
+    "publication_series_first_call": "תיאור סדרת הפרסום של הצעת החוק לקריאה הראשונה",
+
 
     "/// Front-End ///": "/// Front-end below ///",
 
-    "sign-in_title": "Sign in",
-    "sign-in_login-label": "Login",
-    "sign-in_login-placeholder": "Login",
-    "sign-in_password-label": "Password",
-    "sign-in_password-placeholder": "Password",
-    "sign-in_sign-in": "Sign in",
-
-    "emails_title1": "News by Google",
-    "emails_title2": "Gov publications",
-    "emails_keywords": "Keywords",
-
-
-    "emails_data-from-db": "Data from DB",
-    "emails_edit-title": "Edit Mail",
-    "emails_direct-link": "Direct Link",
-    "emails_content-formats": "Content formats",
-    "emails_select-clients": "Select clients",
-    "emails_suggested-clients": "Suggested clients",
-    "emails_clients-label": "Clients",
-    "emails_edit-next": "Next",
-    "emails_edit-send": "Send",
-
-
-
-
-
-
-
-
-
-
-    "btn_email": "Email",
-    "btn_edit": "Edit",
-    "btn_delete": "Delete"
-
-
-
-
-
-
+    "sign-in_title": "כניסה",
+    "sign-in_login-label": "שם משתמש",
+    "sign-in_login-placeholder": "שם משתמש",
+    "sign-in_password-label": "סיסמה",
+    "sign-in_password-placeholder": "סיסמה",
+    "sign-in_sign-in": "כניסה",
 
 
     
+    "emails_title1": "חדשות",
+    "emails_title2": "פובליקציות",
+    "emails_keywords": "מילות מפתח",
+
+    "emails_data-from-db": "נתוני העדכון",
+    "emails_edit-title": "עריכה",
+    "emails_direct-link": "לינק ישיר",
+    "emails_content-formats": "טמפלייטים",
+    "emails_select-clients": "בחר לקוחות נוספים",
+    "emails_suggested-clients": "ממלצים לעדכון זה",
+    "emails_clients-label": "לקוחות",
+    "emails_edit-next": "הבא",
+    "emails_edit-send": "לשלוח",
+
+
+    "btn_email": "מייל",
+    "btn_edit": "עריכה",
+    "btn_delete": "מחיקה"
+
+
   
   
   

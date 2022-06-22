@@ -1,0 +1,1 @@
+export const ws = new WebSocket("wss://gilad.stoi.co/ws/");
