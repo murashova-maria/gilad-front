@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { rootReducerType } from "..";
-import { userSetToken, userLogin } from "./actions";
+import { userLogin, userGetInfo } from "./actions";
 import { ILoginType, IUserState } from "./types";
 
 
@@ -17,13 +17,12 @@ export const useUserActions = () => {
         dispatch(userLogin(loginData))
     }
 
-    ////////////////
-    const onSetToken = (token: string) => {
-        dispatch(userSetToken(token))
+    const onGetUserInfo = (token: string | null) => {
+        dispatch(userGetInfo(token))
     }
 
     return {
-        onSetToken,
-        onLogin
+        onLogin,
+        onGetUserInfo
     }
 }

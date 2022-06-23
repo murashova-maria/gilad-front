@@ -3,14 +3,15 @@ import { EmailsPage, SignIn, WithAuthHOC } from "./pages";
 import { Routes, Route } from "react-router-dom";
 import i18next from "i18next";
 import { ws } from "./api";
+import { useUserActions, useUserState } from "./store/user/hooks";
 
 function App() {
   const pageDirection = i18next.dir();
+  const {token} = useUserState()
   useEffect(() => {
     document.body.dir = pageDirection;
   }, [pageDirection]);
-
-
+  //Watching for posts WebSocket
   useEffect(() => {
     ws.addEventListener('message', (e: any) => {
       console.log('web socket data: ',JSON.parse(e.data))
@@ -25,6 +26,13 @@ function App() {
       ws.close()
     }
   }, []);
+
+  //Get User Info
+  const {onGetUserInfo} = useUserActions()
+  useEffect(() => {
+    onGetUserInfo(token)
+  }, [token])
+
 
   return (
     <div className="App">
