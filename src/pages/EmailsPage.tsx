@@ -39,7 +39,6 @@ const EmailsPage = () => {
   useEffect(() => {
     onGetPosts()
   }, [])
-  console.log(posts)
 
   return (
     <>

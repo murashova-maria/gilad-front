@@ -72,6 +72,7 @@ function* getGoogleNews(): any {
   if (token) {
     const [dataRes, dataErr] = yield call(handle, Posts.getGoogleNews(token));
     if (dataRes) {
+        console.log(dataRes)
       yield put(postsAddGoogleNews(dataRes));
     }
     if (dataErr) {
@@ -124,7 +125,6 @@ function* getBills(): any {
     if (token) {
       const [dataRes, dataErr] = yield call(handle, Posts.getBills(token));
       if (dataRes) {
-        console.log(dataRes)
         yield put(postsAddPosts(dataRes));
       }
       if (dataErr) {

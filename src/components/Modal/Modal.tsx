@@ -12,6 +12,18 @@ const ModalWrapper = styled.div`
     justify-content: center;
     align-items: center;
     overflow-y: auto;
+
+    &::after {
+        filter: blur(10px);
+        background-color: transparent;
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+    }
 `
 
 const Modal = ({children, show, onClose}: IModal): JSX.Element | null => {

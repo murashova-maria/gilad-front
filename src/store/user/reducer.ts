@@ -6,8 +6,8 @@ const initialState: IUserState = {
     login: null,
     email: null,
     is_active: false,
-    //Set token to null
-    token: "537c5d007a8430eb660de4f0c92f097a62a30b16",
+    //token: "537c5d007a8430eb660de4f0c92f097a62a30b16"
+    token: null,
     errorMessage: null,
 }
 
