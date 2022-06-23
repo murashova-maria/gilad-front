@@ -26,8 +26,8 @@ const loadedState = load({
     disableWarnings: true
 })
 
-//const store = createStore(rootReducer,loadedState, composeWithDevTools(applyMiddleware(sagaMiddleware, save({ states: PERSISTED_KEYS }))));
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+const store = createStore(rootReducer,loadedState, composeWithDevTools(applyMiddleware(sagaMiddleware, save({ states: PERSISTED_KEYS }))));
+//const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 
 sagaMiddleware.run(rootSaga)
 

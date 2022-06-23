@@ -10,11 +10,13 @@ const StyledModal = styled.div`
   border-radius: 20px;
   width: 80%;
   background-color: #fff;
+  border: 1px solid #C2FFFD;
+  box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
 `;
 
 const StyledTitle = styled(Title)`
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 15px;
 `;
 
 const Container = styled.div`
@@ -28,13 +30,13 @@ const DirectLink = styled.a`
 `;
 
 const TemplatesDropdown = styled(Dropdown)`
-  margin: 0 30px 20px;
+  margin: 0px 30px 10px;
   width: calc(100% - 60px);
   margin-top: 25px;
 `;
 
 const Content = styled.div`
-  height: 350px;
+  height: 300px;
   overflow-y: auto;
   text-align: right;
   line-height: 1.25;
@@ -53,7 +55,7 @@ const Content = styled.div`
 `;
 
 const Selector = styled.div`
-  padding: 20px 30px;
+  padding: 10px 30px;
   background: #ffffff;
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);
   border-radius: 0 0 20px 20px;

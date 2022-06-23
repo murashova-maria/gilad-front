@@ -11,10 +11,23 @@ const Emails = styled.div`
   min-height: 100vh;
   display: flex;
   padding: 60px 10px 20px;
-  background: url(${bg});
+  background-image: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url(${bg});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 `;
 
 const Content = styled.div`
@@ -46,12 +59,12 @@ const EmailsPage = () => {
         <Content>
           <div>
             <StyledTitle>{t('emails_title2')}</StyledTitle>
-            {posts.map(post => <PostsCard title={post.title ? post.title : 'Title'} onEmail={()=> setShowEditModel(true)} />)}
+            {posts.map(post => <PostsCard item={post} onEmail={()=> setShowEditModel(true)} />)}
             
           </div>
           <div>
             <StyledTitle>{t('emails_title1')}</StyledTitle>
-            {googleNews.map(post => <PostsCard title={post.title ? post.title : 'Title'} onEmail={()=> setShowEditModel(true)} />)}
+            {googleNews.map(post => <PostsCard item={post} onEmail={()=> setShowEditModel(true)} />)}
 
           </div>
         </Content>

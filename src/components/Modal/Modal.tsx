@@ -12,10 +12,8 @@ const ModalWrapper = styled.div`
     justify-content: center;
     align-items: center;
     overflow-y: auto;
-
+    backdrop-filter: blur(20px);
     &::after {
-        filter: blur(10px);
-        background-color: transparent;
         content: '';
         position: absolute;
         top: 0;

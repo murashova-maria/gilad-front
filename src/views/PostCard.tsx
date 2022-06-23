@@ -6,7 +6,6 @@ import SourceLogo from "../assets/svg/card-src.svg";
 import { IPostCard } from "./types";
 import { useTranslation } from "react-i18next";
 
-
 const Card = styled.div`
   width: 640px;
   display: flex;
@@ -35,7 +34,7 @@ const Client = styled.p`
 `;
 
 const Title = styled.h2`
-font-family: 'Gilroy-B';
+  font-family: "Gilroy-B";
   font-size: 24px;
   line-height: 30px;
   margin-bottom: 10px;
@@ -52,12 +51,10 @@ const Source = styled.div`
   color: ${colors.grey_4};
 `;
 
-const SourceLink = styled.a`
+const SourceBox = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-  text-decoration: none;
-  color: inherit;
 `;
 
 const SourcePic = styled.img`
@@ -95,43 +92,47 @@ const Btns = styled.div`
   gap: 15px;
 `;
 
-const PostCard = ({onEmail, title}: IPostCard) => {
-  const {t} = useTranslation()
+const PostCard = ({
+  onEmail,
+  item: { title, cat, tag, desc, keywords, clients },
+}: IPostCard) => {
+  const { t } = useTranslation();
+  if (clients) console.log(clients);
   return (
     <Card>
       <Content>
-        <Title>{title}</Title>
+        {title && <Title>{title}</Title>}
+        {!title && <Title>Committee</Title>}
         <Source>
-          <SourceLink href="#">
-            <SourcePic src={SourceLogo} />
-            Ministry of Social Equality
-          </SourceLink>
-          <SourceText>כותרת: עדכון מהכנסת</SourceText>
+          {tag && (
+            <SourceBox>
+              <SourcePic src={SourceLogo} />
+              {tag}
+            </SourceBox>
+          )}
+          {cat && <SourceText>{cat}</SourceText>}
         </Source>
-        <Text>
-          Ac, elit consectetur convallis nibh venenatis. Mauris tellus,
-          imperdiet tellus vitae dictum accumsan faucibus blandit. Sapien,
-          cursus ...
-        </Text>
-        <KeywordsTitle>{t('emails_keywords')}</KeywordsTitle>
-        <Keywords>
-          <PostKeyword>Word</PostKeyword>
-          <PostKeyword>Word</PostKeyword>
-          <PostKeyword>Word</PostKeyword>
-        </Keywords>
+        {desc && <Text>{desc}</Text>}
+        <KeywordsTitle>{t("emails_keywords")}</KeywordsTitle>
+        {keywords && (
+          <Keywords>
+            {keywords.map((keyword: { keyword: string; id: number }) => (
+              <PostKeyword key={keyword.id}>{keyword.keyword}</PostKeyword>
+            ))}
+          </Keywords>
+        )}
         <Btns>
-          <Button type="email" onClick={onEmail}/>
+          <Button type="email" onClick={onEmail} />
           <Button type="del" />
         </Btns>
       </Content>
-      <Clients>
-        <Client>Client Name 1</Client>
-        <Client>Client Name 2</Client>
-        <Client>Client Name 3</Client>
-        <Client>Client Name 4</Client>
-        <Client>Client Name 5</Client>
-        <Client>Client Name 6</Client>
-      </Clients>
+      {clients && clients.length > 0 && (
+        <Clients>
+          {clients.map((client: any) => (
+            <Client>{client.name}</Client>
+          ))}
+        </Clients>
+      )}
     </Card>
   );
 };

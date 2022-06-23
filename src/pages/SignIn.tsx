@@ -6,12 +6,14 @@ import { TextInput } from "../components/TextInput";
 import { useTranslation } from "react-i18next";
 import { useUserActions, useUserState } from "../store/user/hooks";
 import { ILoginType } from "../store/user/types";
+import bg from '../assets/img/bg.png'
 
 const SignInPage = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(${bg});
 `;
 
 const Title = styled.h1`

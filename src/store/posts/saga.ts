@@ -72,7 +72,6 @@ function* getGoogleNews(): any {
   if (token) {
     const [dataRes, dataErr] = yield call(handle, Posts.getGoogleNews(token));
     if (dataRes) {
-        console.log(dataRes)
       yield put(postsAddGoogleNews(dataRes));
     }
     if (dataErr) {
