@@ -47,11 +47,13 @@ const EmailsPage = () => {
         <Content>
           <div>
             <StyledTitle>{t('emails_title2')}</StyledTitle>
-            <PostsCard onEmail={()=> setShowEditModel(true)} />
+            {posts.map(post => <PostsCard title={post.title ? post.title : 'Title'} onEmail={()=> setShowEditModel(true)} />)}
+            
           </div>
           <div>
             <StyledTitle>{t('emails_title1')}</StyledTitle>
-            <PostsCard onEmail={()=> setShowEditModel(true)} />
+            {googleNews.map(post => <PostsCard title={post.title ? post.title : 'Title'} onEmail={()=> setShowEditModel(true)} />)}
+
           </div>
         </Content>
       </Emails>

@@ -14,7 +14,6 @@ import {
   postsGetQueries,
   postsGetBills,
 } from "./actions";
-import { postsSelector } from "./hooks";
 
 export function* postsWatcher() {
   yield takeLatest(postsGetGovils, getGovils);

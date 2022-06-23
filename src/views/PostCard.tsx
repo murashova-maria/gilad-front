@@ -14,6 +14,7 @@ const Card = styled.div`
   border-radius: 20px;
   border: 1px solid ${colors.blue_green};
   box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
 `;
 
 const Content = styled.div`
@@ -94,14 +95,12 @@ const Btns = styled.div`
   gap: 15px;
 `;
 
-const PostCard = ({onEmail}: IPostCard) => {
+const PostCard = ({onEmail, title}: IPostCard) => {
   const {t} = useTranslation()
   return (
     <Card>
       <Content>
-        <Title>
-          Canada posts significant jobs gains as COVID restrictions lift
-        </Title>
+        <Title>{title}</Title>
         <Source>
           <SourceLink href="#">
             <SourcePic src={SourceLogo} />
