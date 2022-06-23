@@ -13,11 +13,17 @@ export const useUserState = (): IUserState => {
 export const useUserActions = () => {
     const dispatch = useDispatch()
 
+    const onLogin = (loginData: {login: string, password: string}) => {
+        console.log(loginData)
+    }
+
+    //////////////// 
     const onSetToken = (token: string) => {
         dispatch(userSetToken(token))
     }
 
     return {
-        onSetToken
+        onSetToken,
+        onLogin
     }
 }

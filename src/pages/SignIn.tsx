@@ -1,10 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { colors } from "../assets/styles/colors";
 import { MainButton } from "../components/MainButton";
 import { TextInput } from "../components/TextInput";
 import { ILoginData } from "./types";
 import { useTranslation } from "react-i18next";
+import { useUserActions } from "../store/user/hooks";
 
 const SignInPage = styled.div`
   height: 100vh;
@@ -46,14 +47,20 @@ const StyledBtn = styled(MainButton)`
 
 const SignIn = () => {
   const { t } = useTranslation()
+  const {onLogin} = useUserActions()
   const [loginData, setLoginData]: [ILoginData, any] = useState({
     login: "",
     password: "",
   });
 
+  const handleLogin = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    onLogin(loginData)
+  }
+
   return (
     <SignInPage>
-      <div>
+      <form onSubmit={(e) => handleLogin(e)}>
         <Title>{t('sign-in_title')}</Title>
         <Box>
           <StyledInput
@@ -79,7 +86,7 @@ const SignIn = () => {
             {t('sign-in_sign-in')}
           </StyledBtn>
         </Box>
-      </div>
+      </form>
     </SignInPage>
   );
 };

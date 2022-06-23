@@ -3,7 +3,10 @@ import { userSetToken } from './actions'
 import { IUserState } from './types'
 
 const initialState: IUserState = {
-    token: null
+    isLogin: false,
+    token: null,
+    errorMessage: null,
+    userInfo: null,
 }
 
 const user = createReducer(initialState, {
