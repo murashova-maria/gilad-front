@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { EmailsPage, SignIn, WithAuthHOC } from "./pages";
 import { Routes, Route } from "react-router-dom";
 import i18next from "i18next";
-import { ws } from "./api/WebSocket";
+import { ws } from "./api";
 
 function App() {
   const pageDirection = i18next.dir();

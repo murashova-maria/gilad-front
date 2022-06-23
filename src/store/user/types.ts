@@ -6,6 +6,6 @@ export interface IUserState {
 }
 
 export interface ILoginType {
-    login: string
+    username: string
     password: string
 }

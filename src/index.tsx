@@ -10,15 +10,25 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./i18";
 import createSagaMiddleware from "@redux-saga/core";
 import { rootSaga } from "./store/rootSaga";
+import {composeWithDevTools} from "redux-devtools-extension";
+import { load, save } from "redux-localstorage-simple";
+
+
+const PERSISTED_KEYS: string[] = ['user.isLogin', 'user.token']
+const loadedState = load({
+    states: PERSISTED_KEYS,
+    disableWarnings: true
+})
+
+const sagaMiddleware = createSagaMiddleware()
+
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+//const store = createStore(rootReducer,loadedState, composeWithDevTools(applyMiddleware(sagaMiddleware, save({ states: PERSISTED_KEYS }))));
+sagaMiddleware.run(rootSaga)
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-
-const sagaMiddleware = createSagaMiddleware()
-
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(rootSaga)
 
 root.render(
     <Router>

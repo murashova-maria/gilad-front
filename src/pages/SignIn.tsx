@@ -4,7 +4,7 @@ import { colors } from "../assets/styles/colors";
 import { MainButton } from "../components/MainButton";
 import { TextInput } from "../components/TextInput";
 import { useTranslation } from "react-i18next";
-import { useUserActions } from "../store/user/hooks";
+import { useUserActions, useUserState } from "../store/user/hooks";
 import { ILoginType } from "../store/user/types";
 
 const SignInPage = styled.div`
@@ -45,11 +45,18 @@ const StyledBtn = styled(MainButton)`
   text-transform: uppercase;
 `;
 
+const ErrorMessage = styled.p`
+  text-align: center;
+  color: red;
+  margin: 5px 0; 
+`
+
 const SignIn = () => {
   const { t } = useTranslation()
+  const {errorMessage} = useUserState()
   const {onLogin} = useUserActions()
   const [loginData, setLoginData]: [ILoginType, any] = useState({
-    login: "",
+    username: "",
     password: "",
   });
 
@@ -65,9 +72,9 @@ const SignIn = () => {
         <Box>
           <StyledInput
             placeholder={t('sign-in_login-placeholder')}
-            value={loginData.login}
+            value={loginData.username}
             onChange={(e) =>
-              setLoginData((prev: ILoginType) => ({ ...prev, login: e }))
+              setLoginData((prev: ILoginType) => ({ ...prev, username: e }))
             }
             label={t('sign-in_login-label')}
           />
@@ -81,10 +88,11 @@ const SignIn = () => {
           />
           <StyledBtn
             color="orange"
-            disabled={!loginData.login || !loginData.password}
+            disabled={!loginData.username || !loginData.password}
           >
             {t('sign-in_sign-in')}
           </StyledBtn>
+          {errorMessage && <ErrorMessage>{t(errorMessage)}</ErrorMessage>}
         </Box>
       </form>
     </SignInPage>

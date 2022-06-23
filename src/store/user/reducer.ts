@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit'
-import { userSetToken } from './actions'
+import { userSetError, userSetToken, userSetLogin } from './actions'
 import { IUserState } from './types'
 
 const initialState: IUserState = {
@@ -14,6 +14,20 @@ const user = createReducer(initialState, {
         return {
             ...state,
             token: action.payload
+        }
+    },
+    [userSetError.type]: (state, action: {payload: string | null}) => {
+        return {
+            ...state,
+            errorMessage: action.payload
+        }
+    },
+    [userSetLogin.type]: (state, action: {payload: string}) => {
+        return {
+            ...state,
+            token: action.payload,
+            isLogin: true,
+            errorMessage: null
         }
     }
 })
