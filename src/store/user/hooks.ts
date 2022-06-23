@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { rootReducerType } from "..";
-import { userSetToken } from "./actions";
-import { IUserState } from "./types";
+import { userSetToken, userLogin } from "./actions";
+import { ILoginType, IUserState } from "./types";
 
 
 export const userSelector = (state: rootReducerType) => state.user
@@ -13,11 +13,11 @@ export const useUserState = (): IUserState => {
 export const useUserActions = () => {
     const dispatch = useDispatch()
 
-    const onLogin = (loginData: {login: string, password: string}) => {
-        console.log(loginData)
+    const onLogin = (loginData: ILoginType) => {
+        dispatch(userLogin(loginData))
     }
 
-    //////////////// 
+    ////////////////
     const onSetToken = (token: string) => {
         dispatch(userSetToken(token))
     }

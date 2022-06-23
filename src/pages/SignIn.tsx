@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { colors } from "../assets/styles/colors";
 import { MainButton } from "../components/MainButton";
 import { TextInput } from "../components/TextInput";
-import { ILoginData } from "./types";
 import { useTranslation } from "react-i18next";
 import { useUserActions } from "../store/user/hooks";
+import { ILoginType } from "../store/user/types";
 
 const SignInPage = styled.div`
   height: 100vh;
@@ -48,7 +48,7 @@ const StyledBtn = styled(MainButton)`
 const SignIn = () => {
   const { t } = useTranslation()
   const {onLogin} = useUserActions()
-  const [loginData, setLoginData]: [ILoginData, any] = useState({
+  const [loginData, setLoginData]: [ILoginType, any] = useState({
     login: "",
     password: "",
   });
@@ -67,7 +67,7 @@ const SignIn = () => {
             placeholder={t('sign-in_login-placeholder')}
             value={loginData.login}
             onChange={(e) =>
-              setLoginData((prev: ILoginData) => ({ ...prev, login: e }))
+              setLoginData((prev: ILoginType) => ({ ...prev, login: e }))
             }
             label={t('sign-in_login-label')}
           />
@@ -75,7 +75,7 @@ const SignIn = () => {
             placeholder={t('sign-in_password-placeholder')}
             value={loginData.password}
             onChange={(e) =>
-              setLoginData((prev: ILoginData) => ({ ...prev, password: e }))
+              setLoginData((prev: ILoginType) => ({ ...prev, password: e }))
             }
             label={t('sign-in_password-label')}
           />

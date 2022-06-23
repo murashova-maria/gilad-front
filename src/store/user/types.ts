@@ -4,3 +4,8 @@ export interface IUserState {
     errorMessage: null | string
     userInfo: any
 }
+
+export interface ILoginType {
+    login: string
+    password: string
+}

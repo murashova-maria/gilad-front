@@ -4,16 +4,21 @@ import App from "./App";
 import "./assets/styles/index.scss";
 import reportWebVitals from "./reportWebVitals";
 import { rootReducer } from "./store";
-import { createStore } from "@reduxjs/toolkit";
+import { createStore, applyMiddleware } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./i18";
+import createSagaMiddleware from "@redux-saga/core";
+import { rootSaga } from "./store/rootSaga";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const store = createStore(rootReducer);
+const sagaMiddleware = createSagaMiddleware()
+
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(rootSaga)
 
 root.render(
     <Router>
