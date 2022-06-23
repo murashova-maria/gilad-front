@@ -17,8 +17,8 @@ export const useUserActions = () => {
         dispatch(userLogin(loginData))
     }
 
-    const onGetUserInfo = (token: string | null) => {
-        dispatch(userGetInfo(token))
+    const onGetUserInfo = () => {
+        dispatch(userGetInfo())
     }
 
     return {

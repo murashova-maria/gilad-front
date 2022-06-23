@@ -3,5 +3,6 @@ export interface IPost {
 }
 
 export interface IPostsState {
-    posts: IPost[]
+    posts: any[]
+    googleNews: any[]
 }

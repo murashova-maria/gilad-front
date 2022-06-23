@@ -1,16 +1,23 @@
 import {createReducer} from '@reduxjs/toolkit'
-import { postsSetPosts } from './actions'
+import { postsAddGoogleNews, postsAddPosts } from './actions'
 import { IPostsState, IPost } from './types'
 
 const initialState: IPostsState = {
-    posts: []
+    posts: [],
+    googleNews: []
 }
 
 const posts = createReducer(initialState, {
-    [postsSetPosts.type]: (state, action: {paylaod: IPost[]}) => {
+    [postsAddPosts.type]: (state, action: {payload: any[]}) => {
         return {
             ...state,
-            posts: action.paylaod
+            posts: [...state.posts, ...action.payload]
+        }
+    },
+    [postsAddGoogleNews.type]: (state, action: {payload: any[]}) => {
+        return {
+            ...state,
+            googleNews: [...state.googleNews, ...action.payload]
         }
     }
 })

@@ -1,7 +1,8 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import { handle } from "../../api";
 import { User } from "../../api/User";
 import { userLogin, userSetError, userSetLogin, userGetInfo, userSetInfo } from "./actions";
+import { userSelector } from "./hooks";
 import { ILoginType, IUserInfo } from "./types";
 
 export function* userWatcher() {
@@ -19,12 +20,15 @@ function* login(action: { type: string; payload: ILoginType }): any {
   }
 }
 
-function* getInfo(action: { type: string; payload: string | null }): any {
-  if (action.payload) {
-    const [dataRes, dataErr]: [IUserInfo, any] = yield call(handle, User.getInfo(action.payload));
+function* getInfo(): any {
+  const { token } = yield select(userSelector)
+  if (token) {
+    const [dataRes, dataErr]: [IUserInfo, any] = yield call(handle, User.getInfo(token));
     if (dataRes) {
-        console.log(dataRes)
         yield put(userSetInfo(dataRes))
+    }
+    if (dataErr) {
+      console.log(dataErr)
     }
   }
 }

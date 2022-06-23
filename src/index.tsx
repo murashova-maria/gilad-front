@@ -14,16 +14,21 @@ import {composeWithDevTools} from "redux-devtools-extension";
 import { load, save } from "redux-localstorage-simple";
 
 
-const PERSISTED_KEYS: string[] = ['user.isLogin', 'user.token']
+
+
+const sagaMiddleware = createSagaMiddleware()
+
+
+// Stay logged in using local storage
+const PERSISTED_KEYS: string[] = ['user.token']
 const loadedState = load({
     states: PERSISTED_KEYS,
     disableWarnings: true
 })
 
-const sagaMiddleware = createSagaMiddleware()
-
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 //const store = createStore(rootReducer,loadedState, composeWithDevTools(applyMiddleware(sagaMiddleware, save({ states: PERSISTED_KEYS }))));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+
 sagaMiddleware.run(rootSaga)
 
 const root = ReactDOM.createRoot(

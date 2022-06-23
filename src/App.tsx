@@ -14,23 +14,23 @@ function App() {
   //Watching for posts WebSocket
   useEffect(() => {
     ws.addEventListener('message', (e: any) => {
-      console.log('web socket data: ',JSON.parse(e.data))
+      //console.log('web socket data: ',JSON.parse(e.data))
     })
     ws.addEventListener('open', () => {
-      console.log('web socket connected')
+      //console.log('web socket connected')
     })
     ws.addEventListener('error', (e) => {
-      console.log('web socket closed with error:', e)
+      //console.log('web socket closed with error:', e)
     })
     return () => {
-      ws.close()
+      //ws.close()
     }
   }, []);
 
   //Get User Info
   const {onGetUserInfo} = useUserActions()
   useEffect(() => {
-    onGetUserInfo(token)
+    onGetUserInfo()
   }, [token])
 
 

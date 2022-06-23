@@ -3,8 +3,9 @@ import bg from "../assets/img/bg.png";
 import { EditModel, PostsCard } from "../views";
 import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { usePostsActions, usePostsState } from "../store/posts/hooks";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -31,6 +32,15 @@ const StyledTitle = styled(Title)`
 const EmailsPage = () => {
   const {t} = useTranslation()
   const [showEditModel, setShowEditModel] = useState(false)
+  const {posts, googleNews} = usePostsState()
+
+  // Fetch posts
+  const {onGetPosts} = usePostsActions()
+  useEffect(() => {
+    onGetPosts()
+  }, [])
+  console.log(posts)
+
   return (
     <>
       <Emails>
