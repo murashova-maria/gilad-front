@@ -164,7 +164,6 @@ function* getGovStatistics(): any {
   if (token) {
     const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovStatistics(token));
     if (dataRes) {
-      console.log(dataRes)
       yield put(postsSetGovStatistics(dataRes));
     }
     if (dataErr) {

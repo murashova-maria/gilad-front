@@ -6,6 +6,7 @@ import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
+import { useState } from "react";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -140,6 +141,13 @@ const PostLink = styled.a`
   color: inherit;
 `;
 
+const PostDocLink = styled.a`
+  font-weight: 700;
+  font-size: 24px;
+  text-decoration: none;
+  color: ${colors.graphite_5};
+`;
+
 interface IProps {
   post: IPost;
 }
@@ -147,6 +155,25 @@ interface IProps {
 const EditModel = ({ post }: IProps) => {
   const { t } = useTranslation();
   const keys = Object.keys(post);
+  // All Clients (dropdown)
+  const [clientsList, setClientsList] = useState(" ");
+
+  //Selected clients (checkboxes)
+  const [selectedClients, setSelectedClients] = useState<number[]>([]);
+  // Add remove/clients using checkbox
+  const selectClient = (client: any) => {
+    if (selectedClients.includes(client.id) ) {
+      const index = selectedClients.indexOf(client.id)
+      let newItems = [...selectedClients]
+      newItems.splice(index, 1)
+      setSelectedClients(newItems)
+    }
+    if (!selectedClients.includes(client.id) ) {
+      setSelectedClients((prev) => [...prev, client.id])
+    }
+  };
+
+
   return (
     <StyledModal>
       <Container>
@@ -172,6 +199,36 @@ const EditModel = ({ post }: IProps) => {
             // Return cases when key is link
             if (post[key] && key === "link") {
               return null;
+            }
+            // Return cases when key is DOCX
+            if (post[key] && key === "docx") {
+              return (
+                <PostItem key={key}>
+                  <PostDocLink href={post[key]} target="_blank">
+                    {key}
+                  </PostDocLink>
+                </PostItem>
+              );
+            }
+            // Return cases when key is PDF
+            if (post[key] && key === "pdf") {
+              return (
+                <PostItem key={key}>
+                  <PostDocLink href={post[key]} target="_blank">
+                    {key}
+                  </PostDocLink>
+                </PostItem>
+              );
+            }
+            // Return cases when key is XLS
+            if (post[key] && key === "xls") {
+              return (
+                <PostItem key={key}>
+                  <PostDocLink href={post[key]} target="_blank">
+                    {key}
+                  </PostDocLink>
+                </PostItem>
+              );
             }
             // Cases when key is cmt_session_items array
             if (post[key] && key === "cmt_session_items") {
@@ -200,7 +257,9 @@ const EditModel = ({ post }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  <PostValue>{post[key].first_name} {post[key].last_name}</PostValue>
+                  <PostValue>
+                    {post[key].first_name} {post[key].last_name}
+                  </PostValue>
                   <PostValue>{post[key].email}</PostValue>
                 </PostItem>
               );
@@ -210,7 +269,9 @@ const EditModel = ({ post }: IProps) => {
               const list = post[key].map((initiator: any, index: number) => {
                 return (
                   <Initiator key={index}>
-                    <PostValue>{initiator.first_name} {initiator.last_name}</PostValue>
+                    <PostValue>
+                      {initiator.first_name} {initiator.last_name}
+                    </PostValue>
                     <PostValue>{initiator.email}</PostValue>
                   </Initiator>
                 );
@@ -236,7 +297,13 @@ const EditModel = ({ post }: IProps) => {
             }
             //Files
             if (post[key] && key === "files") {
-              console.log("files:", post[key]);
+              let files = Object.keys(post[key]);
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostValue>Files</PostValue>
+                </PostItem>
+              );
             }
           })}
         </InitialPost>
@@ -320,40 +387,25 @@ const EditModel = ({ post }: IProps) => {
           </Content>
           <Selector>
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
-            <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
-            <ClientBox>
-              <Checkbox
-                checked={false}
-                setIsCheckedCreate={(value) => console.log(value)}
-              />
-              <ClientName>Client Name 1</ClientName>
-            </ClientBox>
-            <ClientBox>
-              <Checkbox
-                checked={false}
-                setIsCheckedCreate={(value) => console.log(value)}
-              />
-              <ClientName>Client Name 1</ClientName>
-            </ClientBox>
-            <ClientBox>
-              <Checkbox
-                checked={false}
-                setIsCheckedCreate={(value) => console.log(value)}
-              />
-              <ClientName>Client Name 1</ClientName>
-            </ClientBox>
-            <ClientBox>
-              <Checkbox
-                checked={false}
-                setIsCheckedCreate={(value) => console.log(value)}
-              />
-              <ClientName>Client Name 1</ClientName>
-            </ClientBox>
+            {post.clients && post.clients.length > 0 && (
+              <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
+            )}
+            {post.clients && post.clients.map((client: any) => {
+              return (
+                <ClientBox>
+                  <Checkbox
+                    checked={false}
+                    setIsCheckedCreate={() => selectClient(client)}
+                  />
+                  <ClientName>{client.name}</ClientName>
+                </ClientBox>
+              );
+            })}
             <ClientDropdown
               placeholder=""
               isMultiSelect={true}
-              onSelect={(e) => console.log(e)}
-              value=" "
+              onSelect={(e) => setClientsList(e)}
+              value={clientsList}
               options={[
                 { item: " ", value: " " },
                 { item: "First", value: "first" },

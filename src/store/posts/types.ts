@@ -5,14 +5,16 @@ export interface IPost {
 
 export interface IPostsState {
     editorPost: IPost | null
-    govils: any[]
-    news: any[]
-    agendas: any[]
-    googleNews: any[]
-    committees: any[]
-    plenums: any[]
-    queries: any[]
-    bills: any[]
-    releases: any[]
-    govStatistics: any[]
+    govils: IPost[]
+    news: IPost[]
+    agendas: IPost[]
+    googleNews: IPost[]
+    committees: IPost[]
+    plenums: IPost[]
+    queries: IPost[]
+    bills: IPost[]
+    releases: IPost[]
+    govStatistics: IPost[]
+    newPosts: any[]
+
 }

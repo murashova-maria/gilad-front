@@ -12,6 +12,7 @@ import {
   postsGetReleases,
   postsSetEditor,
   postsGetGovStatistics,
+  postsAddNewPost,
 } from "./actions";
 import { IPost, IPostsState } from "./types";
 import { ws } from "../../api";
@@ -38,13 +39,17 @@ export const usePostsActions = () => {
     dispatch(postsGetGovStatistics());
   };
 
-
+  // Add new posts from WebSocket
   const onWatchForPosts = () => {
     ws.addEventListener('open', () => {
       ws.send(JSON.stringify({event_type: "test"}))
     })
     ws.addEventListener('message', (e: any) => {
-      console.log('web socket data: ',JSON.parse(e.data))
+      const {data } = JSON.parse(e.data)
+      if (data) {
+        dispatch(postsAddNewPost(data))
+        console.log('NEw Post', data)
+      }
     })
     ws.addEventListener('error', (e) => {
       console.log('web socket closed with error:', e)

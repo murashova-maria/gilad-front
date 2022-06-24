@@ -44,3 +44,7 @@ export const postsSetReleases = createAction<IPost[]>('posts/setReleases')
 //Gov Statistics
 export const postsGetGovStatistics = createAction('posts/getGovStatistics')
 export const postsSetGovStatistics = createAction<IPost[]>('posts/setGovStatistics')
+
+//New Posts (Web Socket)
+export const postsAddNewPost = createAction<IPost[]>('posts/addNewPost')
+

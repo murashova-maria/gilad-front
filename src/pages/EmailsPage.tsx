@@ -44,11 +44,11 @@ const StyledTitle = styled(Title)`
 
 const EmailsPage = () => {
   const {t} = useTranslation()
-  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills, govStatistics} = usePostsState()
+  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills, govStatistics, newPosts} = usePostsState()
   // Fetch posts
   const {onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor} = usePostsActions()
   useEffect(() => {
-   // onWatchForPosts()
+    onWatchForPosts()
     onGetPosts()
   }, [])
 
@@ -58,6 +58,7 @@ const EmailsPage = () => {
         <Content>
           <div>
             <StyledTitle>{t('emails_title2')}</StyledTitle>
+            {newPosts.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govils.map((post, index) => <PostsCard key={`govils ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {news.map((post, index) => <PostsCard key={`news ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {agendas.map((post, index) => <PostsCard key={`agendas ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
@@ -65,10 +66,7 @@ const EmailsPage = () => {
             {plenums.map((post, index) => <PostsCard key={`plenums ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {queries.map((post, index) => <PostsCard key={`queries ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {bills.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-            {govStatistics.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-
-
-            
+            {govStatistics.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}            
           </div>
           <div>
             <StyledTitle>{t('emails_title1')}</StyledTitle>
