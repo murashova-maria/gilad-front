@@ -152,27 +152,10 @@ const EditModel = ({ post }: IProps) => {
       <Container>
         <InitialPost>
           <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
-          
+
           {keys.map((key) => {
-            // Return null when key is id(we shouldn't show id)
-            if (post[key] && key === 'id') {
-              return null
-            } 
-            // Return cases when value is primitive
-            if (
-              ((post[key] && typeof post[key] === "string") ||
-                typeof post[key] === "number") &&
-              key !== "link"
-            ) {
-              return (
-                <PostItem key={key}>
-                  <PostKey>{t(key)}</PostKey>
-                  <PostValue>{post[key]}</PostValue>
-                </PostItem>
-              );
-            }
-            // Return cases when key is link
-            if (post[key] && key === "link") {
+            // Return cases when key is source link
+            if (post[key] && key === "source") {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
@@ -181,6 +164,14 @@ const EditModel = ({ post }: IProps) => {
                   </PostLink>
                 </PostItem>
               );
+            }
+            // Return null when key is id(we shouldn't show id)
+            if (post[key] && key === "id") {
+              return null;
+            }
+            // Return cases when key is link
+            if (post[key] && key === "link") {
+              return null;
             }
             // Cases when key is cmt_session_items array
             if (post[key] && key === "cmt_session_items") {
@@ -209,8 +200,7 @@ const EditModel = ({ post }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  <PostValue>{post[key].first_name}</PostValue>
-                  <PostValue>{post[key].last_name}</PostValue>
+                  <PostValue>{post[key].first_name} {post[key].last_name}</PostValue>
                   <PostValue>{post[key].email}</PostValue>
                 </PostItem>
               );
@@ -220,8 +210,7 @@ const EditModel = ({ post }: IProps) => {
               const list = post[key].map((initiator: any, index: number) => {
                 return (
                   <Initiator key={index}>
-                    <PostValue>{initiator.first_name}</PostValue>
-                    <PostValue>{initiator.last_name}</PostValue>
+                    <PostValue>{initiator.first_name} {initiator.last_name}</PostValue>
                     <PostValue>{initiator.email}</PostValue>
                   </Initiator>
                 );
@@ -231,9 +220,20 @@ const EditModel = ({ post }: IProps) => {
                   <PostKey>{t(key)}</PostKey>
                   {list}
                 </Initiators>
-              )
+              );
             }
-
+            // Return cases when value is primitive
+            if (
+              (post[key] && typeof post[key] === "string") ||
+              typeof post[key] === "number"
+            ) {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostValue>{post[key]}</PostValue>
+                </PostItem>
+              );
+            }
             //Files
             if (post[key] && key === "files") {
               console.log("files:", post[key]);

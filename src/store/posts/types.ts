@@ -14,4 +14,5 @@ export interface IPostsState {
     queries: any[]
     bills: any[]
     releases: any[]
+    govStatistics: any[]
 }

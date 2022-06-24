@@ -9,7 +9,8 @@ import {
   postsSetQueries,
   postsSetBills,
   postsSetReleases,
-  postsSetEditor
+  postsSetEditor,
+  postsSetGovStatistics
 } from "./actions";
 import { IPostsState, IPost } from "./types";
 
@@ -24,6 +25,7 @@ const initialState: IPostsState = {
   queries: [],
   bills: [],
   releases: [],
+  govStatistics: [],
 };
 
 const posts = createReducer(initialState, {
@@ -85,6 +87,12 @@ const posts = createReducer(initialState, {
     return {
       ...state,
       releases: action.payload
+    };
+  },
+  [postsSetGovStatistics.type]: (state, action: { payload: IPost[] }) => {
+    return {
+      ...state,
+      govStatistics: action.payload
     };
   },
 });

@@ -41,8 +41,6 @@ export const postsSetBills = createAction<IPost[]>('posts/setBills')
 export const postsGetReleases = createAction('posts/getReleases')
 export const postsSetReleases = createAction<IPost[]>('posts/setReleases')
 
-
-
-
-
-
+//Gov Statistics
+export const postsGetGovStatistics = createAction('posts/getGovStatistics')
+export const postsSetGovStatistics = createAction<IPost[]>('posts/setGovStatistics')

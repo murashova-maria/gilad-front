@@ -113,24 +113,29 @@ const PostCard = ({
         </Source>
         {description && <Text>{description}</Text>}
         {text && <Text>{text}</Text>}
-        <KeywordsTitle>{t("emails_keywords")}</KeywordsTitle>
         {keywords && (
-          <Keywords>
-            {keywords.map((keyword: { keyword: string; id: number }, index: number) => (
-              <PostKeyword key={index}>{keyword.keyword}</PostKeyword>
-            ))}
-          </Keywords>
+          <>
+            <KeywordsTitle>{t("emails_keywords")}</KeywordsTitle>
+            <Keywords>
+              {keywords.map(
+                (keyword: { keyword: string; id: number }, index: number) => (
+                  <PostKeyword key={index}>{keyword.keyword}</PostKeyword>
+                )
+              )}
+            </Keywords>
+          </>
         )}
         <Btns>
           <Button type="email" onClick={onEmail} />
           <Button type="del" />
         </Btns>
       </Content>
-        <Clients>
-          {clients && clients.map((client: any, index: number) => (
+      <Clients>
+        {clients &&
+          clients.map((client: any, index: number) => (
             <Client key={index}>{client.name}</Client>
           ))}
-        </Clients>
+      </Clients>
     </Card>
   );
 };

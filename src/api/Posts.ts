@@ -65,4 +65,11 @@ export const Posts = {
             },
         })
     },
+    getGovStatistics: async (token: string) => {
+        return await axiosInstance.get('gilad/gov_statisctics/', {
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
+    },
 }

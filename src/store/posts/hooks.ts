@@ -11,6 +11,7 @@ import {
   postsGetBills,
   postsGetReleases,
   postsSetEditor,
+  postsGetGovStatistics,
 } from "./actions";
 import { IPost, IPostsState } from "./types";
 import { ws } from "../../api";
@@ -34,6 +35,7 @@ export const usePostsActions = () => {
     dispatch(postsGetQueries());
     dispatch(postsGetBills());
     dispatch(postsGetReleases());
+    dispatch(postsGetGovStatistics());
   };
 
 

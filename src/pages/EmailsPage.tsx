@@ -44,7 +44,7 @@ const StyledTitle = styled(Title)`
 
 const EmailsPage = () => {
   const {t} = useTranslation()
-  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills} = usePostsState()
+  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills, govStatistics} = usePostsState()
   // Fetch posts
   const {onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor} = usePostsActions()
   useEffect(() => {
@@ -65,6 +65,7 @@ const EmailsPage = () => {
             {plenums.map((post, index) => <PostsCard key={`plenums ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {queries.map((post, index) => <PostsCard key={`queries ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {bills.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {govStatistics.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
 
 
             
