@@ -72,4 +72,11 @@ export const Posts = {
             },
         })
     },
+    getGovilData: async (token: string) => {
+        return await axiosInstance.get('gilad/govil_data/', {
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
+    },
 }

@@ -22,7 +22,9 @@ import {
   postsGetReleases,
   postsSetReleases,
   postsGetGovStatistics,
-  postsSetGovStatistics
+  postsSetGovStatistics,
+  postsGetGovilData,
+  postsSetGovilData
 } from "./actions";
 import { IPost } from "./types";
 
@@ -37,8 +39,7 @@ export function* postsWatcher() {
   yield takeLatest(postsGetBills, getBills);
   yield takeLatest(postsGetReleases, getReleases);
   yield takeLatest(postsGetGovStatistics, getGovStatistics);
-
-
+  yield takeLatest(postsGetGovilData, getGovilData);
 }
 
 function* getGovils(): any {
@@ -165,6 +166,19 @@ function* getGovStatistics(): any {
     const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovStatistics(token));
     if (dataRes) {
       yield put(postsSetGovStatistics(dataRes));
+    }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
+}
+
+function* getGovilData(): any {
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovilData(token));
+    if (dataRes) {
+      yield put(postsSetGovilData(dataRes));
     }
     if (dataErr) {
       console.log(dataErr);

@@ -13,6 +13,7 @@ import {
   postsSetEditor,
   postsGetGovStatistics,
   postsAddNewPost,
+  postsGetGovilData,
 } from "./actions";
 import { IPost, IPostsState } from "./types";
 import { ws } from "../../api";
@@ -37,6 +38,7 @@ export const usePostsActions = () => {
     dispatch(postsGetBills());
     dispatch(postsGetReleases());
     dispatch(postsGetGovStatistics());
+    dispatch(postsGetGovilData());
   };
 
   // Add new posts from WebSocket
@@ -66,6 +68,7 @@ export const usePostsActions = () => {
   const onSetEditor = (post: IPost | null) => {
     dispatch(postsSetEditor(post))
   }
+
 
   return {
     onGetPosts,

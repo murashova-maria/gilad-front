@@ -15,6 +15,7 @@ export interface IPostsState {
     bills: IPost[]
     releases: IPost[]
     govStatistics: IPost[]
+    govilData: IPost[]
     newPosts: any[]
 
 }
