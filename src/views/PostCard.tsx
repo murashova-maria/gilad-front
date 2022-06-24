@@ -24,6 +24,7 @@ const Content = styled.div`
 const Clients = styled.div`
   padding: 20px;
   flex-shrink: 0;
+  min-width: 135px;
   border-inline-start: 1px solid #cccccc;
 `;
 
@@ -97,7 +98,6 @@ const PostCard = ({
   item: { title, cat, tag, description, keywords, clients, text },
 }: IPostCard) => {
   const { t } = useTranslation();
-  if (clients) console.log(clients);
   return (
     <Card>
       <Content>
@@ -116,8 +116,8 @@ const PostCard = ({
         <KeywordsTitle>{t("emails_keywords")}</KeywordsTitle>
         {keywords && (
           <Keywords>
-            {keywords.map((keyword: { keyword: string; id: number }) => (
-              <PostKeyword key={keyword.id}>{keyword.keyword}</PostKeyword>
+            {keywords.map((keyword: { keyword: string; id: number }, index: number) => (
+              <PostKeyword key={index}>{keyword.keyword}</PostKeyword>
             ))}
           </Keywords>
         )}
@@ -126,13 +126,11 @@ const PostCard = ({
           <Button type="del" />
         </Btns>
       </Content>
-      {clients && clients.length > 0 && (
         <Clients>
-          {clients.map((client: any) => (
-            <Client>{client.name}</Client>
+          {clients && clients.map((client: any, index: number) => (
+            <Client key={index}>{client.name}</Client>
           ))}
         </Clients>
-      )}
     </Card>
   );
 };

@@ -9,8 +9,11 @@ import {
   postsGetPlenums,
   postsGetQueries,
   postsGetBills,
+  postsGetReleases,
+  postsSetEditor,
 } from "./actions";
-import { IPostsState } from "./types";
+import { IPost, IPostsState } from "./types";
+import { ws } from "../../api";
 
 export const postsSelector = (state: rootReducerType) => state.posts;
 
@@ -30,11 +33,37 @@ export const usePostsActions = () => {
     dispatch(postsGetPlenums());
     dispatch(postsGetQueries());
     dispatch(postsGetBills());
-
-
+    dispatch(postsGetReleases());
   };
+
+
+  const onWatchForPosts = () => {
+    ws.addEventListener('open', () => {
+      ws.send(JSON.stringify({event_type: "test"}))
+    })
+    ws.addEventListener('message', (e: any) => {
+      console.log('web socket data: ',JSON.parse(e.data))
+    })
+    ws.addEventListener('error', (e) => {
+      console.log('web socket closed with error:', e)
+    })
+    ws.addEventListener('close', (e) => {
+      console.log('web socket closed ', e)
+    })
+  }
+
+  const onCloseWebSocket = () => {
+    ws.close()
+  }
+
+  const onSetEditor = (post: IPost | null) => {
+    dispatch(postsSetEditor(post))
+  }
 
   return {
     onGetPosts,
+    onWatchForPosts,
+    onCloseWebSocket,
+    onSetEditor
   };
 };

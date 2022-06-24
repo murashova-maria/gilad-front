@@ -44,12 +44,11 @@ const StyledTitle = styled(Title)`
 
 const EmailsPage = () => {
   const {t} = useTranslation()
-  const [showEditModel, setShowEditModel] = useState(false)
-  const {posts, googleNews} = usePostsState()
-
+  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills} = usePostsState()
   // Fetch posts
-  const {onGetPosts} = usePostsActions()
+  const {onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor} = usePostsActions()
   useEffect(() => {
+   // onWatchForPosts()
     onGetPosts()
   }, [])
 
@@ -59,18 +58,26 @@ const EmailsPage = () => {
         <Content>
           <div>
             <StyledTitle>{t('emails_title2')}</StyledTitle>
-            {posts.map(post => <PostsCard item={post} onEmail={()=> setShowEditModel(true)} />)}
+            {govils.map((post, index) => <PostsCard key={`govils ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {news.map((post, index) => <PostsCard key={`news ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {agendas.map((post, index) => <PostsCard key={`agendas ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {committees.map((post, index) => <PostsCard key={`committees ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {plenums.map((post, index) => <PostsCard key={`plenums ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {queries.map((post, index) => <PostsCard key={`queries ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {bills.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+
+
             
           </div>
           <div>
             <StyledTitle>{t('emails_title1')}</StyledTitle>
-            {googleNews.map(post => <PostsCard item={post} onEmail={()=> setShowEditModel(true)} />)}
+            {googleNews.map(post => <PostsCard key={`${post.id} ${post.title}`} item={post} onEmail={()=> onSetEditor(post)} />)}
 
           </div>
         </Content>
       </Emails>
-      <Modal show={showEditModel} onClose={() => setShowEditModel(false)}>
-        <EditModel />
+      <Modal show={!!editorPost} onClose={() =>  onSetEditor(null)}>
+        {editorPost && <EditModel post={editorPost}/>}
       </Modal>
     </>
   );

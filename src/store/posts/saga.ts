@@ -4,16 +4,25 @@ import { Posts } from "../../api/Posts";
 import { userSelector } from "../user/hooks";
 import {
   postsGetGovils,
-  postsAddPosts,
+  postsSetGovils,
   postsGetNews,
+  postsSetNews,
   postsGetAgendas,
+  postsSetAgendas,
   postsGetGoogleNews,
-  postsAddGoogleNews,
+  postsSetGoogleNews,
   postsGetCommittees,
+  postsSetCommittees,
   postsGetPlenums,
+  postsSetPlenums,
   postsGetQueries,
+  postsSetQueries,
   postsGetBills,
+  postsSetBills,
+  postsGetReleases,
+  postsSetReleases
 } from "./actions";
+import { IPost } from "./types";
 
 export function* postsWatcher() {
   yield takeLatest(postsGetGovils, getGovils);
@@ -24,16 +33,16 @@ export function* postsWatcher() {
   yield takeLatest(postsGetPlenums, getPlenums);
   yield takeLatest(postsGetQueries, getQueries);
   yield takeLatest(postsGetBills, getBills);
-
+  yield takeLatest(postsGetReleases, getReleases);
 
 }
 
 function* getGovils(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr] = yield call(handle, Posts.getGovils(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovils(token));
     if (dataRes) {
-      yield put(postsAddPosts(dataRes));
+      yield put(postsSetGovils(dataRes));
     }
     if (dataErr) {
       console.log(dataErr);
@@ -44,9 +53,9 @@ function* getGovils(): any {
 function* getNews(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr] = yield call(handle, Posts.getNews(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getNews(token));
     if (dataRes) {
-      yield put(postsAddPosts(dataRes));
+      yield put(postsSetNews(dataRes));
     }
     if (dataErr) {
       console.log(dataErr);
@@ -57,9 +66,9 @@ function* getNews(): any {
 function* getAgendas(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr] = yield call(handle, Posts.getAgendas(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getAgendas(token));
     if (dataRes) {
-      yield put(postsAddPosts(dataRes));
+      yield put(postsSetAgendas(dataRes));
     }
     if (dataErr) {
       console.log(dataErr);
@@ -70,9 +79,9 @@ function* getAgendas(): any {
 function* getGoogleNews(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr] = yield call(handle, Posts.getGoogleNews(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGoogleNews(token));
     if (dataRes) {
-      yield put(postsAddGoogleNews(dataRes));
+      yield put(postsSetGoogleNews(dataRes));
     }
     if (dataErr) {
       console.log(dataErr);
@@ -83,9 +92,9 @@ function* getGoogleNews(): any {
 function* getCommittees():any {
     const { token } = yield select(userSelector);
     if (token) {
-      const [dataRes, dataErr] = yield call(handle, Posts.getCommittees(token));
+      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getCommittees(token));
       if (dataRes) {
-        yield put(postsAddPosts(dataRes));
+        yield put(postsSetCommittees(dataRes));
       }
       if (dataErr) {
         console.log(dataErr);
@@ -96,9 +105,9 @@ function* getCommittees():any {
 function* getPlenums(): any {
     const { token } = yield select(userSelector);
     if (token) {
-      const [dataRes, dataErr] = yield call(handle, Posts.getPlenums(token));
+      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getPlenums(token));
       if (dataRes) {
-        yield put(postsAddPosts(dataRes));
+        yield put(postsSetPlenums(dataRes));
       }
       if (dataErr) {
         console.log(dataErr);
@@ -109,9 +118,9 @@ function* getPlenums(): any {
 function* getQueries(): any {
     const { token } = yield select(userSelector);
     if (token) {
-      const [dataRes, dataErr] = yield call(handle, Posts.getQueries(token));
+      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getQueries(token));
       if (dataRes) {
-        yield put(postsAddPosts(dataRes));
+        yield put(postsSetQueries(dataRes));
       }
       if (dataErr) {
         console.log(dataErr);
@@ -122,12 +131,25 @@ function* getQueries(): any {
 function* getBills(): any {
     const { token } = yield select(userSelector);
     if (token) {
-      const [dataRes, dataErr] = yield call(handle, Posts.getBills(token));
+      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getBills(token));
       if (dataRes) {
-        yield put(postsAddPosts(dataRes));
+        yield put(postsSetBills(dataRes));
       }
       if (dataErr) {
         console.log(dataErr);
       }
     }
+}
+
+function* getReleases(): any {
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getReleases(token));
+    if (dataRes) {
+      yield put(postsSetReleases(dataRes));
+    }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
 }

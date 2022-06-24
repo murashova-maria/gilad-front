@@ -5,12 +5,13 @@ import { colors } from "../assets/styles/colors";
 import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
+import { IPost } from "../store/posts";
 
 const StyledModal = styled.div`
   border-radius: 20px;
   width: 80%;
   background-color: #fff;
-  border: 1px solid #C2FFFD;
+  border: 1px solid #c2fffd;
   box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
 `;
 
@@ -22,11 +23,6 @@ const StyledTitle = styled(Title)`
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
-`;
-
-const DirectLink = styled.a`
-  color: #000;
-  margin-left: 35px;
 `;
 
 const TemplatesDropdown = styled(Dropdown)`
@@ -107,43 +103,146 @@ const BtnBox = styled.div`
 `;
 
 const InitialPost = styled.div`
-  padding: 0 20px;
+  padding: 15px 20px;
+  height: 700px;
+  overflow-y: auto;
 `;
 
-const PostTitle = styled.p`
-  font-family: "Gilroy-B";
-  font-size: 30px;
+const PostItem = styled.div`
+  margin-bottom: 27px;
+`;
+
+const Initiators = styled.div`
+  margin-bottom: 35px;
+`;
+
+const Initiator = styled.div`
   margin-bottom: 10px;
 `;
 
-const PostText = styled.p`
+const PostKey = styled.p`
+  font-family: Open-Sans;
+  font-weight: 700;
+  word-break: break-all;
   font-size: 20px;
 `;
 
-const EditModel = (props: any) => {
-  const {t} = useTranslation()
+const PostValue = styled.p`
+  font-family: Open-Sans;
+  word-break: break-all;
+  font-size: 20px;
+  margin-bottom: 8px;
+`;
+
+const PostLink = styled.a`
+  font-family: Open-Sans;
+  word-break: break-all;
+  color: inherit;
+`;
+
+interface IProps {
+  post: IPost;
+}
+
+const EditModel = ({ post }: IProps) => {
+  const { t } = useTranslation();
+  const keys = Object.keys(post);
   return (
     <StyledModal>
       <Container>
         <InitialPost>
-          <StyledTitle>{t('emails_data-from-db')}</StyledTitle>
-          <PostTitle>יתקיים דיון בוועדת</PostTitle>
-          <PostText>
-            שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת __________בנושא:
-            (נושא הדיון) לצרף חומרי רקע המצויים בפורטל הוועדה( הצ"ח, ניירות
-            עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח – כלומר באיזה שלב הכנה
-            נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית. כמו – כן יש לפרט אודות
-            תמצית התיקון של הצ"ח, הסבר מדיון האחרון בעניינה ( באם פורסם פרוטוקול
-            הדיון) או ע"ב הודעה לעיתונות. לטובת צירוף חומר רקע אשר מצוי בפורטל
-            הוועדה, יש לשמור את הקבצים בשם הוועדה, תאריך ונושא. דוגמא: ו. כלכלה
-            15.11.21 – הצ"ח ביטוח לאומי ( הוראת שעה) התשפ"א 2021, על מנת להקל על
-            הלקוח ועלייך בעת איתור ושיוך המידע.
-          </PostText>
+          <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
+          
+          {keys.map((key) => {
+            // Return null when key is id(we shouldn't show id)
+            if (post[key] && key === 'id') {
+              return null
+            } 
+            // Return cases when value is primitive
+            if (
+              ((post[key] && typeof post[key] === "string") ||
+                typeof post[key] === "number") &&
+              key !== "link"
+            ) {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostValue>{post[key]}</PostValue>
+                </PostItem>
+              );
+            }
+            // Return cases when key is link
+            if (post[key] && key === "link") {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostLink href={post[key]} target="_blank">
+                    {post[key]}
+                  </PostLink>
+                </PostItem>
+              );
+            }
+            // Cases when key is cmt_session_items array
+            if (post[key] && key === "cmt_session_items") {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  {post[key].map((item: any, index: number) => (
+                    <PostValue key={index}>{item.name}</PostValue>
+                  ))}
+                </PostItem>
+              );
+            }
+            // Cases when key is plenum_session_items array
+            if (post[key] && key === "plenum_session_items") {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  {post[key].map((item: any, index: number) => (
+                    <PostValue key={index}>{item.name}</PostValue>
+                  ))}
+                </PostItem>
+              );
+            }
+            // Cases when key is initiator object
+            if (post[key] && key === "initiator") {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostValue>{post[key].first_name}</PostValue>
+                  <PostValue>{post[key].last_name}</PostValue>
+                  <PostValue>{post[key].email}</PostValue>
+                </PostItem>
+              );
+            }
+            // Cases when key is initiators array
+            if (post[key] && key === "initiators") {
+              const list = post[key].map((initiator: any, index: number) => {
+                return (
+                  <Initiator key={index}>
+                    <PostValue>{initiator.first_name}</PostValue>
+                    <PostValue>{initiator.last_name}</PostValue>
+                    <PostValue>{initiator.email}</PostValue>
+                  </Initiator>
+                );
+              });
+              return (
+                <Initiators>
+                  <PostKey>{t(key)}</PostKey>
+                  {list}
+                </Initiators>
+              )
+            }
+
+            //Files
+            if (post[key] && key === "files") {
+              console.log("files:", post[key]);
+            }
+          })}
         </InitialPost>
 
         <div>
-          <StyledTitle>{t('emails_edit-title')}</StyledTitle>
-          <DirectLink href="#">{t('emails_direct-link')}</DirectLink>
+          <StyledTitle>{t("emails_edit-title")}</StyledTitle>
 
           <TemplatesDropdown
             placeholder=""
@@ -155,7 +254,7 @@ const EditModel = (props: any) => {
               { item: "First", value: "third" },
               { item: "First", value: "fourth" },
             ]}
-            label={t('emails_content-formats')}
+            label={t("emails_content-formats")}
           />
           <Content>
             <h2>
@@ -220,8 +319,8 @@ const EditModel = (props: any) => {
             </p>
           </Content>
           <Selector>
-            <SelectorTitle>{t('emails_select-clients')}</SelectorTitle>
-            <SelectorLabel>{t('emails_suggested-clients')}</SelectorLabel>
+            <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
+            <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
             <ClientBox>
               <Checkbox
                 checked={false}
@@ -261,11 +360,11 @@ const EditModel = (props: any) => {
                 { item: "First", value: "third" },
                 { item: "First", value: "fourth" },
               ]}
-              label={t('emails_clients-label')}
+              label={t("emails_clients-label")}
             />
             <BtnBox>
-              <MainButton color="blue">{t('emails_edit-next')}</MainButton>
-              <MainButton color="orange">{t('emails_edit-send')}</MainButton>
+              <MainButton color="blue">{t("emails_edit-next")}</MainButton>
+              <MainButton color="orange">{t("emails_edit-send")}</MainButton>
             </BtnBox>
           </Selector>
         </div>

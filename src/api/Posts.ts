@@ -58,4 +58,11 @@ export const Posts = {
             },
         })
     },
+    getReleases: async (token: string) => {
+        return await axiosInstance.get('gilad/press_release/', {
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
+    },
 }
