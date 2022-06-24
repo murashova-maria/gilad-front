@@ -14,6 +14,9 @@ const SignInPage = styled.div`
   justify-content: center;
   align-items: center;
   background-image: url(${bg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const Title = styled.h1`
