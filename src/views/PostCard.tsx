@@ -94,7 +94,7 @@ const Btns = styled.div`
 
 const PostCard = ({
   onEmail,
-  item: { title, cat, tag, desc, keywords, clients },
+  item: { title, cat, tag, description, keywords, clients, text },
 }: IPostCard) => {
   const { t } = useTranslation();
   if (clients) console.log(clients);
@@ -102,7 +102,6 @@ const PostCard = ({
     <Card>
       <Content>
         {title && <Title>{title}</Title>}
-        {!title && <Title>Committee</Title>}
         <Source>
           {tag && (
             <SourceBox>
@@ -112,7 +111,8 @@ const PostCard = ({
           )}
           {cat && <SourceText>{cat}</SourceText>}
         </Source>
-        {desc && <Text>{desc}</Text>}
+        {description && <Text>{description}</Text>}
+        {text && <Text>{text}</Text>}
         <KeywordsTitle>{t("emails_keywords")}</KeywordsTitle>
         {keywords && (
           <Keywords>
