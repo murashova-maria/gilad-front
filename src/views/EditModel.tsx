@@ -6,7 +6,8 @@ import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useClientsActions, useClientsState } from "../store/clients";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -154,9 +155,16 @@ interface IProps {
 
 const EditModel = ({ post }: IProps) => {
   const { t } = useTranslation();
-  const keys = Object.keys(post);
   // All Clients (dropdown)
+  const {clients} = useClientsState()
+  const {onGetClients} = useClientsActions()
   const [clientsList, setClientsList] = useState(" ");
+  //Fetch all clients list
+  useEffect(() => {
+    onGetClients()
+  }, [])
+
+
 
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
@@ -173,7 +181,7 @@ const EditModel = ({ post }: IProps) => {
     }
   };
 
-
+  const keys = Object.keys(post);
   return (
     <StyledModal>
       <Container>
@@ -406,12 +414,7 @@ const EditModel = ({ post }: IProps) => {
               isMultiSelect={true}
               onSelect={(e) => setClientsList(e)}
               value={clientsList}
-              options={[
-                { item: " ", value: " " },
-                { item: "First", value: "first" },
-                { item: "First", value: "third" },
-                { item: "First", value: "fourth" },
-              ]}
+              options={clients.map(c => ({item: c.name, value: c.id}))}
               label={t("emails_clients-label")}
             />
             <BtnBox>

@@ -12,7 +12,8 @@ import {
   postsSetEditor,
   postsSetGovStatistics,
   postsAddNewPost,
-  postsSetGovilData
+  postsSetGovilData,
+  postsSetGovilPdf
 } from "./actions";
 import { IPostsState, IPost } from "./types";
 
@@ -29,6 +30,7 @@ const initialState: IPostsState = {
   releases: [],
   govStatistics: [],
   govilData: [],
+  govilPdf: [],
   newPosts: [],
 };
 
@@ -103,6 +105,12 @@ const posts = createReducer(initialState, {
     return {
       ...state,
       govilData: action.payload
+    };
+  },
+  [postsSetGovilPdf.type]: (state, action: { payload: IPost[] }) => {
+    return {
+      ...state,
+      govilPdf: action.payload
     };
   },
   [postsAddNewPost.type]: (state, action: { payload: IPost[] }) => {

@@ -47,7 +47,12 @@ export const postsSetGovStatistics = createAction<IPost[]>('posts/setGovStatisti
 
 //Govil Data
 export const postsGetGovilData = createAction('posts/getGovilData')
-export const postsSetGovilData = createAction<IPost[]>('posts/setGovilData')
+export const postsSetGovilData = createAction<any[]>('posts/setGovilData')
+
+//Govil PDF
+export const postsGetGovilPdf = createAction('posts/getGovilPdf')
+export const postsSetGovilPdf = createAction<any[]>('posts/setGovilPdf')
+
 
 
 

@@ -14,6 +14,7 @@ import {
   postsGetGovStatistics,
   postsAddNewPost,
   postsGetGovilData,
+  postsGetGovilPdf,
 } from "./actions";
 import { IPost, IPostsState } from "./types";
 import { ws } from "../../api";
@@ -39,6 +40,7 @@ export const usePostsActions = () => {
     dispatch(postsGetReleases());
     dispatch(postsGetGovStatistics());
     dispatch(postsGetGovilData());
+    dispatch(postsGetGovilPdf());
   };
 
   // Add new posts from WebSocket

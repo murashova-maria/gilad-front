@@ -44,7 +44,7 @@ const StyledTitle = styled(Title)`
 
 const EmailsPage = () => {
   const {t} = useTranslation()
-  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills, govStatistics, govilData, newPosts} = usePostsState()
+  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills, govStatistics, govilData, govilPdf, newPosts} = usePostsState()
   // Fetch posts
   const {onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor} = usePostsActions()
   useEffect(() => {
@@ -67,7 +67,8 @@ const EmailsPage = () => {
             {queries.map((post, index) => <PostsCard key={`queries ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {bills.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govStatistics.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-            {govilData.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}            
+            {govilData.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {govilPdf.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)} 
           </div>
           <div>
             <StyledTitle>{t('emails_title1')}</StyledTitle>

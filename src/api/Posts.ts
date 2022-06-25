@@ -79,4 +79,11 @@ export const Posts = {
             },
         })
     },
+    getGovilPdf: async (token: string) => {
+        return await axiosInstance.get('gilad/govil_pdf/', {
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
+    },
 }
