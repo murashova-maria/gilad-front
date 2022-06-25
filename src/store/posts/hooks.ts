@@ -21,9 +21,7 @@ import { ws } from "../../api";
 
 export const postsSelector = (state: rootReducerType) => state.posts;
 
-export const usePostsState = (): IPostsState => {
-  return useSelector(postsSelector);
-};
+export const usePostsState = (): IPostsState => useSelector(postsSelector);
 
 export const usePostsActions = () => {
   const dispatch = useDispatch();

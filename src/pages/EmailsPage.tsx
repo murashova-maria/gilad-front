@@ -16,7 +16,7 @@ const Emails = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
@@ -42,24 +42,46 @@ const StyledTitle = styled(Title)`
   margin-bottom: 10px;
 `;
 
+
 const EmailsPage = () => {
-  const {t} = useTranslation()
-  const {editorPost, govils, news, agendas, googleNews, committees, plenums, queries, bills, govStatistics, govilData, govilPdf, newPosts} = usePostsState()
+  const { t } = useTranslation();
+  const {
+    editorPost,
+    govils,
+    news,
+    agendas,
+    googleNews,
+    committees,
+    plenums,
+    queries,
+    bills,
+    govStatistics,
+    govilData,
+    govilPdf,
+    newPosts,
+  } = usePostsState();
   // Fetch posts
-  const {onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor} = usePostsActions()
+  const { onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor } =
+    usePostsActions();
   useEffect(() => {
-    onWatchForPosts()
-    onGetPosts()
-  }, [])
+    onWatchForPosts();
+    onGetPosts();
+  }, []);
 
   return (
     <>
       <Emails>
         <Content>
           <div>
-            <StyledTitle>{t('emails_title2')}</StyledTitle>
-            {committees.map((post, index) => <PostsCard key={`committees ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-            { /*newPosts.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            <StyledTitle>{t("emails_title2")}</StyledTitle>
+            {committees.map((post, index) => (
+              <PostsCard
+                key={`committees ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+            {/*newPosts.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govils.map((post, index) => <PostsCard key={`govils ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {news.map((post, index) => <PostsCard key={`news ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {agendas.map((post, index) => <PostsCard key={`agendas ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
@@ -68,18 +90,25 @@ const EmailsPage = () => {
             {bills.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govStatistics.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govilData.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-  {govilPdf.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />) */} 
+  {govilPdf.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />) */}
           </div>
           <div>
-            <StyledTitle>{t('emails_title1')}</StyledTitle>
-            {googleNews.map(post => <PostsCard key={`${post.id} ${post.title}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-
+            <StyledTitle>{t("emails_title1")}</StyledTitle>
+            {googleNews.map((post) => (
+              <PostsCard
+                key={`${post.id} ${post.title}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
           </div>
         </Content>
       </Emails>
-      <Modal show={!!editorPost} onClose={() =>  onSetEditor(null)}>
-        {editorPost && <EditModel post={editorPost}/>}
-      </Modal>
+      {editorPost && (
+        <Modal onClose={() => onSetEditor(null)}>
+          <EditModel post={editorPost} />
+        </Modal>
+      )}
     </>
   );
 };

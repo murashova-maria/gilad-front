@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
 import { useEffect, useState } from "react";
 import { useClientsActions, useClientsState } from "../store/clients";
+import SunEditor from "suneditor-react";
+import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -140,11 +142,19 @@ const PostDocLink = styled.a`
 `;
 
 //Templates
-const firstTemplate = (committee:string, cmt_session_items:any, start_date:string, location: string, files: any) => {
-  const cessionItems = cmt_session_items.map((item: any) => item.name)
-  const filesNames = Object.keys(files).join(', ')
-  return `כותרת: עדכון מהכנסת – ועדת ${committee}\nשלום רב,\nביום ${start_date} יתקיים דיון בוועדת ${committee} בנושא:  ${cessionItems} \nהדיון יתקיים ב  ${location}\nלהלן חומרי רקע: ${filesNames}`
-}
+const dash = '___ '
+
+const firstTemplate = (
+  committee: string = dash,
+  cmt_session_items: any,
+  start_date: string = dash,
+  location: string = dash,
+  files: any
+) => {
+  const cessionItems = cmt_session_items ? cmt_session_items.map((item: any) => item.name) : dash
+  const filesNames = files ? Object.keys(files).join(", ") : dash
+  return `כותרת: עדכון מהכנסת – ועדת ${committee}\nשלום רב,\nביום ${start_date} יתקיים דיון בוועדת ${committee} בנושא:  ${cessionItems} \nהדיון יתקיים ב  ${location}\nלהלן חומרי רקע: ${filesNames}`;
+};
 
 interface IProps {
   post: IPost;
@@ -153,40 +163,42 @@ interface IProps {
 const EditModel = ({ post }: IProps) => {
   const { t } = useTranslation();
   //Text Editor
-  const [text, setText] = useState(firstTemplate(post.committee, post.cmt_session_items, post.start_date, post.location, post.files))
-
-  const handleTextChange = (value: string) => {
-    console.log(value)
-    setText(value)
-  }
-
+  const [text, setText] = useState(
+    firstTemplate(
+      post.committee,
+      post.cmt_session_items,
+      post.start_date,
+      post.location,
+      post.files
+    )
+  );
 
 
   // All Clients (dropdown)
-  const {clients} = useClientsState()
-  const {onGetClients} = useClientsActions()
+  const { clients } = useClientsState();
+  const { onGetClients } = useClientsActions();
   const [clientsList, setClientsList] = useState(" ");
   //Fetch all clients list
   useEffect(() => {
-    onGetClients()
-  }, [])
+    onGetClients();
+  }, []);
 
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
   // Add remove/clients using checkbox
   const selectClient = (client: any) => {
-    if (selectedClients.includes(client.id) ) {
-      const index = selectedClients.indexOf(client.id)
-      let newItems = [...selectedClients]
-      newItems.splice(index, 1)
-      setSelectedClients(newItems)
+    if (selectedClients.includes(client.id)) {
+      const index = selectedClients.indexOf(client.id);
+      let newItems = [...selectedClients];
+      newItems.splice(index, 1);
+      setSelectedClients(newItems);
     }
-    if (!selectedClients.includes(client.id) ) {
-      setSelectedClients((prev) => [...prev, client.id])
+    if (!selectedClients.includes(client.id)) {
+      setSelectedClients((prev) => [...prev, client.id]);
     }
   };
 
-  console.log(post)
+  console.log(post);
   const keys = Object.keys(post);
   return (
     <StyledModal>
@@ -337,29 +349,50 @@ const EditModel = ({ post }: IProps) => {
             ]}
             label={t("emails_content-formats")}
           />
-          <TextEditor value={text} onChange={(e) => handleTextChange(e.target.value)} />
+          <SunEditor
+            lang="en"
+            defaultValue={''}
+            setContents={text}
+            height="350px"
+            autoFocus={true}
+            onChange={(val) => setText(val)}
+            setOptions={{
+              buttonList: [
+                [
+                  "bold",
+                  "underline",
+                  "italic",
+                  "list",
+                  "align",
+                  "fontSize",
+                ],
+              ],
+            }}
+
+          />
           <Selector>
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
             {post.clients && post.clients.length > 0 && (
               <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
             )}
-            {post.clients && post.clients.map((client: any) => {
-              return (
-                <ClientBox>
-                  <Checkbox
-                    checked={false}
-                    setIsCheckedCreate={() => selectClient(client)}
-                  />
-                  <ClientName>{client.name}</ClientName>
-                </ClientBox>
-              );
-            })}
+            {post.clients &&
+              post.clients.map((client: any) => {
+                return (
+                  <ClientBox>
+                    <Checkbox
+                      checked={false}
+                      setIsCheckedCreate={() => selectClient(client)}
+                    />
+                    <ClientName>{client.name}</ClientName>
+                  </ClientBox>
+                );
+              })}
             <ClientDropdown
               placeholder=""
               isMultiSelect={true}
               onSelect={(e) => setClientsList(e)}
               value={clientsList}
-              options={clients.map(c => ({item: c.name, value: c.id}))}
+              options={clients.map((c) => ({ item: c.name, value: c.id }))}
               label={t("emails_clients-label")}
               isReversed={true}
             />
