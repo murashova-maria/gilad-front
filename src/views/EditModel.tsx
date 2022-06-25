@@ -167,7 +167,6 @@ const template2 = (post: IPost) => {
   const tempPageContent = post.pulished_page_content ? post.pulished_page_content : dash
   const tempFiles = post.files ? `<a href=${post.files}>Files</a>` : dash
 
-
   return `שלום רב,
   להלן הודעה לעיתונות מדיון שהתקיים ב – (${tempDateTime}) ב ${tempArticle}<br>
   <br>
@@ -180,9 +179,10 @@ const template3 = (post: IPost) => {
   const tempStartDate = post.start_date ? post.start_date : dash
   const tempItems = post.cmt_session_items ? post.cmt_session_items.map((item:any) => item.name).join(', ') : dash
   const filesKeys = post.files ? Object.keys(post.files) : null
+  const tempComittee = post.committee ? `<strong>${post.committee}</strong>` : dash
   const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
   return `שלום רב, <br>
-  מצ"ב פרוטוקול דיון שהתקיים ב – (${tempStartDate}) בוועדת committee  בנושאים: <br>
+  מצ"ב פרוטוקול דיון שהתקיים ב – (${tempStartDate}) בוועדת ${tempComittee}  בנושאים: <br>
   ${tempItems} <br>
   קובץ: ${tempFiles}
   `
@@ -194,11 +194,11 @@ const template4 = (post: IPost) => {
   const tempTitle = post.title ? post.title : null
   const tempInitiators = post.initiators ? post.initiators.map((i: any) => `${i.first_name} ${i.last_name}`).join(', ') : dash
   const tempSummaryLaw = (post.summary_law && typeof post.summary_law === 'string') ? post.summary_law : dash
+  const tempStatus = post.status ? post.status : dash
   const filesKeys = post.files ? Object.keys(post.files) : null
   const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
-  console.log(tempFiles)
   return `שלום רב,
-  היום, date(${tempUpdatedDate})  הצעות החוק status: <br>
+  היום, ${tempUpdatedDate}  הצעות החוק ${tempStatus}: <br>
   פ/2321 – ${tempTitle} של ח"כ ${tempInitiators} <br>
   תקציר הצעת החוק: ${tempSummaryLaw} <br>
   שם הח"כ המציע : ${tempInitiators} <br>
@@ -208,7 +208,18 @@ const template4 = (post: IPost) => {
 }
 
 const template5 = (post: IPost) => {
-  return `template5`
+  const tempSubmitDate = post.submit_date ? post.submit_date : dash
+  const tempSubcategory = post.subcategory ? post.subcategory : dash
+  const tempGovMinistry = post.gov_ministry ? post.gov_ministry : dash
+  const tempTitle = post.title ? post.title : dash
+  const tempFirstName = post.initiator?.first_name ? post.initiator?.first_name : dash
+  const tempLastName = post.initiator?.last_name ? post.initiator?.last_name : dash
+  const filesKeys = post.files ? Object.keys(post.files) : null
+  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash  
+  return `ב${tempSubmitDate} תעלה במליאת הכנסת שאילתה ${tempSubcategory} לשר ה ${tempGovMinistry} בנושא ${tempTitle} של חה"כ ${tempFirstName} ${tempLastName}. <br>
+  תוכן שאילתא: <br>
+  ${tempFiles}  
+  `
 }
 
 const template6 = (post: IPost) => {
@@ -264,7 +275,7 @@ const template17 = (post: IPost) => {
 // Templates Object
 const templates = {
   options: [
-    { item: '', value: 0, emailTheme: '' },
+    { item: '', value: 0},
     { item: '1כנסת: הפצת לו"ז לעדכון בודד', value: 1 },
     { item: '2כנסת: הודעה לעיתונות', value: 2 },
     { item: '3כנסת: פרוטוקול דיוני ועדות', value: 3 },
