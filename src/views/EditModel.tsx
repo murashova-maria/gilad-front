@@ -136,67 +136,121 @@ const PostDocLink = styled.a`
 const StyledInput = styled(TextInput)`
   width: calc(100% - 60px);
   margin: 0 auto 10px;
-  & input {padding: 8px 20px;}
-`
+  & input {
+    padding: 8px 20px;
+  }
+`;
 
 //Templates
 const dash = "___ ";
 
 const template0 = (post: IPost) => {
-  return ''
-}
+  return "";
+};
 
 const template1 = (post: IPost) => {
-  const tempStartDate = post.start_date ? post.start_date : dash
-  const tempComittee = post.committee ? `<strong>${post.committee}</strong>` : dash
-  const tempLocation = post.location ? post.location : dash
-  const tempSessionItems = Array.isArray(post.cmt_session_items) ? post.cmt_session_items.map(i => i.name).join(', ') : dash
+  const tempStartDate = post.start_date ? post.start_date : dash;
+  const tempComittee = post.committee
+    ? `<strong>${post.committee}</strong>`
+    : dash;
+  const tempLocation = post.location ? post.location : dash;
+  const tempSessionItems = Array.isArray(post.cmt_session_items)
+    ? post.cmt_session_items.map((i) => i.name).join(", ")
+    : dash;
   //files
-  const filesKeys = post.files ? Object.keys(post.files) : null
-  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
+  const filesKeys =
+    typeof post.files == "object" ? Object.keys(post.files) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: any) => {
+          let list = [key];
+          post.files[key].forEach((item: any) =>
+            list.push(`<a href=${item}>${item}</a>`)
+          );
+          return list.join("<br>") + "<br>";
+        })
+        .join("<br>")
+    : dash;
   //result
   return `שלום רב,<br>
   ביום ${tempStartDate} יתקיים דיון בוועדת ${tempComittee} בנושא:  ${tempSessionItems} <br>
   הדיון יתקיים ב  ${tempLocation} <br>
-  להלן חומרי רקע: ${tempFiles}` 
-}
+  להלן חומרי רקע: ${tempFiles}`;
+};
 
-const template2 = (post: IPost) => {
-  const tempDateTime = post.datetime_knesset ? post.datetime_knesset : dash
-  const tempArticle = post.article_by_line ? post.article_by_line : dash
-  const tempPageContent = post.pulished_page_content ? post.pulished_page_content : dash
-  const tempFiles = post.files ? `<a href=${post.files}>Files</a>` : dash
-
+const template3 = (post: IPost) => {
+  const tempDateTime = post.datetime_knesset ? post.datetime_knesset : dash;
+  const tempArticle = post.article_by_line ? post.article_by_line : dash;
+  const tempPageContent = post.pulished_page_content
+    ? post.pulished_page_content
+    : dash;
+  const tempLink = post.link ? `<a href=${post.link}>${post.link}</a>` : dash;
+  console.log(tempLink);
   return `שלום רב,
   להלן הודעה לעיתונות מדיון שהתקיים ב – (${tempDateTime}) ב ${tempArticle}<br>
   <br>
   ${tempPageContent}<br>
-  לינק לידיעה: ${tempFiles}
-  `
-}
+  לינק לידיעה: ${tempLink}
+  `;
+};
 
-const template3 = (post: IPost) => {
-  const tempStartDate = post.start_date ? post.start_date : dash
-  const tempItems = post.cmt_session_items ? post.cmt_session_items.map((item:any) => item.name).join(', ') : dash
-  const filesKeys = post.files ? Object.keys(post.files) : null
-  const tempComittee = post.committee ? `<strong>${post.committee}</strong>` : dash
-  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
+const template4 = (post: IPost) => {
+  const tempStartDate = post.start_date ? post.start_date : dash;
+  const tempItems = post.cmt_session_items
+    ? post.cmt_session_items.map((item: any) => item.name).join(", ")
+    : dash;
+  const tempComittee = post.committee
+    ? `<strong>${post.committee}</strong>`
+    : dash;
+  const filesKeys =
+    typeof post.files == "object" ? Object.keys(post.files) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: any) => {
+          let list = [key];
+          post.files[key].forEach((item: any) =>
+            list.push(`<a href=${item}>${item}</a>`)
+          );
+          return list.join("<br>") + "<br>";
+        })
+        .join("<br>")
+    : dash;
   return `שלום רב, <br>
   מצ"ב פרוטוקול דיון שהתקיים ב – (${tempStartDate}) בוועדת ${tempComittee}  בנושאים: <br>
   ${tempItems} <br>
   קובץ: ${tempFiles}
-  `
-}
+  `;
+};
 
-const template4 = (post: IPost) => {
-  
-  const tempUpdatedDate = post.last_updated_date ? post.last_updated_date : dash
-  const tempTitle = post.title ? post.title : null
-  const tempInitiators = post.initiators ? post.initiators.map((i: any) => `${i.first_name} ${i.last_name}`).join(', ') : dash
-  const tempSummaryLaw = (post.summary_law && typeof post.summary_law === 'string') ? post.summary_law : dash
-  const tempStatus = post.status ? post.status : dash
-  const filesKeys = post.files ? Object.keys(post.files) : null
-  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
+const template6 = (post: IPost) => {
+  const tempUpdatedDate = post.last_updated_date
+    ? post.last_updated_date
+    : dash;
+  const tempTitle = post.title ? post.title : null;
+  const tempInitiators = post.initiators
+    ? post.initiators
+        .map((i: any) => `${i.first_name} ${i.last_name}`)
+        .join(", ")
+    : dash;
+  const tempSummaryLaw =
+    post.summary_law && typeof post.summary_law === "string"
+      ? post.summary_law
+      : dash;
+  const tempStatus = post.status ? post.status : dash;
+
+  const filesKeys =
+    typeof post.files == "object" ? Object.keys(post.files) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: any) => {
+          let list = [key];
+          post.files[key].forEach((item: any) =>
+            list.push(`<a href=${item}>${item}</a>`)
+          );
+          return list.join("<br>") + "<br>";
+        })
+        .join("<br>")
+    : dash;
   return `שלום רב,
   היום, ${tempUpdatedDate}  הצעות החוק ${tempStatus}: <br>
   פ/2321 – ${tempTitle} של ח"כ ${tempInitiators} <br>
@@ -204,104 +258,127 @@ const template4 = (post: IPost) => {
   שם הח"כ המציע : ${tempInitiators} <br>
   קובץ מלא של הצעת החוק: <br>
   ${tempFiles}
-  `
-}
+  `;
+};
 
-const template5 = (post: IPost) => {
-  const tempSubmitDate = post.submit_date ? post.submit_date : dash
-  const tempSubcategory = post.subcategory ? post.subcategory : dash
-  const tempGovMinistry = post.gov_ministry ? post.gov_ministry : dash
-  const tempTitle = post.title ? post.title : dash
-  const tempFirstName = post.initiator?.first_name ? post.initiator?.first_name : dash
-  const tempLastName = post.initiator?.last_name ? post.initiator?.last_name : dash
-  const filesKeys = post.files ? Object.keys(post.files) : null
-  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash  
+const template8 = (post: IPost) => {
+  const tempSubmitDate = post.submit_date ? post.submit_date : dash;
+  const tempSubcategory = post.subcategory ? post.subcategory : dash;
+  const tempGovMinistry = post.gov_ministry ? post.gov_ministry : dash;
+  const tempTitle = post.title ? post.title : dash;
+  const tempFirstName = post.initiator?.first_name
+    ? post.initiator?.first_name
+    : dash;
+  const tempLastName = post.initiator?.last_name
+    ? post.initiator?.last_name
+    : dash;
+  const filesKeys =
+    typeof post.files == "object" ? Object.keys(post.files) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: any) => {
+          let list = [key];
+          post.files[key].forEach((item: any) =>
+            list.push(`<a href=${item}>${item}</a>`)
+          );
+          return list.join("<br>") + "<br>";
+        })
+        .join("<br>")
+    : dash;
   return `ב${tempSubmitDate} תעלה במליאת הכנסת שאילתה ${tempSubcategory} לשר ה ${tempGovMinistry} בנושא ${tempTitle} של חה"כ ${tempFirstName} ${tempLastName}. <br>
   תוכן שאילתא: <br>
   ${tempFiles}  
-  `
-}
-
-const template6 = (post: IPost) => {
-  return `template6`
-}
-
-
-const template7 = (post: IPost) => {
-  return `template7`
-}
-
-const template8 = (post: IPost) => {
-  return `template8`
-}
+  `;
+};
 
 const template9 = (post: IPost) => {
-  return `template9`
-}
+  const tempTitle = post.title ? post.title : dash
+  const tempFirstName = post.initiator?.first_name ? post.initiator.first_name : dash
+  const tempLastName = post.initiator?.last_name ? post.initiator.last_name : dash
+  console.log(tempFirstName, tempLastName)
+  return `יובם _______ ה – (תאריך) תעלה במליאת הכנסת הצעה לסדר היום בנושא ${tempTitle} של חה"כ ${tempFirstName} ${tempLastName}. `;
+};
 
 const template10 = (post: IPost) => {
-  return `template10`
-}
+  return `template7`;
+};
 
 const template11 = (post: IPost) => {
-  return `template11`
-}
+  return `template8`;
+};
 
 const template12 = (post: IPost) => {
-  return `template12`
-}
+  return `template9`;
+};
 
 const template13 = (post: IPost) => {
-  return `template13`
-}
+  return `template10`;
+};
 
 const template14 = (post: IPost) => {
-  return `template14`
-}
+  return `template11`;
+};
 
 const template15 = (post: IPost) => {
-  return `template15`
-}
+  return `template12`;
+};
 
 const template16 = (post: IPost) => {
-  return `template16`
-}
+  return `template13`;
+};
 
 const template17 = (post: IPost) => {
-  return `template17`
-}
+  return `template14`;
+};
 
+const template18 = (post: IPost) => {
+  return `template15`;
+};
+
+const template19 = (post: IPost) => {
+  return `template16`;
+};
+
+const template20 = (post: IPost) => {
+  return `template17`;
+};
 
 // Templates Object
 const templates = {
   options: [
-    { item: '', value: 0},
+    { item: "", value: 0 },
     { item: '1כנסת: הפצת לו"ז לעדכון בודד', value: 1 },
-    { item: '2כנסת: הודעה לעיתונות', value: 2 },
-    { item: '3כנסת: פרוטוקול דיוני ועדות', value: 3 },
-    { item: '4עדכון מהכנסת – הצעות חוק שהונחו לדיון ', value: 4 },
-    { item: '5כנסת: שאילתות', value: 5 },
-    { item: '6כנסת: הצעות לסדר יום', value: 6 },
-    { item: '7כנסת: פרוטוקולים', value: 7 },
-    { item: '8כנסת: דיון מהיר', value: 8 },
-    { item: '9ישיבת ממשלה – סדר יום', value: 9 },
-    { item: '10ממשלה: סיכום ישיבת ממשלה', value: 10 },
-    { item: '11ממשלה: סדר יום ועדת שרים לענייני חקיקה', value: 11 },
-    { item: '12ממשלה: ועדת שרים לענייני חקיקה החלטות- שליחת החלטה פרטנית', value: 12 },
-    { item: '13ממשלה: תזכיר חוק', value: 13 },
-    { item: '14ממשלה: חקיקת משנה – קובץ תקנות', value: 14 },
-    { item: '15ממשלה: חקיקת משנה - קובץ התקנות – שיעורי מכס, מס קניה ותשלומי חובה', value: 15 },
-    { item: '16ממשלה: חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי', value: 16 },
-    { item: '17ממשלה: עדכוני חקיקה – ילקוט הפרסומים', value: 17 },
+    { item: "", value: 2 },
+    { item: "3כנסת: הודעה לעיתונות", value: 3 },
+    { item: "4כנסת: פרוטוקול דיוני ועדות", value: 4 },
+    { item: "", value: 5 },
+    { item: "6עדכון מהכנסת – הצעות חוק שהונחו לדיון ", value: 6 },
+    { item: "", value: 7 },
+    { item: "8כנסת: שאילתות", value: 8 },
+    { item: "9כנסת: הצעות לסדר יום", value: 9 },
+    { item: "10כנסת: פרוטוקולים", value: 10 },
+    { item: "11כנסת: דיון מהיר", value: 11 },
+    { item: "12ישיבת ממשלה – סדר יום", value: 12 },
+    { item: "13ממשלה: סיכום ישיבת ממשלה", value: 13 },
+    { item: "14ממשלה: סדר יום ועדת שרים לענייני חקיקה", value: 14 },
+    {
+      item: "15ממשלה: ועדת שרים לענייני חקיקה החלטות- שליחת החלטה פרטנית",
+      value: 15,
+    },
+    { item: "16ממשלה: תזכיר חוק", value: 16 },
+    { item: "17ממשלה: חקיקת משנה – קובץ תקנות", value: 17 },
+    {
+      item: "18ממשלה: חקיקת משנה - קובץ התקנות – שיעורי מכס, מס קניה ותשלומי חובה",
+      value: 18,
+    },
+    { item: "19ממשלה: חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי", value: 19 },
+    { item: "20ממשלה: עדכוני חקיקה – ילקוט הפרסומים", value: 20 },
   ],
   0: template0,
   1: template1,
-  2: template2,
   3: template3,
   4: template4,
-  5: template5,
   6: template6,
-  7: template7,
   8: template8,
   9: template9,
   10: template10,
@@ -312,9 +389,10 @@ const templates = {
   15: template15,
   16: template16,
   17: template17,
-}
-
-
+  18: template18,
+  19: template19,
+  20: template20,
+};
 
 interface IProps {
   post: IPost;
@@ -323,9 +401,9 @@ interface IProps {
 const EditModel = ({ post }: IProps) => {
   const { t } = useTranslation();
   //Templates Dropdown
-  const [template, setTemplate] = useState('');
+  const [template, setTemplate] = useState("");
   //Email theme
-  const [emailTheme, setEmailTheme] = useState('')
+  const [emailTheme, setEmailTheme] = useState("");
   //Text Editor
   const [text, setText] = useState("");
   // All Clients (dropdown)
@@ -347,7 +425,6 @@ const EditModel = ({ post }: IProps) => {
     }
   };
 
-
   //Fetch all clients list
   useEffect(() => {
     console.log(post);
@@ -356,9 +433,9 @@ const EditModel = ({ post }: IProps) => {
 
   const handleChangeTemplate = (val: string) => {
     //@ts-ignore
-    setText(templates[val](post))
-    setTemplate(val)
-  }
+    setText(templates[val](post));
+    setTemplate(val);
+  };
 
   const keys = Object.keys(post);
   return (
@@ -506,7 +583,12 @@ const EditModel = ({ post }: IProps) => {
             label={t("emails_content-formats")}
           />
 
-          <StyledInput value={emailTheme} onChange={(val) => setEmailTheme(val)} placeholder={t('email_theme')} label={t('email_theme')}/>
+          <StyledInput
+            value={emailTheme}
+            onChange={(val) => setEmailTheme(val)}
+            placeholder={t("email_theme")}
+            label={t("email_theme")}
+          />
 
           <SunEditor
             setDefaultStyle="font-size: 20px;"
