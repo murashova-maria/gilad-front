@@ -416,6 +416,7 @@ const EditModel = ({ post }: IProps) => {
               value={clientsList}
               options={clients.map(c => ({item: c.name, value: c.id}))}
               label={t("emails_clients-label")}
+              isReversed={true}
             />
             <BtnBox>
               <MainButton color="blue">{t("emails_edit-next")}</MainButton>

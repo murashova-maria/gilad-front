@@ -42,13 +42,18 @@ const IconStyled = styled.img<{rtl: boolean}>`
   transform: translateY(-50%);
 `;
 
-const Menu = styled.div<{ showMenu: boolean }>`
+const returnDir = (isReversed: any) => {
+  console.log(isReversed)
+  return 'top: 100%;' 
+}
+
+const Menu = styled.div<{ showMenu: boolean, isReversed: boolean | undefined }>`
   visibility: ${({ showMenu }) => (showMenu ? "visible" : "hidden")};
   background-color: #fff;
   border-radius: 1rem;
   border: 1px solid ${colors.graphite_1};
   position: absolute;
-  top: 100%;
+  ${({isReversed}) => (isReversed ? 'bottom' : 'top') + ': 100%;'}
   left: 0;
   right: 0;
   width: 100%;
@@ -92,6 +97,7 @@ function Dropdown({
   isDisabled,
   menuChild,
   isMultiSelect,
+  isReversed,
   ...props
 }: DropdownProps) {
   const dropdown = useRef<HTMLDivElement>(null);
@@ -201,9 +207,7 @@ function Dropdown({
           />
         )}
         <IconStyled rtl={document.body.dir === 'rtl'} src={arrow} />
-      </RowItemStyled>
-
-      <Menu showMenu={showMenu}>
+        <Menu showMenu={showMenu} isReversed={isReversed}>
         {menuChild !== undefined && menuChild}
         {options.map((opt, id) => {
           const isSelected =
@@ -230,6 +234,7 @@ function Dropdown({
           );
         })}
       </Menu>
+      </RowItemStyled>
     </DropdownStyled>
   );
 }

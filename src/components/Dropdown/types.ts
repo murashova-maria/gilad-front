@@ -9,6 +9,7 @@ export interface DropdownProps {
   disabledValues?: Array<number | string>;
   isMultiSelect?: boolean;
   isDisabled?: boolean;
+  isReversed?: boolean
 }
 
 export type InputValueType = string | number | boolean;
