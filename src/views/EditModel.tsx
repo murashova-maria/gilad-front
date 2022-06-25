@@ -33,23 +33,13 @@ const TemplatesDropdown = styled(Dropdown)`
   margin-top: 25px;
 `;
 
-const Content = styled.div`
+const TextEditor = styled.textarea`
   height: 300px;
+  width: 100%;
   overflow-y: auto;
   text-align: right;
   line-height: 1.25;
-  margin: 0 30px;
-  & > h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    font-family: "Gilroy-R", sans-serif;
-  }
-  & > p {
-    margin-bottom: 30px;
-  }
-  & span {
-    font-family: "Gilroy-B", sans-serif;
-  }
+  resize: none;
 `;
 
 const Selector = styled.div`
@@ -149,12 +139,29 @@ const PostDocLink = styled.a`
   color: ${colors.graphite_5};
 `;
 
+//Templates
+const firstTemplate = (committee:string, cmt_session_items:any, start_date:string, location: string, files: any) => {
+  const cessionItems = cmt_session_items.map((item: any) => item.name)
+  const filesNames = Object.keys(files).join(', ')
+  return `כותרת: עדכון מהכנסת – ועדת ${committee}\nשלום רב,\nביום ${start_date} יתקיים דיון בוועדת ${committee} בנושא:  ${cessionItems} \nהדיון יתקיים ב  ${location}\nלהלן חומרי רקע: ${filesNames}`
+}
+
 interface IProps {
   post: IPost;
 }
 
 const EditModel = ({ post }: IProps) => {
   const { t } = useTranslation();
+  //Text Editor
+  const [text, setText] = useState(firstTemplate(post.committee, post.cmt_session_items, post.start_date, post.location, post.files))
+
+  const handleTextChange = (value: string) => {
+    console.log(value)
+    setText(value)
+  }
+
+
+
   // All Clients (dropdown)
   const {clients} = useClientsState()
   const {onGetClients} = useClientsActions()
@@ -163,8 +170,6 @@ const EditModel = ({ post }: IProps) => {
   useEffect(() => {
     onGetClients()
   }, [])
-
-
 
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
@@ -181,6 +186,7 @@ const EditModel = ({ post }: IProps) => {
     }
   };
 
+  console.log(post)
   const keys = Object.keys(post);
   return (
     <StyledModal>
@@ -331,68 +337,7 @@ const EditModel = ({ post }: IProps) => {
             ]}
             label={t("emails_content-formats")}
           />
-          <Content>
-            <h2>
-              <span>כותרת: עדכון מהכנסת – ועדת</span>
-            </h2>
-            <p>
-              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
-              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
-              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
-              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
-              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
-              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
-              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
-              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
-              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
-              ושיוך המידע.
-            </p>
-            <h2>
-              {" "}
-              <span> :הפצת לו"ז הוועדות</span> – יותר מדיון אחד
-            </h2>
-            <p>
-              כדאי לנסות לרכז את לו"ז הדיונים בוועדות במייל אחד לכל לקוח תוך
-              שמירה על סדר כרונולוגי (כלומר – קודם את כל הדיונים של יום שני,
-              לאחר מכן יום, שלישי, רביעי וכך הלאה).
-            </p>
-            <p>
-              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
-              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
-              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
-              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
-              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
-              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
-              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
-              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
-              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
-              ושיוך המידע.
-            </p>
-            <p>
-              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
-              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
-              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
-              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
-              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
-              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
-              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
-              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
-              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
-              ושיוך המידע.
-            </p>{" "}
-            <p>
-              שלום רב, ביום _ ה - __ בשעה ___ יתקיים דיון בוועדת
-              __________בנושא: (נושא הדיון) לצרף חומרי רקע המצויים בפורטל
-              הוועדה( הצ"ח, ניירות עמדה, מצגות) חשוב לפרט בדיון על סטטוס הצ"ח –
-              כלומר באיזה שלב הכנה נמצאת– קריאה טרומית /ראשונה/ שנייה ושלישית.
-              כמו – כן יש לפרט אודות תמצית התיקון של הצ"ח, הסבר מדיון האחרון
-              בעניינה ( באם פורסם פרוטוקול הדיון) או ע"ב הודעה לעיתונות. לטובת
-              צירוף חומר רקע אשר מצוי בפורטל הוועדה, יש לשמור את הקבצים בשם
-              הוועדה, תאריך ונושא. דוגמא: ו. כלכלה 15.11.21 – הצ"ח ביטוח לאומי (
-              הוראת שעה) התשפ"א 2021, על מנת להקל על הלקוח ועלייך בעת איתור
-              ושיוך המידע.
-            </p>
-          </Content>
+          <TextEditor value={text} onChange={(e) => handleTextChange(e.target.value)} />
           <Selector>
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
             {post.clients && post.clients.length > 0 && (

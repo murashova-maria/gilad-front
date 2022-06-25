@@ -58,17 +58,17 @@ const EmailsPage = () => {
         <Content>
           <div>
             <StyledTitle>{t('emails_title2')}</StyledTitle>
-            {newPosts.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            {committees.map((post, index) => <PostsCard key={`committees ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
+            { /*newPosts.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govils.map((post, index) => <PostsCard key={`govils ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {news.map((post, index) => <PostsCard key={`news ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {agendas.map((post, index) => <PostsCard key={`agendas ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-            {committees.map((post, index) => <PostsCard key={`committees ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {plenums.map((post, index) => <PostsCard key={`plenums ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {queries.map((post, index) => <PostsCard key={`queries ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {bills.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govStatistics.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
             {govilData.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)}
-            {govilPdf.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />)} 
+  {govilPdf.map((post, index) => <PostsCard key={`bills ${index}`} item={post} onEmail={()=> onSetEditor(post)} />) */} 
           </div>
           <div>
             <StyledTitle>{t('emails_title1')}</StyledTitle>
