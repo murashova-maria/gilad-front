@@ -77,7 +77,7 @@ const Menu = styled.div<{ showMenu: boolean, isReversed: boolean | undefined }>`
   }
 `;
 const LabelStyled = styled.label`
-  margin-left: 20px;
+  margin-inline-start: 20px;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

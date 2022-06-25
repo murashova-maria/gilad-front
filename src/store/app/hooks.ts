@@ -10,7 +10,6 @@ export const useAppActions = () => {
     const dispatch = useDispatch()
 
     const onSetModalOpen = (isOpen: boolean) => {
-        console.log(isOpen)
         dispatch(setIsModalOpen(isOpen))
     }
 

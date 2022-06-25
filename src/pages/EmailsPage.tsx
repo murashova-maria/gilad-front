@@ -57,6 +57,7 @@ const EmailsPage = () => {
     govStatistics,
     govilData,
     govilPdf,
+    releases,
     newPosts,
   } = usePostsState();
   // Fetch posts
@@ -73,14 +74,30 @@ const EmailsPage = () => {
         <Content>
           <div>
             <StyledTitle>{t("emails_title2")}</StyledTitle>
-            {committees.map((post, index) => (
+
+            {bills.map((post, index) => (
+              <PostsCard
+                key={`bills ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+
+            {/*newPosts.map((post, index) => (
+              <PostsCard
+                key={`bills ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+                        {committees.map((post, index) => (
               <PostsCard
                 key={`committees ${index}`}
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-            {newPosts.map((post, index) => (
+            {releases.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
                 item={post}
@@ -122,13 +139,7 @@ const EmailsPage = () => {
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-            {bills.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+
             {govStatistics.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
@@ -149,7 +160,7 @@ const EmailsPage = () => {
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
-            ))}
+            ))*/}
           </div>
           <div>
             <StyledTitle>{t("emails_title1")}</StyledTitle>

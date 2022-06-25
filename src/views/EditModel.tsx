@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useClientsActions, useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
+import { TextInput } from "../components/TextInput";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -33,15 +34,6 @@ const TemplatesDropdown = styled(Dropdown)`
   margin: 0px 30px 10px;
   width: calc(100% - 60px);
   margin-top: 25px;
-`;
-
-const TextEditor = styled.textarea`
-  height: 300px;
-  width: 100%;
-  overflow-y: auto;
-  text-align: right;
-  line-height: 1.25;
-  resize: none;
 `;
 
 const Selector = styled.div`
@@ -98,7 +90,7 @@ const BtnBox = styled.div`
 
 const InitialPost = styled.div`
   padding: 15px 20px;
-  height: 700px;
+  height: 810px;
   overflow-y: auto;
 `;
 
@@ -141,38 +133,174 @@ const PostDocLink = styled.a`
   color: ${colors.graphite_5};
 `;
 
+const StyledInput = styled(TextInput)`
+  width: calc(100% - 60px);
+  margin: 0 auto 10px;
+  & input {padding: 8px 20px;}
+`
+
 //Templates
 const dash = "___ ";
 
-const firstTemplate = () => {
-  return ' template'
+const template0 = (post: IPost) => {
+  return ''
 }
+
+const template1 = (post: IPost) => {
+  const tempStartDate = post.start_date ? post.start_date : dash
+  const tempComittee = post.committee ? `<strong>${post.committee}</strong>` : dash
+  const tempLocation = post.location ? post.location : dash
+  const tempSessionItems = Array.isArray(post.cmt_session_items) ? post.cmt_session_items.map(i => i.name).join(', ') : dash
+  //files
+  const filesKeys = post.files ? Object.keys(post.files) : null
+  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
+  //result
+  return `שלום רב,<br>
+  ביום ${tempStartDate} יתקיים דיון בוועדת ${tempComittee} בנושא:  ${tempSessionItems} <br>
+  הדיון יתקיים ב  ${tempLocation} <br>
+  להלן חומרי רקע: ${tempFiles}` 
+}
+
+const template2 = (post: IPost) => {
+  const tempDateTime = post.datetime_knesset ? post.datetime_knesset : dash
+  const tempArticle = post.article_by_line ? post.article_by_line : dash
+  const tempPageContent = post.pulished_page_content ? post.pulished_page_content : dash
+  const tempFiles = post.files ? `<a href=${post.files}>Files</a>` : dash
+
+
+  return `שלום רב,
+  להלן הודעה לעיתונות מדיון שהתקיים ב – (${tempDateTime}) ב ${tempArticle}<br>
+  <br>
+  ${tempPageContent}<br>
+  לינק לידיעה: ${tempFiles}
+  `
+}
+
+const template3 = (post: IPost) => {
+  const tempStartDate = post.start_date ? post.start_date : dash
+  const tempItems = post.cmt_session_items ? post.cmt_session_items.map((item:any) => item.name).join(', ') : dash
+  const filesKeys = post.files ? Object.keys(post.files) : null
+  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
+  return `שלום רב, <br>
+  מצ"ב פרוטוקול דיון שהתקיים ב – (${tempStartDate}) בוועדת committee  בנושאים: <br>
+  ${tempItems} <br>
+  קובץ: ${tempFiles}
+  `
+}
+
+const template4 = (post: IPost) => {
+  
+  const tempUpdatedDate = post.last_updated_date ? post.last_updated_date : dash
+  const tempTitle = post.title ? post.title : null
+  const tempInitiators = post.initiators ? post.initiators.map((i: any) => `${i.first_name} ${i.last_name}`).join(', ') : dash
+  const tempSummaryLaw = (post.summary_law && typeof post.summary_law === 'string') ? post.summary_law : dash
+  const filesKeys = post.files ? Object.keys(post.files) : null
+  const tempFiles = filesKeys ? filesKeys.map(key => `<a href=${post.files[key]} target="_blank">${key}</a>`).join(', ') : dash
+  console.log(tempFiles)
+  return `שלום רב,
+  היום, date(${tempUpdatedDate})  הצעות החוק status: <br>
+  פ/2321 – ${tempTitle} של ח"כ ${tempInitiators} <br>
+  תקציר הצעת החוק: ${tempSummaryLaw} <br>
+  שם הח"כ המציע : ${tempInitiators} <br>
+  קובץ מלא של הצעת החוק: <br>
+  ${tempFiles}
+  `
+}
+
+const template5 = (post: IPost) => {
+  return `template5`
+}
+
+const template6 = (post: IPost) => {
+  return `template6`
+}
+
+
+const template7 = (post: IPost) => {
+  return `template7`
+}
+
+const template8 = (post: IPost) => {
+  return `template8`
+}
+
+const template9 = (post: IPost) => {
+  return `template9`
+}
+
+const template10 = (post: IPost) => {
+  return `template10`
+}
+
+const template11 = (post: IPost) => {
+  return `template11`
+}
+
+const template12 = (post: IPost) => {
+  return `template12`
+}
+
+const template13 = (post: IPost) => {
+  return `template13`
+}
+
+const template14 = (post: IPost) => {
+  return `template14`
+}
+
+const template15 = (post: IPost) => {
+  return `template15`
+}
+
+const template16 = (post: IPost) => {
+  return `template16`
+}
+
+const template17 = (post: IPost) => {
+  return `template17`
+}
+
 
 // Templates Object
 const templates = {
   options: [
-    { item: '', value: 0 },
-    { item: 'כנסת: הפצת לו"ז לעדכון בודד', value: 1 },
-    { item: 'כנסת: הודעה לעיתונות', value: 2 },
-    { item: 'כנסת: פרוטוקול דיוני ועדות', value: 3 },
-    { item: 'עדכון מהכנסת – הצעות חוק שהונחו לדיון ', value: 4 },
-    { item: 'כנסת: שאילתות', value: 5 },
-    { item: 'כנסת: הצעות לסדר יום', value: 6 },
-    { item: 'כנסת: פרוטוקולים', value: 7 },
-    { item: 'כנסת: דיון מהיר', value: 8 },
-    { item: 'ישיבת ממשלה – סדר יום', value: 9 },
-    { item: 'ממשלה: סיכום ישיבת ממשלה', value: 10 },
-    { item: 'ממשלה: סדר יום ועדת שרים לענייני חקיקה', value: 11 },
-    { item: 'ממשלה: ועדת שרים לענייני חקיקה החלטות- שליחת החלטה פרטנית', value: 12 },
-    { item: 'ממשלה: תזכיר חוק', value: 13 },
-    { item: 'ממשלה: חקיקת משנה – קובץ תקנות', value: 14 },
-    { item: 'ממשלה: חקיקת משנה - קובץ התקנות – שיעורי מכס, מס קניה ותשלומי חובה', value: 15 },
-    { item: 'ממשלה: חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי', value: 16 },
-    { item: 'ממשלה: עדכוני חקיקה – ילקוט הפרסומים', value: 17 },
+    { item: '', value: 0, emailTheme: '' },
+    { item: '1כנסת: הפצת לו"ז לעדכון בודד', value: 1 },
+    { item: '2כנסת: הודעה לעיתונות', value: 2 },
+    { item: '3כנסת: פרוטוקול דיוני ועדות', value: 3 },
+    { item: '4עדכון מהכנסת – הצעות חוק שהונחו לדיון ', value: 4 },
+    { item: '5כנסת: שאילתות', value: 5 },
+    { item: '6כנסת: הצעות לסדר יום', value: 6 },
+    { item: '7כנסת: פרוטוקולים', value: 7 },
+    { item: '8כנסת: דיון מהיר', value: 8 },
+    { item: '9ישיבת ממשלה – סדר יום', value: 9 },
+    { item: '10ממשלה: סיכום ישיבת ממשלה', value: 10 },
+    { item: '11ממשלה: סדר יום ועדת שרים לענייני חקיקה', value: 11 },
+    { item: '12ממשלה: ועדת שרים לענייני חקיקה החלטות- שליחת החלטה פרטנית', value: 12 },
+    { item: '13ממשלה: תזכיר חוק', value: 13 },
+    { item: '14ממשלה: חקיקת משנה – קובץ תקנות', value: 14 },
+    { item: '15ממשלה: חקיקת משנה - קובץ התקנות – שיעורי מכס, מס קניה ותשלומי חובה', value: 15 },
+    { item: '16ממשלה: חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי', value: 16 },
+    { item: '17ממשלה: עדכוני חקיקה – ילקוט הפרסומים', value: 17 },
   ],
-
-  0: () => '',
-
+  0: template0,
+  1: template1,
+  2: template2,
+  3: template3,
+  4: template4,
+  5: template5,
+  6: template6,
+  7: template7,
+  8: template8,
+  9: template9,
+  10: template10,
+  11: template11,
+  12: template12,
+  13: template13,
+  14: template14,
+  15: template15,
+  16: template16,
+  17: template17,
 }
 
 
@@ -184,7 +312,7 @@ interface IProps {
 const EditModel = ({ post }: IProps) => {
   const { t } = useTranslation();
   //Templates Dropdown
-  const [template, setTemplate] = useState("");
+  const [template, setTemplate] = useState('');
   //Email theme
   const [emailTheme, setEmailTheme] = useState('')
   //Text Editor
@@ -193,12 +321,6 @@ const EditModel = ({ post }: IProps) => {
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
   const [clientsList, setClientsList] = useState(" ");
-  //Fetch all clients list
-  useEffect(() => {
-    console.log(post);
-    onGetClients();
-  }, []);
-
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
   // Add remove/clients using checkbox
@@ -213,6 +335,19 @@ const EditModel = ({ post }: IProps) => {
       setSelectedClients((prev) => [...prev, client.id]);
     }
   };
+
+
+  //Fetch all clients list
+  useEffect(() => {
+    console.log(post);
+    onGetClients();
+  }, []);
+
+  const handleChangeTemplate = (val: string) => {
+    //@ts-ignore
+    setText(templates[val](post))
+    setTemplate(val)
+  }
 
   const keys = Object.keys(post);
   return (
@@ -354,13 +489,16 @@ const EditModel = ({ post }: IProps) => {
 
           <TemplatesDropdown
             placeholder=""
-            onSelect={(e) => setTemplate(e)}
+            onSelect={(e) => handleChangeTemplate(e)}
             value={template}
             options={templates.options}
             label={t("emails_content-formats")}
           />
 
+          <StyledInput value={emailTheme} onChange={(val) => setEmailTheme(val)} placeholder={t('email_theme')} label={t('email_theme')}/>
+
           <SunEditor
+            setDefaultStyle="font-size: 20px;"
             lang="en"
             defaultValue={""}
             setContents={text}
