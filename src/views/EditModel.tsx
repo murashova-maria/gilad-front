@@ -142,19 +142,40 @@ const PostDocLink = styled.a`
 `;
 
 //Templates
-const dash = '___ '
+const dash = "___ ";
 
-const firstTemplate = (
-  committee: string = dash,
-  cmt_session_items: any,
-  start_date: string = dash,
-  location: string = dash,
-  files: any
-) => {
-  const cessionItems = cmt_session_items ? cmt_session_items.map((item: any) => item.name) : dash
-  const filesNames = files ? Object.keys(files).join(", ") : dash
-  return `כותרת: עדכון מהכנסת – ועדת ${committee}\nשלום רב,\nביום ${start_date} יתקיים דיון בוועדת ${committee} בנושא:  ${cessionItems} \nהדיון יתקיים ב  ${location}\nלהלן חומרי רקע: ${filesNames}`;
-};
+const firstTemplate = () => {
+  return ' template'
+}
+
+// Templates Object
+const templates = {
+  options: [
+    { item: '', value: 0 },
+    { item: 'כנסת: הפצת לו"ז לעדכון בודד', value: 1 },
+    { item: 'כנסת: הודעה לעיתונות', value: 2 },
+    { item: 'כנסת: פרוטוקול דיוני ועדות', value: 3 },
+    { item: 'עדכון מהכנסת – הצעות חוק שהונחו לדיון ', value: 4 },
+    { item: 'כנסת: שאילתות', value: 5 },
+    { item: 'כנסת: הצעות לסדר יום', value: 6 },
+    { item: 'כנסת: פרוטוקולים', value: 7 },
+    { item: 'כנסת: דיון מהיר', value: 8 },
+    { item: 'ישיבת ממשלה – סדר יום', value: 9 },
+    { item: 'ממשלה: סיכום ישיבת ממשלה', value: 10 },
+    { item: 'ממשלה: סדר יום ועדת שרים לענייני חקיקה', value: 11 },
+    { item: 'ממשלה: ועדת שרים לענייני חקיקה החלטות- שליחת החלטה פרטנית', value: 12 },
+    { item: 'ממשלה: תזכיר חוק', value: 13 },
+    { item: 'ממשלה: חקיקת משנה – קובץ תקנות', value: 14 },
+    { item: 'ממשלה: חקיקת משנה - קובץ התקנות – שיעורי מכס, מס קניה ותשלומי חובה', value: 15 },
+    { item: 'ממשלה: חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי', value: 16 },
+    { item: 'ממשלה: עדכוני חקיקה – ילקוט הפרסומים', value: 17 },
+  ],
+
+  0: () => '',
+
+}
+
+
 
 interface IProps {
   post: IPost;
@@ -162,24 +183,19 @@ interface IProps {
 
 const EditModel = ({ post }: IProps) => {
   const { t } = useTranslation();
+  //Templates Dropdown
+  const [template, setTemplate] = useState("");
+  //Email theme
+  const [emailTheme, setEmailTheme] = useState('')
   //Text Editor
-  const [text, setText] = useState(
-    firstTemplate(
-      post.committee,
-      post.cmt_session_items,
-      post.start_date,
-      post.location,
-      post.files
-    )
-  );
-
-
+  const [text, setText] = useState("");
   // All Clients (dropdown)
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
   const [clientsList, setClientsList] = useState(" ");
   //Fetch all clients list
   useEffect(() => {
+    console.log(post);
     onGetClients();
   }, []);
 
@@ -198,7 +214,6 @@ const EditModel = ({ post }: IProps) => {
     }
   };
 
-  console.log(post);
   const keys = Object.keys(post);
   return (
     <StyledModal>
@@ -339,36 +354,24 @@ const EditModel = ({ post }: IProps) => {
 
           <TemplatesDropdown
             placeholder=""
-            onSelect={(e) => console.log(e)}
-            value=" "
-            options={[
-              { item: " ", value: " " },
-              { item: "First", value: "first" },
-              { item: "First", value: "third" },
-              { item: "First", value: "fourth" },
-            ]}
+            onSelect={(e) => setTemplate(e)}
+            value={template}
+            options={templates.options}
             label={t("emails_content-formats")}
           />
+
           <SunEditor
             lang="en"
-            defaultValue={''}
+            defaultValue={""}
             setContents={text}
             height="350px"
             autoFocus={true}
             onChange={(val) => setText(val)}
             setOptions={{
               buttonList: [
-                [
-                  "bold",
-                  "underline",
-                  "italic",
-                  "list",
-                  "align",
-                  "fontSize",
-                ],
+                ["bold", "underline", "italic", "list", "align", "fontSize"],
               ],
             }}
-
           />
           <Selector>
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
