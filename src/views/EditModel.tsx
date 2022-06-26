@@ -190,7 +190,7 @@ const template3 = (post: IPost) => {
   const tempPageContent = post.pulished_page_content
     ? post.pulished_page_content
     : dash;
-  const tempLink = post.link ? `<a href=${post.link}>${post.link}</a>` : dash;
+  const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash;
   return `שלום רב,
   להלן הודעה לעיתונות מדיון שהתקיים ב – (${tempDateTime}) ב ${tempArticle}<br>
   <br>
@@ -368,14 +368,14 @@ const template12 = (post: IPost) => {
   const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
   const tempDescription = post.description ? post.description : dash
 
-  const filesKeys = Object.keys(post.files_govdata)
-  const tempFiles = filesKeys.map((key: string, index: number) => {
+  const filesKeys = post.files_govdata ? Object.keys(post.files_govdata) : null
+  const tempFiles = filesKeys ? filesKeys.map((key: string, index: number) => {
     return (
       `${index + 1}. ${key}<br>
       דברי הסבר: ${tempDescription}<br>
       קובץ עם פירוט מלא: <a href= ${post.files_govdata[key]}>${post.files_govdata[key]}</a>`
     )
-  }).join('<br>')
+  }).join('<br>') : dash
 
   return `שלום רב, <br>
   ביום ${tempMeetingDate} תתכנס הממשלה לישיבתה השבועית. <br>
@@ -385,35 +385,79 @@ const template12 = (post: IPost) => {
 };
 
 const template13 = (post: IPost) => {
-  return `template10`;
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
+  const filesKeys = post.files_govdata ? Object.keys(post.files_govdata) : null
+  const tempFiles = filesKeys ? filesKeys.map((key: string, index: number) => {
+    return (
+      `${index + 1}. ${key}<br>
+      קובץ עם פירוט מלא: <a href= ${post.files_govdata[key]}>${post.files_govdata[key]}</a>`
+    )
+  }).join('<br>') : dash
+  return `שלום רב,<br>
+  ב${tempMeetingDate} התכנסה הממשלה לישיבתה השבועית.<br>
+  להלן החלטותיה: <br>
+  ${tempFiles}
+  `;
 };
 
 const template14 = (post: IPost) => {
-  return `template11`;
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
+  const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash
+  return `שלום רב,<br>
+  ביום ראשון ה- ${tempMeetingDate} תתכנס ועדת שרים לענייני חקיקה.<br>
+  על סדר היום:<br>
+  <br>
+  <ul>
+    <li>פ/_____ (שם הצעת החוק) של חה"כ ________.</li>
+    <li>פ/_____ (שם הצעת החוק) של חה"כ ________.</li>
+    <li>פ/_____ (שם הצעת החוק) של חה"כ ________.</li>
+    <li>טיוטת חוק שהוכנה ע"י משרד _______ לבצע התאמה של המשרד הרלוונטי למשל: משרד הבריאות/ האנרגיה/ ביטחון פנים</li>
+  </ul>
+  מצ"ב נוסח הצעות החוק.<br>
+  ${tempLink}
+  `;
 };
 
 const template15 = (post: IPost) => {
-  return `template12`;
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
+  return `שלום רב, <br>
+  ביום ראשון ה- ${tempMeetingDate} ועדת שרים לענייני חקיקה. <br>
+  להלן  החלטותיה: <br>
+  פ/_____ (שם הצעת החוק) של חה"כ ________ - הממשלה תמכה בהצעת החוק (במקרה של תמיכה).<br>
+  פ/_____ (שם הצעת החוק) של חה"כ ________ - הממשלה התנגדה להצעת החוק (במקרה של התנגדות)
+  `;
 };
 
 const template16 = (post: IPost) => {
-  return `template13`;
+  const tempName = post.name ? post.name : dash
+  const tempMinistry = post.ministry ? post.ministry : dash
+  const tempDescription = post.description ? post.description : dash
+  const tempExpirationDate = post.exp_date ? post.exp_date : dash
+  const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash
+
+  return `שלום רב,
+  מצ"ב תזכיר חוק ${tempName} שהוכן ע"י ${tempMinistry}.
+  תמצית התיקון:
+  ${tempDescription}
+  ${tempExpirationDate} באמצעות הקישור שלהלן:
+  אתר החקיקה הממשלתי - ${tempName} 
+  ${tempLink}`;
 };
 
 const template17 = (post: IPost) => {
-  return `template14`;
+  return `template17`;
 };
 
 const template18 = (post: IPost) => {
-  return `template15`;
+  return `template18`;
 };
 
 const template19 = (post: IPost) => {
-  return `template16`;
+  return `template19`;
 };
 
 const template20 = (post: IPost) => {
-  return `template17`;
+  return `template20`;
 };
 
 // Templates Object
@@ -715,7 +759,7 @@ const EditModel = ({ post }: IProps) => {
 
           <SunEditor
             setDefaultStyle="font-size: 20px;"
-            lang="en"
+            lang="he"
             defaultValue={""}
             setContents={text}
             height="350px"
@@ -723,7 +767,7 @@ const EditModel = ({ post }: IProps) => {
             onChange={(val) => setText(val)}
             setOptions={{
               buttonList: [
-                ["bold", "underline", "italic", "list", "align", "fontSize"],
+                ["bold", "underline", "italic", "list", "align", "fontSize"],['link']
               ],
             }}
           />

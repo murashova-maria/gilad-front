@@ -83,7 +83,7 @@ const EmailsPage = () => {
               />
             ))}
 
-            {/*queries.map((post, index) => (
+            {queries.map((post, index) => (
               <PostsCard
                 key={`queries ${index}`}
                 item={post}
@@ -180,7 +180,11 @@ const EmailsPage = () => {
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
-            ))*/}
+            ))}
+
+
+
+
           </div>
           <div>
             <StyledTitle>{t("emails_title1")}</StyledTitle>

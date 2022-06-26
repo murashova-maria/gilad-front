@@ -49,6 +49,7 @@ export const usePostsActions = () => {
     ws.addEventListener('message', (e: any) => {
       const {data } = JSON.parse(e.data)
       if (data) {
+        console.log('new post')
         dispatch(postsAddNewPost(data))
       }
     })
