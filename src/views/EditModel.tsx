@@ -217,11 +217,11 @@ const template4 = (post: IPost) => {
           post.files[key].forEach((item: any) =>
             list.push(`<a href=${item}>${item}</a>`)
           );
-         if (key === 'פרוטוקול ועדה')  return list.join("<br>") + "<br>";
+          if (key === "פרוטוקול ועדה") return list.join("<br>") + "<br>";
         })
         .join("<br>")
     : dash;
-    console.log(tempFiles)
+  console.log(tempFiles);
   return `שלום רב, <br>
   מצ"ב פרוטוקול דיון שהתקיים ב – (${tempStartDate}) בוועדת ${tempComittee}  בנושאים: <br>
   ${tempItems} <br>
@@ -230,7 +230,9 @@ const template4 = (post: IPost) => {
 };
 
 const template6 = (post: IPost) => {
-  const tempUpdatedDate = post.last_updated_date ? new Date(post.last_updated_date).toISOString().slice(0, 10) : dash
+  const tempUpdatedDate = post.last_updated_date
+    ? new Date(post.last_updated_date).toISOString().slice(0, 10)
+    : dash;
   const tempTitle = post.title ? post.title : null;
   const tempInitiators = post.initiators
     ? post.initiators
@@ -325,7 +327,7 @@ const template10 = (post: IPost) => {
           post.files[key].forEach((item: any) =>
             list.push(`<a href=${item}>${item}</a>`)
           );
-          if (key === 'פרוטוקול מליאה')  return list.join("<br>") + "<br>";
+          if (key === "פרוטוקול מליאה") return list.join("<br>") + "<br>";
         })
         .join("<br>")
     : dash;
@@ -365,17 +367,21 @@ const template11 = (post: IPost) => {
 };
 
 const template12 = (post: IPost) => {
-  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
-  const tempDescription = post.description ? post.description : dash
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash;
+  const tempDescription = post.description ? post.description : dash;
 
-  const filesKeys = post.files_govdata ? Object.keys(post.files_govdata) : null
-  const tempFiles = filesKeys ? filesKeys.map((key: string, index: number) => {
-    return (
-      `${index + 1}. ${key}<br>
+  const filesKeys = post.files_govdata ? Object.keys(post.files_govdata) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: string, index: number) => {
+          return `${index + 1}. ${key}<br>
       דברי הסבר: ${tempDescription}<br>
-      קובץ עם פירוט מלא: <a href= ${post.files_govdata[key]}>${post.files_govdata[key]}</a>`
-    )
-  }).join('<br>') : dash
+      קובץ עם פירוט מלא: <a href= ${post.files_govdata[key]}>${
+            post.files_govdata[key]
+          }</a>`;
+        })
+        .join("<br>")
+    : dash;
 
   return `שלום רב, <br>
   ביום ${tempMeetingDate} תתכנס הממשלה לישיבתה השבועית. <br>
@@ -385,14 +391,18 @@ const template12 = (post: IPost) => {
 };
 
 const template13 = (post: IPost) => {
-  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
-  const filesKeys = post.files_govdata ? Object.keys(post.files_govdata) : null
-  const tempFiles = filesKeys ? filesKeys.map((key: string, index: number) => {
-    return (
-      `${index + 1}. ${key}<br>
-      קובץ עם פירוט מלא: <a href= ${post.files_govdata[key]}>${post.files_govdata[key]}</a>`
-    )
-  }).join('<br>') : dash
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash;
+  const filesKeys = post.files_govdata ? Object.keys(post.files_govdata) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: string, index: number) => {
+          return `${index + 1}. ${key}<br>
+      קובץ עם פירוט מלא: <a href= ${post.files_govdata[key]}>${
+            post.files_govdata[key]
+          }</a>`;
+        })
+        .join("<br>")
+    : dash;
   return `שלום רב,<br>
   ב${tempMeetingDate} התכנסה הממשלה לישיבתה השבועית.<br>
   להלן החלטותיה: <br>
@@ -401,8 +411,8 @@ const template13 = (post: IPost) => {
 };
 
 const template14 = (post: IPost) => {
-  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
-  const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash;
+  const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash;
   return `שלום רב,<br>
   ביום ראשון ה- ${tempMeetingDate} תתכנס ועדת שרים לענייני חקיקה.<br>
   על סדר היום:<br>
@@ -419,7 +429,7 @@ const template14 = (post: IPost) => {
 };
 
 const template15 = (post: IPost) => {
-  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash;
   return `שלום רב, <br>
   ביום ראשון ה- ${tempMeetingDate} ועדת שרים לענייני חקיקה. <br>
   להלן  החלטותיה: <br>
@@ -429,23 +439,31 @@ const template15 = (post: IPost) => {
 };
 
 const template16 = (post: IPost) => {
-  const tempName = post.name ? post.name : dash
-  const tempMinistry = post.ministry ? post.ministry : dash
-  const tempDescription = post.description ? post.description : dash
-  const tempExpirationDate = post.exp_date ? post.exp_date : dash
-  const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash
+  const tempName = post.name ? post.name : dash;
+  const tempMinistry = post.ministry ? post.ministry : dash;
+  const tempDescription = post.description ? post.description : dash;
+  const tempExpirationDate = post.exp_date ? post.exp_date : dash;
+  const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash;
 
-  return `שלום רב,
-  מצ"ב תזכיר חוק ${tempName} שהוכן ע"י ${tempMinistry}.
-  תמצית התיקון:
-  ${tempDescription}
-  ${tempExpirationDate} באמצעות הקישור שלהלן:
-  אתר החקיקה הממשלתי - ${tempName} 
+  return `שלום רב,<br>
+  מצ"ב תזכיר חוק ${tempName} שהוכן ע"י ${tempMinistry}.<br>
+  תמצית התיקון:<br>
+  ${tempDescription}<br>
+  ${tempExpirationDate} באמצעות הקישור שלהלן:<br>
+  אתר החקיקה הממשלתי - ${tempName} <br>
   ${tempLink}`;
 };
 
 const template17 = (post: IPost) => {
-  return `template17`;
+  const tempFileName = post.file_name ? post.file_name : dash;
+  const tempFileDate = post.file_date ? post.file_date : dash;
+  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
+  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
+    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
+  }).join('') : dash
+  return `שלום רב,
+  מצ"ב קובץ התקנות מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br> 
+   ${tempTitles}`;
 };
 
 const template18 = (post: IPost) => {
@@ -554,7 +572,6 @@ const EditModel = ({ post }: IProps) => {
     setTemplate(val);
   };
 
-
   const keys = Object.keys(post);
   return (
     <StyledModal>
@@ -565,60 +582,77 @@ const EditModel = ({ post }: IProps) => {
           {keys.map((key) => {
             //Return cases when key is FILES
             if (post[key] && key === "files") {
-              let listArray: any[] = []
-              let keys = Object.keys(post.files)
-              keys.forEach(key => {
-                listArray.push({type: 'head', item: key})
-                post.files[key].forEach((link: string) => listArray.push({type: 'link', item: link}))
-              })
-              return(
-                <>
-                  <PostKey>{t(key)}</PostKey>
-                  {listArray.map((item: any, index: number) => {
-                return item.type === "head" ? (
-                  <PostValue key={index}>{item.item}</PostValue>
-                ) : (
-                  <FileLink href={item.item} key={index} target="_blank">
-                    {item.item}
-                  </FileLink>
+              let listArray: any[] = [];
+              let keys = Object.keys(post.files);
+              keys.forEach((key) => {
+                listArray.push({ type: "head", item: key });
+                post.files[key].forEach((link: string) =>
+                  listArray.push({ type: "link", item: link })
                 );
-              })}
+              });
+              return (
+                <>
+                  {listArray.length > 0 ? (
+                    <>
+                      <PostKey>{t(key)}</PostKey>
+                      {listArray.map((item: any, index: number) => {
+                        return item.type === "head" ? (
+                          <PostValue key={index}>{item.item}</PostValue>
+                        ) : (
+                          <FileLink
+                            href={item.item}
+                            key={index}
+                            target="_blank"
+                          >
+                            {item.item}
+                          </FileLink>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    "null"
+                  )}
                 </>
-              )
+              );
             }
 
             //Files GOV data
             if (post[key] && key === "files_govdata") {
-              const keys =  Object.keys(post.files_govdata)
+              const keys = Object.keys(post.files_govdata);
               const elements = keys.map((item: string) => {
                 return (
                   <>
-                  <PostValue>{item}</PostValue>
-                  <FileLink href={post.files_govdata[item]} target="_blank">{post.files_govdata[item]}</FileLink>
+                    <PostValue>{item}</PostValue>
+                    <FileLink href={post.files_govdata[item]} target="_blank">
+                      {post.files_govdata[item]}
+                    </FileLink>
                   </>
-                )
-              })
-              return (
-                <PostItem key={key}>
-                  <PostKey>{t(key)}</PostKey>
-                  {elements}
-                </PostItem>
+                );
+              });
+              return elements.length > 0 ? (
+                <>
+                  {" "}
+                  <PostItem key={key}>
+                    <PostKey>{t(key)}</PostKey>
+                    {elements}
+                  </PostItem>
+                </>
+              ) : (
+                "null"
               );
             }
 
             //Return cases when key is last_updated_date
             if (post[key] && key === "last_updated_date") {
-              let rawDate = new Date(post[key])
-              let date = rawDate.toISOString().slice(0, 10)
-              let time = rawDate.getHours()+":"+rawDate.getMinutes()
-              let formatedDate = time + " " + date
+              let rawDate = new Date(post[key]);
+              let date = rawDate.toISOString().slice(0, 10);
+              let time = rawDate.getHours() + ":" + rawDate.getMinutes();
+              let formatedDate = time + " " + date;
 
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  <PostValue>
-                    {formatedDate}
-                  </PostValue>
+                  <PostValue>{formatedDate}</PostValue>
                 </PostItem>
               );
             }
@@ -676,9 +710,11 @@ const EditModel = ({ post }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {post[key].map((item: any, index: number) => (
-                    <PostValue key={index}>{item.name}</PostValue>
-                  ))}
+                  {post[key].length > 0
+                    ? post[key].map((item: any, index: number) => (
+                        <PostValue key={index}>{item.name}</PostValue>
+                      ))
+                    : "null"}
                 </PostItem>
               );
             }
@@ -687,9 +723,9 @@ const EditModel = ({ post }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {post[key].map((item: any, index: number) => (
+                  {post[key].length > 0 ? post[key].map((item: any, index: number) => (
                     <PostValue key={index}>{item.name}</PostValue>
-                  ))}
+                  )) : 'null'}
                 </PostItem>
               );
             }
@@ -720,7 +756,7 @@ const EditModel = ({ post }: IProps) => {
               return (
                 <Initiators>
                   <PostKey>{t(key)}</PostKey>
-                  {list}
+                  {list.length > 0 ? list : 'null'}
                 </Initiators>
               );
             }
@@ -733,6 +769,15 @@ const EditModel = ({ post }: IProps) => {
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
                   <PostValue>{post[key]}</PostValue>
+                </PostItem>
+              );
+            }
+            // Reuturn 'null' string when primitive value doesn't exist
+            if (!post[key]) {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostValue>null</PostValue>
                 </PostItem>
               );
             }
@@ -767,7 +812,8 @@ const EditModel = ({ post }: IProps) => {
             onChange={(val) => setText(val)}
             setOptions={{
               buttonList: [
-                ["bold", "underline", "italic", "list", "align", "fontSize"],['link']
+                ["bold", "underline", "italic", "list", "align", "fontSize"],
+                ["link"],
               ],
             }}
           />

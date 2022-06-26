@@ -91,14 +91,13 @@ const EmailsPage = () => {
               />
             ))}
 
-                        {plenums.map((post, index) => (
+            {plenums.map((post, index) => (
               <PostsCard
                 key={`plenums ${index}`}
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-
 
             {agendas.map((post, index) => (
               <PostsCard
@@ -108,9 +107,7 @@ const EmailsPage = () => {
               />
             ))}
 
-
-
-                        {bills.map((post, index) => (
+            {bills.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
                 item={post}
@@ -118,7 +115,7 @@ const EmailsPage = () => {
               />
             ))}
 
-                        {releases.map((post, index) => (
+            {releases.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
                 item={post}
@@ -126,15 +123,13 @@ const EmailsPage = () => {
               />
             ))}
 
-                        {committees.map((post, index) => (
+            {committees.map((post, index) => (
               <PostsCard
                 key={`committees ${index}`}
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-
-
 
             {newPosts.map((post, index) => (
               <PostsCard
@@ -143,12 +138,6 @@ const EmailsPage = () => {
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-
-
-
-
-
-
 
             {govils.map((post, index) => (
               <PostsCard
@@ -173,7 +162,6 @@ const EmailsPage = () => {
               />
             ))}
 
-
             {govilPdf.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
@@ -181,10 +169,6 @@ const EmailsPage = () => {
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-
-
-
-
           </div>
           <div>
             <StyledTitle>{t("emails_title1")}</StyledTitle>
