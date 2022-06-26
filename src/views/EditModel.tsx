@@ -230,9 +230,7 @@ const template4 = (post: IPost) => {
 };
 
 const template6 = (post: IPost) => {
-  const tempUpdatedDate = post.last_updated_date
-    ? post.last_updated_date
-    : dash;
+  const tempUpdatedDate = post.last_updated_date ? new Date(post.last_updated_date).toISOString().slice(0, 10) : dash
   const tempTitle = post.title ? post.title : null;
   const tempInitiators = post.initiators
     ? post.initiators
@@ -504,7 +502,7 @@ const EditModel = ({ post }: IProps) => {
           <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
 
           {keys.map((key) => {
-            //Files
+            //Return cases when key is FILES
             if (post[key] && key === "files") {
               let listArray: any[] = []
               let keys = Object.keys(post.files)
@@ -526,6 +524,23 @@ const EditModel = ({ post }: IProps) => {
               })}
                 </>
               )
+            }
+
+            //Return cases when key is last_updated_date
+            if (post[key] && key === "last_updated_date") {
+              let rawDate = new Date(post[key])
+              let date = rawDate.toISOString().slice(0, 10)
+              let time = rawDate.getHours()+":"+rawDate.getMinutes()
+              let formatedDate = time + " " + date
+
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostValue>
+                    {formatedDate}
+                  </PostValue>
+                </PostItem>
+              );
             }
             // Return cases when key is source link
             if (post[key] && key === "source") {

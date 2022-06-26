@@ -75,14 +75,14 @@ const EmailsPage = () => {
           <div>
             <StyledTitle>{t("emails_title2")}</StyledTitle>
 
-            {committees.map((post, index) => (
+
+            {bills.map((post, index) => (
               <PostsCard
-                key={`committees ${index}`}
+                key={`bills ${index}`}
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-
 
 
             { /*agendas.map((post, index) => (
@@ -96,6 +96,14 @@ const EmailsPage = () => {
                         {releases.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+
+                        {committees.map((post, index) => (
+              <PostsCard
+                key={`committees ${index}`}
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
@@ -130,13 +138,7 @@ const EmailsPage = () => {
               />
             ))}
 
-            {bills.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+
             {govils.map((post, index) => (
               <PostsCard
                 key={`govils ${index}`}
