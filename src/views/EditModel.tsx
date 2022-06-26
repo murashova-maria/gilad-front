@@ -209,6 +209,7 @@ const template4 = (post: IPost) => {
     : dash;
   const filesKeys =
     typeof post.files == "object" ? Object.keys(post.files) : null;
+
   const tempFiles = filesKeys
     ? filesKeys
         .map((key: any) => {
@@ -216,10 +217,11 @@ const template4 = (post: IPost) => {
           post.files[key].forEach((item: any) =>
             list.push(`<a href=${item}>${item}</a>`)
           );
-          return list.join("<br>") + "<br>";
+         if (key === 'פרוטוקול ועדה')  return list.join("<br>") + "<br>";
         })
         .join("<br>")
     : dash;
+    console.log(tempFiles)
   return `שלום רב, <br>
   מצ"ב פרוטוקול דיון שהתקיים ב – (${tempStartDate}) בוועדת ${tempComittee}  בנושאים: <br>
   ${tempItems} <br>
