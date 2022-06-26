@@ -191,7 +191,7 @@ const template3 = (post: IPost) => {
     ? post.pulished_page_content
     : dash;
   const tempLink = post.link ? `<a href="${post.link}">${post.link}</a>` : dash;
-  return `שלום רב,
+  return `שלום רב,<br>
   להלן הודעה לעיתונות מדיון שהתקיים ב – (${tempDateTime}) ב ${tempArticle}<br>
   <br>
   ${tempPageContent}<br>
@@ -258,7 +258,7 @@ const template6 = (post: IPost) => {
         })
         .join("<br>")
     : dash;
-  return `שלום רב,
+  return `שלום רב,<br>
   היום, ${tempUpdatedDate}  הצעות החוק ${tempStatus}: <br>
   פ/2321 – ${tempTitle} של ח"כ ${tempInitiators} <br>
   תקציר הצעת החוק: ${tempSummaryLaw} <br>
@@ -461,21 +461,50 @@ const template17 = (post: IPost) => {
   const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
     return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
   }).join('') : dash
-  return `שלום רב,
+  return `שלום רב,<br>
+  <br>
   מצ"ב קובץ התקנות מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br> 
    ${tempTitles}`;
 };
 
 const template18 = (post: IPost) => {
-  return `template18`;
+  const tempFileName = post.file_name ? post.file_name : dash;
+  const tempFileDate = post.file_date ? post.file_date : dash;
+  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
+  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
+    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
+  }).join('') : dash
+  return `שלום רב,<br>
+  <br>
+  מצ"ב קובץ התקנות חיקוקי שלטון מקומי מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br>
+  ${tempTitles}`;
 };
 
 const template19 = (post: IPost) => {
-  return `template19`;
+  const tempFileName = post.file_name ? post.file_name : dash;
+  const tempFileDate = post.file_date ? post.file_date : dash;
+  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
+  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
+    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
+  }).join('') : dash
+  return `שלום רב,<br>
+  <br>
+  מצ"ב קובץ התקנות שיעורי מכס, מס קניה ותשלומי חובה מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br>
+   ${tempTitles}`;
 };
 
 const template20 = (post: IPost) => {
-  return `template20`;
+  const tempFileName = post.file_name ? post.file_name : dash;
+  const tempFileDate = post.file_date ? post.file_date : dash;
+  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
+  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
+    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
+  }).join('') : dash
+  return `שלום רב,<br>
+  <br>
+  מצ"ב ילקוט הפרסומים מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br>
+  ${tempTitles}
+  `;
 };
 
 // Templates Object
