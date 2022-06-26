@@ -314,7 +314,7 @@ const template9 = (post: IPost) => {
 const template10 = (post: IPost) => {
   const tempStartDate = post.start_date ? post.start_date : dash;
   const tempPlenumItems = Array.isArray(post.plenum_session_items)
-    ? post.plenum_session_items.map((item) => item.name).join(", ")
+    ? post.plenum_session_items.map((item) => item.name).join("<br>")
     : dash;
   const filesKeys =
     typeof post.files == "object" ? Object.keys(post.files) : null;
@@ -325,7 +325,7 @@ const template10 = (post: IPost) => {
           post.files[key].forEach((item: any) =>
             list.push(`<a href=${item}>${item}</a>`)
           );
-          return list.join("<br>") + "<br>";
+          if (key === 'פרוטוקול מליאה')  return list.join("<br>") + "<br>";
         })
         .join("<br>")
     : dash;
@@ -338,6 +338,7 @@ const template10 = (post: IPost) => {
 const template11 = (post: IPost) => {
   const tempCat = post.cat ? post.cat : dash;
   const tempSubCategory = post.subcategory ? post.subcategory : dash;
+  const tempTitle = post.title ? post.title : dash;
   const tempFirstName = post.initiator ? post.initiator.first_name : dash;
   const tempLastName = post.initiator ? post.initiator.last_name : dash;
   const tempStatus = post.status ? post.status : dash;
@@ -358,13 +359,29 @@ const template11 = (post: IPost) => {
         .join("<br>")
     : dash;
   //result
-  return `${tempCat} מסוג ${tempSubCategory} בנושא title של חה"כ  ${tempFirstName} ${tempLastName} ${tempStatus}<br>.
-  הדיון ישובץ במהלך השבועיים הקרובים ב ${tempCommittee}<br>.
+  return `${tempCat} מסוג ${tempSubCategory} בנושא ${tempTitle} של חה"כ  ${tempFirstName} ${tempLastName} ${tempStatus}.<br>
+  הדיון ישובץ במהלך השבועיים הקרובים ב ${tempCommittee}.<br>
   ${tempFiles}`;
 };
 
 const template12 = (post: IPost) => {
-  return `template12`;
+  const tempMeetingDate = post.meeting_date ? post.meeting_date : dash
+  const tempDescription = post.description ? post.description : dash
+
+  const filesKeys = Object.keys(post.files_govdata)
+  const tempFiles = filesKeys.map((key: string, index: number) => {
+    return (
+      `${index + 1}. ${key}<br>
+      דברי הסבר: ${tempDescription}<br>
+      קובץ עם פירוט מלא: <a href= ${post.files_govdata[key]}>${post.files_govdata[key]}</a>`
+    )
+  }).join('<br>')
+
+  return `שלום רב, <br>
+  ביום ${tempMeetingDate} תתכנס הממשלה לישיבתה השבועית. <br>
+  על סדר היום: <br>
+  ${tempFiles}
+  `;
 };
 
 const template13 = (post: IPost) => {
@@ -524,6 +541,25 @@ const EditModel = ({ post }: IProps) => {
               })}
                 </>
               )
+            }
+
+            //Files GOV data
+            if (post[key] && key === "files_govdata") {
+              const keys =  Object.keys(post.files_govdata)
+              const elements = keys.map((item: string) => {
+                return (
+                  <>
+                  <PostValue>{item}</PostValue>
+                  <FileLink href={post.files_govdata[item]} target="_blank">{post.files_govdata[item]}</FileLink>
+                  </>
+                )
+              })
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  {elements}
+                </PostItem>
+              );
             }
 
             //Return cases when key is last_updated_date
