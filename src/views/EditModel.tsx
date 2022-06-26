@@ -141,6 +141,12 @@ const StyledInput = styled(TextInput)`
   }
 `;
 
+const FileLink = styled.a`
+  display: block;
+  word-break: break-all;
+  margin-bottom: 5px;
+`;
+
 //Templates
 const dash = "___ ";
 
@@ -185,7 +191,6 @@ const template3 = (post: IPost) => {
     ? post.pulished_page_content
     : dash;
   const tempLink = post.link ? `<a href=${post.link}>${post.link}</a>` : dash;
-  console.log(tempLink);
   return `שלום רב,
   להלן הודעה לעיתונות מדיון שהתקיים ב – (${tempDateTime}) ב ${tempArticle}<br>
   <br>
@@ -292,23 +297,74 @@ const template8 = (post: IPost) => {
 };
 
 const template9 = (post: IPost) => {
-  const tempTitle = post.title ? post.title : dash
-  const tempFirstName = post.initiator?.first_name ? post.initiator.first_name : dash
-  const tempLastName = post.initiator?.last_name ? post.initiator.last_name : dash
-  console.log(tempFirstName, tempLastName)
-  return `יובם _______ ה – (תאריך) תעלה במליאת הכנסת הצעה לסדר היום בנושא ${tempTitle} של חה"כ ${tempFirstName} ${tempLastName}. `;
+  const tempTitle = post.title ? post.title : dash;
+  const tempFirstName = post.initiator?.first_name
+    ? post.initiator.first_name
+    : dash;
+  const tempLastName = post.initiator?.last_name
+    ? post.initiator.last_name
+    : dash;
+  const tempSubCategory = post.subcategory ? post.subcategory : dash;
+  const tempStatus = post.status ? post.status : dash;
+  return `יובם _______ ה – (תאריך) תעלה במליאת הכנסת הצעה לסדר היום בנושא ${tempTitle} של חה"כ ${tempFirstName} ${tempLastName}. <br>
+  הצעה ${tempSubCategory},   ${tempStatus}
+  `;
 };
 
 const template10 = (post: IPost) => {
-  return `template7`;
+  const tempStartDate = post.start_date ? post.start_date : dash;
+  const tempPlenumItems = Array.isArray(post.plenum_session_items)
+    ? post.plenum_session_items.map((item) => item.name).join(", ")
+    : dash;
+  const filesKeys =
+    typeof post.files == "object" ? Object.keys(post.files) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: any) => {
+          let list = [key];
+          post.files[key].forEach((item: any) =>
+            list.push(`<a href=${item}>${item}</a>`)
+          );
+          return list.join("<br>") + "<br>";
+        })
+        .join("<br>")
+    : dash;
+  return `שלום רב, <br>
+  מצ"ב קטע מפרוטוקול הדיון שהתקיים ב ${tempStartDate} במליאת הכנסת בנושאים ${tempPlenumItems}. <br>
+  ${tempFiles}
+  `;
 };
 
 const template11 = (post: IPost) => {
-  return `template8`;
+  const tempCat = post.cat ? post.cat : dash;
+  const tempSubCategory = post.subcategory ? post.subcategory : dash;
+  const tempFirstName = post.initiator ? post.initiator.first_name : dash;
+  const tempLastName = post.initiator ? post.initiator.last_name : dash;
+  const tempStatus = post.status ? post.status : dash;
+  const tempCommittee = post.committee
+    ? `<strong>${post.committee}</strong>`
+    : dash;
+  const filesKeys =
+    typeof post.files == "object" ? Object.keys(post.files) : null;
+  const tempFiles = filesKeys
+    ? filesKeys
+        .map((key: any) => {
+          let list = [key];
+          post.files[key].forEach((item: any) =>
+            list.push(`<a href=${item}>${item}</a>`)
+          );
+          return list.join("<br>") + "<br>";
+        })
+        .join("<br>")
+    : dash;
+  //result
+  return `${tempCat} מסוג ${tempSubCategory} בנושא title של חה"כ  ${tempFirstName} ${tempLastName} ${tempStatus}<br>.
+  הדיון ישובץ במהלך השבועיים הקרובים ב ${tempCommittee}<br>.
+  ${tempFiles}`;
 };
 
 const template12 = (post: IPost) => {
-  return `template9`;
+  return `template12`;
 };
 
 const template13 = (post: IPost) => {
@@ -399,6 +455,7 @@ interface IProps {
 }
 
 const EditModel = ({ post }: IProps) => {
+  console.log(post);
   const { t } = useTranslation();
   //Templates Dropdown
   const [template, setTemplate] = useState("");
@@ -427,7 +484,6 @@ const EditModel = ({ post }: IProps) => {
 
   //Fetch all clients list
   useEffect(() => {
-    console.log(post);
     onGetClients();
   }, []);
 
@@ -437,6 +493,7 @@ const EditModel = ({ post }: IProps) => {
     setTemplate(val);
   };
 
+
   const keys = Object.keys(post);
   return (
     <StyledModal>
@@ -445,6 +502,29 @@ const EditModel = ({ post }: IProps) => {
           <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
 
           {keys.map((key) => {
+            //Files
+            if (post[key] && key === "files") {
+              let listArray: any[] = []
+              let keys = Object.keys(post.files)
+              keys.forEach(key => {
+                listArray.push({type: 'head', item: key})
+                post.files[key].forEach((link: string) => listArray.push({type: 'link', item: link}))
+              })
+              return(
+                <>
+                  <PostKey>{t(key)}</PostKey>
+                  {listArray.map((item: any, index: number) => {
+                return item.type === "head" ? (
+                  <PostValue key={index}>{item.item}</PostValue>
+                ) : (
+                  <FileLink href={item.item} key={index} target="_blank">
+                    {item.item}
+                  </FileLink>
+                );
+              })}
+                </>
+              )
+            }
             // Return cases when key is source link
             if (post[key] && key === "source") {
               return (
@@ -556,16 +636,6 @@ const EditModel = ({ post }: IProps) => {
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
                   <PostValue>{post[key]}</PostValue>
-                </PostItem>
-              );
-            }
-            //Files
-            if (post[key] && key === "files") {
-              let files = Object.keys(post[key]);
-              return (
-                <PostItem key={key}>
-                  <PostKey>{t(key)}</PostKey>
-                  <PostValue>Files</PostValue>
                 </PostItem>
               );
             }

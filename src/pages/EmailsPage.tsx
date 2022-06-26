@@ -75,23 +75,7 @@ const EmailsPage = () => {
           <div>
             <StyledTitle>{t("emails_title2")}</StyledTitle>
 
-            {agendas.map((post, index) => (
-              <PostsCard
-                key={`agendas ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
-
-            {/*newPosts.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
-
-                        {committees.map((post, index) => (
+            {committees.map((post, index) => (
               <PostsCard
                 key={`committees ${index}`}
                 item={post}
@@ -100,7 +84,16 @@ const EmailsPage = () => {
             ))}
 
 
-            {releases.map((post, index) => (
+
+            { /*agendas.map((post, index) => (
+              <PostsCard
+                key={`agendas ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+
+                        {releases.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
                 item={post}
@@ -108,18 +101,36 @@ const EmailsPage = () => {
               />
             ))}
 
-            
 
-                        {queries.map((post, index) => (
+
+            {newPosts.map((post, index) => (
+              <PostsCard
+                key={`bills ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+
+
+
+
+            {plenums.map((post, index) => (
+              <PostsCard
+                key={`plenums ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+
+            {queries.map((post, index) => (
               <PostsCard
                 key={`queries ${index}`}
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
             ))}
-                        
 
-             {bills.map((post, index) => (
+            {bills.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
                 item={post}
@@ -141,15 +152,6 @@ const EmailsPage = () => {
               />
             ))}
 
-            {plenums.map((post, index) => (
-              <PostsCard
-                key={`plenums ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
-
-
             {govStatistics.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
@@ -157,6 +159,7 @@ const EmailsPage = () => {
                 onEmail={() => onSetEditor(post)}
               />
             ))}
+
             {govilData.map((post, index) => (
               <PostsCard
                 key={`bills ${index}`}
@@ -170,7 +173,7 @@ const EmailsPage = () => {
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
-            )) */}
+            ))*/}
           </div>
           <div>
             <StyledTitle>{t("emails_title1")}</StyledTitle>

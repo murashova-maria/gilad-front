@@ -181,6 +181,7 @@ function* getGovilData(): any {
   if (token) {
     const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovilData(token));
     if (dataRes) {
+      console.log(dataRes)
       yield put(postsSetGovilData(dataRes));
     }
     if (dataErr) {
