@@ -7,12 +7,10 @@ import { IPostCard } from "./types";
 import { useTranslation } from "react-i18next";
 
 const Card = styled.div`
-  width: 640px;
+  width: 540px;
   display: flex;
   background-color: #fff;
   border-radius: 20px;
-  border: 1px solid ${colors.blue_green};
-  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.05);
   margin-bottom: 30px;
 `;
 
@@ -36,7 +34,7 @@ const Client = styled.p`
 
 const Title = styled.h2`
   font-family: "Gilroy-B";
-  font-size: 24px;
+  font-size: 22px;
   line-height: 30px;
   margin-bottom: 10px;
 `;
@@ -101,7 +99,8 @@ const PostCard = ({
   return (
     <Card>
       <Content>
-        {title || name && <Title>{title || name}</Title>}
+        {title && <Title>{title}</Title>}
+        {name && <Title>{name}</Title>}
         <Source>
           {(tag || source_name)&& (
             <SourceBox>
