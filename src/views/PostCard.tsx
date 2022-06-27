@@ -95,7 +95,7 @@ const Btns = styled.div`
 
 const PostCard = ({
   onEmail,
-  item: { title, name, cat, tag, description, keywords, clients, text },
+  item: { title, name, cat, tag, description, keywords, clients, text, source_name },
 }: IPostCard) => {
   const { t } = useTranslation();
   return (
@@ -103,10 +103,10 @@ const PostCard = ({
       <Content>
         {title || name && <Title>{title || name}</Title>}
         <Source>
-          {tag && (
+          {(tag || source_name)&& (
             <SourceBox>
               <SourcePic src={SourceLogo} />
-              {tag}
+              {tag || source_name}
             </SourceBox>
           )}
           {cat && <SourceText>{cat}</SourceText>}

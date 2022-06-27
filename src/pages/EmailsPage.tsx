@@ -75,6 +75,22 @@ const EmailsPage = () => {
           <div>
             <StyledTitle>{t("emails_title2")}</StyledTitle>
 
+            {newPosts.map((post, index) => (
+              <PostsCard
+                key={`bills ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+
+            {govilData.map((post, index) => (
+              <PostsCard
+                key={`bills ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            ))}
+
             {queries.map((post, index) => (
               <PostsCard
                 key={`queries ${index}`}
@@ -82,6 +98,14 @@ const EmailsPage = () => {
                 onEmail={() => onSetEditor(post)}
               />
             ))}
+
+                        {govilPdf.map((post, index) => (
+              <PostsCard
+                key={`bills ${index}`}
+                item={post}
+                onEmail={() => onSetEditor(post)}
+              />
+            )) }
 
             {plenums.map((post, index) => (
               <PostsCard
@@ -139,21 +163,7 @@ const EmailsPage = () => {
               />
             ))}
 
-                        {govilData.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
 
-                        {govilPdf.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            )) }
 
             {news.map((post, index) => (
               <PostsCard
@@ -161,15 +171,9 @@ const EmailsPage = () => {
                 item={post}
                 onEmail={() => onSetEditor(post)}
               />
-            ))}
+            )) }
 
-{newPosts.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+
           </div>
           <div>
             <StyledTitle>{t("emails_title1")}</StyledTitle>

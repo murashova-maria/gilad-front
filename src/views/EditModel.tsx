@@ -15,6 +15,7 @@ import { TextInput } from "../components/TextInput";
 const StyledModal = styled.div`
   border-radius: 20px;
   width: 80%;
+  max-width: 1200px;
   background-color: #fff;
   border: 1px solid #c2fffd;
   box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
@@ -561,24 +562,25 @@ const templates = {
       cat: "הצעות חוק",
     },
     //{ item: "", value: 7 },
-    { item: "8כנסת: שאילתות",
-     value: 8,
-     tag: "כנסת",
-     cat: "שאילתות" },
+    { item: "8כנסת: שאילתות", value: 8, tag: "כנסת", cat: "שאילתות" },
     {
       item: "9כנסת: הצעות לסדר יום",
       value: 9,
       tag: "כנסת",
       cat: "הצעות לסדר-יום",
     },
-    { item: "10כנסת: פרוטוקולים",
-     value: 10,
-     tag: "כנסת",
-     cat: "ישיבות המליאה" },
-    { item: "11כנסת: דיון מהיר",
-     value: 11,
-     tag: "כנסת",
-     cat: "הצעות לסדר-יום" },
+    {
+      item: "10כנסת: פרוטוקולים",
+      value: 10,
+      tag: "כנסת",
+      cat: "ישיבות המליאה",
+    },
+    {
+      item: "11כנסת: דיון מהיר",
+      value: 11,
+      tag: "כנסת",
+      cat: "הצעות לסדר-יום",
+    },
     {
       item: "12ממשלה: ישיבת ממשלה – סדר יום",
       value: 12,
@@ -751,16 +753,18 @@ const EditModel = ({ post }: IProps) => {
 
   //Template autoselect function
   const selectAccordingTemplate = () => {
-    const {tag, cat} = post
-    const template = templates.options.find(option => (option.cat === cat && option.tag === tag))
-    const option = template ? template.value.toString() : '0'
-    handleChangeTemplate(option)
-  }
+    const { tag, cat } = post;
+    const template = templates.options.find(
+      (option) => option.cat === cat && option.tag === tag
+    );
+    const option = template ? template.value.toString() : "0";
+    handleChangeTemplate(option);
+  };
 
-
+  console.log(post);
   //Fetch all clients list
   useEffect(() => {
-    selectAccordingTemplate()
+    selectAccordingTemplate();
     onGetClients();
   }, []);
 
@@ -848,8 +852,19 @@ const EditModel = ({ post }: IProps) => {
                 </PostItem>
               );
             }
-            // Return cases when key is source link
+            // Return cases when key is source
             if (post[key] && key === "source") {
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostLink href={post[key]} target="_blank">
+                    {post[key]}
+                  </PostLink>
+                </PostItem>
+              );
+            }
+            // Return cases when key is root_link
+            if (post[key] && key === "root_link") {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
@@ -865,7 +880,14 @@ const EditModel = ({ post }: IProps) => {
             }
             // Return cases when key is link
             if (post[key] && key === "link") {
-              return null;
+              return (
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  <PostLink href={post[key]} target="_blank">
+                    {post[key]}
+                  </PostLink>
+                </PostItem>
+              );
             }
             // Return cases when key is DOCX
             if (post[key] && key === "docx") {
@@ -997,7 +1019,7 @@ const EditModel = ({ post }: IProps) => {
           />
 
           <SunEditor
-            setDefaultStyle="font-size: 20px;"
+            setDefaultStyle="font-size: 20px; max-width: 800px;"
             lang="he"
             defaultValue={""}
             setContents={text}

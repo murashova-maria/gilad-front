@@ -68,6 +68,24 @@
     "publication_series_desc": "תיאור סדרת הפרסום של החוק",
     "publication_series_first_call": "תיאור סדרת הפרסום של הצעת החוק לקריאה הראשונה",
 
+    "meeting_date": "תאריך של הישיבה",
+    "ministry": "משרד",
+    "name": "שם",
+    "files_govdata": "קבצים או נושאים",
+    "exp_date": "ניתן להעביר הצעות עד",
+    "created_at": "תאריך עדכון אחרון",
+    "root_link": "לינק מקור",
+    "classification_desc": "תת-סוג",
+    "initiator": "יזם",
+    "keywords": "מילות מפתח",
+    "minister": "משרד",
+    "source": "לינק מקור",
+    "source_name": "שם המקור",
+    "sub_title": "תיאור",
+    "article_by_line": "שם הכתבה",
+    "datetime_knesset": "תאריך פרסום בכנסת",
+    "pulished_page_content": "תוכן הכתבה",
+
 
     "/// Front-End ///": "/// Front-end below ///",
 
@@ -98,6 +116,7 @@
     "btn_email": "מייל",
     "btn_edit": "עריכה",
     "btn_delete": "מחיקה"
+
 
 
   
