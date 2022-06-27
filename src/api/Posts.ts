@@ -1,4 +1,5 @@
 import { axiosInstance } from "."
+import { IEmail } from "../store/posts"
 
 
 export const Posts = {
@@ -86,4 +87,11 @@ export const Posts = {
             },
         })
     },
+    sendEmail: async (params: IEmail,token: string) => {
+        return await axiosInstance.post('api/send_email/',params,{
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
+    }
 }

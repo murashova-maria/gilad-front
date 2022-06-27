@@ -11,6 +11,7 @@ import { useClientsActions, useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
+import { usePostsActions } from "../store/posts/hooks";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -726,7 +727,7 @@ const EditModel = ({ post }: IProps) => {
   // All Clients (dropdown)
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
-  const [clientsList, setClientsList] = useState(" ");
+  const [clientsList, setClientsList] = useState("");
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
   // Add remove/clients using checkbox
@@ -741,7 +742,6 @@ const EditModel = ({ post }: IProps) => {
       setSelectedClients((prev) => [...prev, client.id]);
     }
   };
-  console.log(selectedClients)
   //Handle template change with dropdown
   const handleChangeTemplate = (val: string) => {
     //@ts-ignore
@@ -760,12 +760,22 @@ const EditModel = ({ post }: IProps) => {
     const option = template ? template.value.toString() : "0";
     handleChangeTemplate(option);
   };
-  console.log(post)
+
+
+  //Handle send email (btn click)
+  const {onSendEmail} = usePostsActions()
   const handleSendEmail = () => {
-    console.log('title',emailTitle)
-    console.log('text',text)
-    console.log(clientsList)
-    console.log(selectedClients)
+    let checkboxClients = clientsList.split(', ')
+    if (checkboxClients[0] === '') checkboxClients = []
+    //@ts-ignore
+    checkboxClients = checkboxClients.map(id => parseInt(id, 10))
+
+    const emailData = {
+      subject: emailTitle,
+      html: text,
+      recipients_ids: [...checkboxClients, ...selectedClients]
+    }
+    onSendEmail(emailData)
   }
 
   //Fetch all clients list
@@ -1046,7 +1056,6 @@ const EditModel = ({ post }: IProps) => {
             )}
             {post.clients &&
               post.clients.map((client: any) => {
-                console.log(client)
                 return (
                   <ClientBox>
                     <Checkbox

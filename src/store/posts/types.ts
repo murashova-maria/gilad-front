@@ -3,6 +3,12 @@ export interface IPost {
     [key: string]: any
 }
 
+export interface IEmail {
+    subject: string
+    html: string
+    recipients_ids: Array<string | number>
+}
+
 export interface IPostsState {
     editorPost: IPost | null
     govils: IPost[]

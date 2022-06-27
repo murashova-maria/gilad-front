@@ -26,9 +26,10 @@ import {
   postsGetGovilData,
   postsSetGovilData,
   postsGetGovilPdf,
-  postsSetGovilPdf
+  postsSetGovilPdf,
+  postsSendEmail
 } from "./actions";
-import { IPost } from "./types";
+import { IEmail, IPost } from "./types";
 
 export function* postsWatcher() {
   yield takeLatest(postsGetGovils, getGovils);
@@ -43,6 +44,7 @@ export function* postsWatcher() {
   yield takeLatest(postsGetGovStatistics, getGovStatistics);
   yield takeLatest(postsGetGovilData, getGovilData);
   yield takeLatest(postsGetGovilPdf, getGovilPdf);
+  yield takeLatest(postsSendEmail, sendEmail);
 }
 
 function* getGovils(): any {
@@ -195,6 +197,19 @@ function* getGovilPdf(): any {
     const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovilPdf(token));
     if (dataRes) {
       yield put(postsSetGovilPdf(dataRes));
+    }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
+}
+
+function* sendEmail({payload}: {payload: IEmail}) {
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [any, any] = yield call(handle, Posts.sendEmail(payload, token));
+    if (dataRes) {
+      console.log(dataRes)
     }
     if (dataErr) {
       console.log(dataErr);

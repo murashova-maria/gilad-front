@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { IPost } from "./types";
+import { IEmail, IPost } from "./types";
 
 //Editor
 export const postsSetEditor = createAction<IPost | null>('posts/setEditor')
@@ -54,8 +54,10 @@ export const postsGetGovilPdf = createAction('posts/getGovilPdf')
 export const postsSetGovilPdf = createAction<any[]>('posts/setGovilPdf')
 
 
-
-
 //New Posts (Web Socket)
 export const postsAddNewPost = createAction<IPost[]>('posts/addNewPost')
+
+
+//Send modified email
+export const postsSendEmail = createAction<IEmail>('posts/sendEmail')
 

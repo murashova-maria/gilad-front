@@ -15,8 +15,9 @@ import {
   postsAddNewPost,
   postsGetGovilData,
   postsGetGovilPdf,
+  postsSendEmail,
 } from "./actions";
-import { IPost, IPostsState } from "./types";
+import { IEmail, IPost, IPostsState } from "./types";
 import { ws } from "../../api";
 
 export const postsSelector = (state: rootReducerType) => state.posts;
@@ -69,11 +70,15 @@ export const usePostsActions = () => {
     dispatch(postsSetEditor(post))
   }
 
+  const  onSendEmail = (email: IEmail) => {
+    dispatch(postsSendEmail(email))
+  }
 
   return {
     onGetPosts,
     onWatchForPosts,
     onCloseWebSocket,
-    onSetEditor
+    onSetEditor,
+    onSendEmail
   };
 };
