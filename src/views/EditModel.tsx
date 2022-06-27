@@ -221,7 +221,6 @@ const template4 = (post: IPost) => {
         })
         .join("<br>")
     : dash;
-  console.log(tempFiles);
   return `שלום רב, <br>
   מצ"ב פרוטוקול דיון שהתקיים ב – (${tempStartDate}) בוועדת ${tempComittee}  בנושאים: <br>
   ${tempItems} <br>
@@ -457,10 +456,16 @@ const template16 = (post: IPost) => {
 const template17 = (post: IPost) => {
   const tempFileName = post.file_name ? post.file_name : dash;
   const tempFileDate = post.file_date ? post.file_date : dash;
-  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
-  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
-    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
-  }).join('') : dash
+  const titlesKeys = post.title_and_page
+    ? Object.keys(post.title_and_page)
+    : null;
+  const tempTitles = titlesKeys
+    ? titlesKeys
+        .map((key: string) => {
+          return `בעמ' ${key} - ${post.title_and_page[key]} <br>`;
+        })
+        .join("")
+    : dash;
   return `שלום רב,<br>
   <br>
   מצ"ב קובץ התקנות מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br> 
@@ -470,10 +475,16 @@ const template17 = (post: IPost) => {
 const template18 = (post: IPost) => {
   const tempFileName = post.file_name ? post.file_name : dash;
   const tempFileDate = post.file_date ? post.file_date : dash;
-  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
-  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
-    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
-  }).join('') : dash
+  const titlesKeys = post.title_and_page
+    ? Object.keys(post.title_and_page)
+    : null;
+  const tempTitles = titlesKeys
+    ? titlesKeys
+        .map((key: string) => {
+          return `בעמ' ${key} - ${post.title_and_page[key]} <br>`;
+        })
+        .join("")
+    : dash;
   return `שלום רב,<br>
   <br>
   מצ"ב קובץ התקנות חיקוקי שלטון מקומי מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br>
@@ -483,10 +494,16 @@ const template18 = (post: IPost) => {
 const template19 = (post: IPost) => {
   const tempFileName = post.file_name ? post.file_name : dash;
   const tempFileDate = post.file_date ? post.file_date : dash;
-  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
-  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
-    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
-  }).join('') : dash
+  const titlesKeys = post.title_and_page
+    ? Object.keys(post.title_and_page)
+    : null;
+  const tempTitles = titlesKeys
+    ? titlesKeys
+        .map((key: string) => {
+          return `בעמ' ${key} - ${post.title_and_page[key]} <br>`;
+        })
+        .join("")
+    : dash;
   return `שלום רב,<br>
   <br>
   מצ"ב קובץ התקנות שיעורי מכס, מס קניה ותשלומי חובה מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br>
@@ -496,10 +513,16 @@ const template19 = (post: IPost) => {
 const template20 = (post: IPost) => {
   const tempFileName = post.file_name ? post.file_name : dash;
   const tempFileDate = post.file_date ? post.file_date : dash;
-  const titlesKeys = post.title_and_page ? Object.keys(post.title_and_page) : null
-  const tempTitles = titlesKeys ? titlesKeys.map((key: string) => {
-    return `בעמ' ${key} - ${post.title_and_page[key]} <br>`
-  }).join('') : dash
+  const titlesKeys = post.title_and_page
+    ? Object.keys(post.title_and_page)
+    : null;
+  const tempTitles = titlesKeys
+    ? titlesKeys
+        .map((key: string) => {
+          return `בעמ' ${key} - ${post.title_and_page[key]} <br>`;
+        })
+        .join("")
+    : dash;
   return `שלום רב,<br>
   <br>
   מצ"ב ילקוט הפרסומים מס' ${tempFileName} שפורסם בתאריך ${tempFileDate} בו מפורסמות:<br>
@@ -511,32 +534,92 @@ const template20 = (post: IPost) => {
 const templates = {
   options: [
     { item: "", value: 0 },
-    { item: '1כנסת: הפצת לו"ז לעדכון בודד', value: 1 },
+    {
+      item: '1כנסת: הפצת לו"ז לעדכון בודד',
+      value: 1,
+      tag: "כנסת",
+      cat: "ישיבות המליאה",
+    },
     { item: "", value: 2 },
-    { item: "3כנסת: הודעה לעיתונות", value: 3 },
-    { item: "4כנסת: פרוטוקול דיוני ועדות", value: 4 },
+    {
+      item: "3כנסת: הודעה לעיתונות",
+      value: 3,
+      tag: null,
+      cat: "הודעות לעיתונות",
+    },
+    {
+      item: "4כנסת: פרוטוקול דיוני ועדות",
+      value: 4,
+      tag: null,
+      cat: "ישיבות המליאה",
+    },
     { item: "", value: 5 },
-    { item: "6עדכון מהכנסת – הצעות חוק שהונחו לדיון ", value: 6 },
+    {
+      item: "6עדכון מהכנסת – הצעות חוק שהונחו לדיון ",
+      value: 6,
+      tag: null,
+      cat: "הצעות חוק",
+    },
     { item: "", value: 7 },
-    { item: "8כנסת: שאילתות", value: 8 },
-    { item: "9כנסת: הצעות לסדר יום", value: 9 },
-    { item: "10כנסת: פרוטוקולים", value: 10 },
-    { item: "11כנסת: דיון מהיר", value: 11 },
-    { item: "12ישיבת ממשלה – סדר יום", value: 12 },
-    { item: "13ממשלה: סיכום ישיבת ממשלה", value: 13 },
-    { item: "14ממשלה: סדר יום ועדת שרים לענייני חקיקה", value: 14 },
+    { item: "8כנסת: שאילתות", value: 8, tag: null, cat: "שאילתות" },
+    {
+      item: "9כנסת: הצעות לסדר יום",
+      value: 9,
+      tag: null,
+      cat: "הצעות לסדר-יום",
+    },
+    { item: "10כנסת: פרוטוקולים", value: 10, tag: null, cat: "ישיבות המליאה" },
+    { item: "11כנסת: דיון מהיר", value: 11, tag: null, cat: "הצעות לסדר-יום" },
+    {
+      item: "12ישיבת ממשלה – סדר יום",
+      value: 12,
+      tag: "ממשלה",
+      cat: "סדר היום לישיבת הממשלה",
+    },
+    {
+      item: "13ממשלה: סיכום ישיבת ממשלה",
+      value: 13,
+      tag: "ממשלה",
+      cat: "הודעות מזכיר הממשלה",
+    },
+    {
+      item: "14ממשלה: סדר יום ועדת שרים לענייני חקיקה",
+      value: 14,
+      tag: "ממשלה",
+      cat: "סדר יום ועדות שרים",
+    },
     {
       item: "15ממשלה: ועדת שרים לענייני חקיקה החלטות- שליחת החלטה פרטנית",
       value: 15,
+      // Не нужен автовыбор, т.к. идентичен 14-му шаблону
+      //tag: "ממשלה",
+      //cat: "סדר יום ועדות שרים",
     },
-    { item: "16ממשלה: תזכיר חוק", value: 16 },
-    { item: "17ממשלה: חקיקת משנה – קובץ תקנות", value: 17 },
+    { item: "16ממשלה: תזכיר חוק", value: 16, tag: "ממשלה", cat: "תזכיר חוק" },
+    {
+      item: "17ממשלה: חקיקת משנה – קובץ תקנות",
+      value: 17,
+      tag: "ממשלה",
+      cat: "קובץ תקנות",
+    },
     {
       item: "18ממשלה: חקיקת משנה - קובץ התקנות – שיעורי מכס, מס קניה ותשלומי חובה",
       value: 18,
+      tag: "ממשלה",
+      cat: "קובץ תקנות שיעורי מכס, מס קניה ותשלומי חובה",
     },
-    { item: "19ממשלה: חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי", value: 19 },
-    { item: "20ממשלה: עדכוני חקיקה – ילקוט הפרסומים", value: 20 },
+    {
+      item: "19ממשלה: חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי",
+      value: 19,
+      tag: "ממשלה",
+      cat: "חיקוקי שלטון מקומי",
+    },
+    {
+      item: "20ממשלה: עדכוני חקיקה – ילקוט הפרסומים",
+      value: 20,
+      tag: "ממשלה",
+      cat: "ילקוט פרסומים",
+    },
   ],
   0: template0,
   1: template1,
@@ -558,17 +641,75 @@ const templates = {
   20: template20,
 };
 
+const emailTitles = {
+  0: (post: IPost) => {
+    return ``;
+  },
+  1: (post: IPost) => {
+    return `עדכון מהכנסת – ${post.committee ? post.committee : dash}`;
+  },
+  3: (post: IPost) => {
+    return `עדכון מהכנסת - ${post.title ? post.title : dash}`;
+  },
+  4: (post: IPost) => {
+    return `עדכון מהכנסת – פרוטוקול ועדה`;
+  },
+  6: (post: IPost) => {
+    return `עדכון מהכנסת – הצעות חוק שהונחו לדיון`;
+  },
+  8: (post: IPost) => {
+    return `Tעדכון מהכנסת – שאילתות`;
+  },
+  9: (post: IPost) => {
+    return `עדכון מהכנסת – הצעות לסדר יום`;
+  },
+  10: (post: IPost) => {
+    return `עדכון מהכנסת – פרוטוקול מליאה`;
+  },
+  11: (post: IPost) => {
+    return `עדכון מהכנסת – דיון מהיר`;
+  },
+  12: (post: IPost) => {
+    return `ישיבת ממשלה – סדר יום`;
+  },
+  13: (post: IPost) => {
+    return `ישיבת ממשלה – סיכום`;
+  },
+  14: (post: IPost) => {
+    return `ועדת שרים לענייני חקיקה – סדר יום`;
+  },
+  15: (post: IPost) => {
+    return `ועדת שרים לענייני חקיקה – החלטות`;
+  },
+  16: (post: IPost) => {
+    const tempName = post.name ? post.name : dash;
+    return `תזכיר חוק ${tempName}`;
+  },
+  17: (post: IPost) => {
+    const tempName = post.name ? post.name : dash;
+    return `כותרת: חקיקת משנה – קובץ תקנות מס' ${tempName}`;
+  },
+  18: (post: IPost) => {
+    return `חקיקת משנה – קובץ תקנות חיקוקי שלטון מקומי `;
+  },
+  19: (post: IPost) => {
+    return `חקיקת משנה - קובץ התקנות – שיעורי מכס, מס קניה ותשלומי חובה`;
+  },
+  20: (post: IPost) => {
+    return `עדכוני חקיקה – ילקוט הפרסומים`;
+  },
+};
+
 interface IProps {
   post: IPost;
 }
 
 const EditModel = ({ post }: IProps) => {
-  console.log(post);
   const { t } = useTranslation();
   //Templates Dropdown
   const [template, setTemplate] = useState("");
   //Email theme
-  const [emailTheme, setEmailTheme] = useState("");
+  const [emailTitle, setEmailTitle] = useState("");
   //Text Editor
   const [text, setText] = useState("");
   // All Clients (dropdown)
@@ -590,16 +731,29 @@ const EditModel = ({ post }: IProps) => {
     }
   };
 
-  //Fetch all clients list
-  useEffect(() => {
-    onGetClients();
-  }, []);
-
+  //Handle template change with dropdown
   const handleChangeTemplate = (val: string) => {
     //@ts-ignore
     setText(templates[val](post));
+    //@ts-ignore
+    setEmailTitle(emailTitles[val](post));
     setTemplate(val);
   };
+
+  //Template autoselect function
+  const selectAccordingTemplate = () => {
+    const {tag, cat} = post
+    const template = templates.options.find(option => (option.cat === cat && option.tag === tag))
+    const option = template ? template.value.toString() : '0'
+    handleChangeTemplate(option)
+  }
+
+
+  //Fetch all clients list
+  useEffect(() => {
+    selectAccordingTemplate()
+    onGetClients();
+  }, []);
 
   const keys = Object.keys(post);
   return (
@@ -752,9 +906,11 @@ const EditModel = ({ post }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {post[key].length > 0 ? post[key].map((item: any, index: number) => (
-                    <PostValue key={index}>{item.name}</PostValue>
-                  )) : 'null'}
+                  {post[key].length > 0
+                    ? post[key].map((item: any, index: number) => (
+                        <PostValue key={index}>{item.name}</PostValue>
+                      ))
+                    : "null"}
                 </PostItem>
               );
             }
@@ -785,7 +941,7 @@ const EditModel = ({ post }: IProps) => {
               return (
                 <Initiators>
                   <PostKey>{t(key)}</PostKey>
-                  {list.length > 0 ? list : 'null'}
+                  {list.length > 0 ? list : "null"}
                 </Initiators>
               );
             }
@@ -825,8 +981,8 @@ const EditModel = ({ post }: IProps) => {
           />
 
           <StyledInput
-            value={emailTheme}
-            onChange={(val) => setEmailTheme(val)}
+            value={emailTitle}
+            onChange={(val) => setEmailTitle(val)}
             placeholder={t("email_theme")}
             label={t("email_theme")}
           />
