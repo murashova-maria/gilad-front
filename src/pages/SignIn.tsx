@@ -65,14 +65,13 @@ const SignIn = () => {
     password: "",
   });
 
-  const handleLogin = (e: React.SyntheticEvent) => {
-    e.preventDefault()
+  const handleLogin = () => {
     onLogin(loginData)
   }
 
   return (
     <SignInPage>
-      <form onSubmit={(e) => handleLogin(e)}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <Title>{t('sign-in_title')}</Title>
         <Box>
           <StyledInput
@@ -92,6 +91,7 @@ const SignIn = () => {
             label={t('sign-in_password-label')}
           />
           <StyledBtn
+            onClick={handleLogin}
             color="orange"
             disabled={!loginData.username || !loginData.password}
           >

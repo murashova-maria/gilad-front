@@ -741,7 +741,7 @@ const EditModel = ({ post }: IProps) => {
       setSelectedClients((prev) => [...prev, client.id]);
     }
   };
-
+  console.log(selectedClients)
   //Handle template change with dropdown
   const handleChangeTemplate = (val: string) => {
     //@ts-ignore
@@ -760,8 +760,14 @@ const EditModel = ({ post }: IProps) => {
     const option = template ? template.value.toString() : "0";
     handleChangeTemplate(option);
   };
+  console.log(post)
+  const handleSendEmail = () => {
+    console.log('title',emailTitle)
+    console.log('text',text)
+    console.log(clientsList)
+    console.log(selectedClients)
+  }
 
-  console.log(post);
   //Fetch all clients list
   useEffect(() => {
     selectAccordingTemplate();
@@ -1040,10 +1046,11 @@ const EditModel = ({ post }: IProps) => {
             )}
             {post.clients &&
               post.clients.map((client: any) => {
+                console.log(client)
                 return (
                   <ClientBox>
                     <Checkbox
-                      checked={false}
+                      checked={selectedClients.includes(client.id)}
                       setIsCheckedCreate={() => selectClient(client)}
                     />
                     <ClientName>{client.name}</ClientName>
@@ -1060,8 +1067,8 @@ const EditModel = ({ post }: IProps) => {
               isReversed={true}
             />
             <BtnBox>
-              <MainButton color="blue">{t("emails_edit-next")}</MainButton>
-              <MainButton color="orange">{t("emails_edit-send")}</MainButton>
+              <MainButton onClick={() => console.log('next')} color="blue">{t("emails_edit-next")}</MainButton>
+              <MainButton onClick={() => handleSendEmail()} color="orange">{t("emails_edit-send")}</MainButton>
             </BtnBox>
           </Selector>
         </div>

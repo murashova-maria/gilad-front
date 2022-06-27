@@ -10,7 +10,6 @@ import { usePostsActions, usePostsState } from "../store/posts/hooks";
 const Emails = styled.div`
   min-height: 100vh;
   display: flex;
-  padding: 60px 10px 20px;
   background-image: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
@@ -36,6 +35,12 @@ const Content = styled.div`
   gap: 20px;
   max-width: 1300px;
   margin: 0 auto;
+`;
+
+const PostsContainer = styled.div`
+  height: calc(100vh - 60px);
+  padding-inline-end: 3px;
+  overflow-y: auto;
 `;
 
 const StyledTitle = styled(Title)`
@@ -74,116 +79,116 @@ const EmailsPage = () => {
         <Content>
           <div>
             <StyledTitle>{t("emails_title2")}</StyledTitle>
+            <PostsContainer>
+              {newPosts.map((post, index) => (
+                <PostsCard
+                  key={`bills ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {newPosts.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {govilData.map((post, index) => (
+                <PostsCard
+                  key={`bills ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {govilData.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {queries.map((post, index) => (
+                <PostsCard
+                  key={`queries ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {queries.map((post, index) => (
-              <PostsCard
-                key={`queries ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {govilPdf.map((post, index) => (
+                <PostsCard
+                  key={`bills ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-                        {govilPdf.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            )) }
+              {plenums.map((post, index) => (
+                <PostsCard
+                  key={`plenums ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {plenums.map((post, index) => (
-              <PostsCard
-                key={`plenums ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {agendas.map((post, index) => (
+                <PostsCard
+                  key={`agendas ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {agendas.map((post, index) => (
-              <PostsCard
-                key={`agendas ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {bills.map((post, index) => (
+                <PostsCard
+                  key={`bills ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {bills.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {releases.map((post, index) => (
+                <PostsCard
+                  key={`bills ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {releases.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {govils.map((post, index) => (
+                <PostsCard
+                  key={`govils ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {govils.map((post, index) => (
-              <PostsCard
-                key={`govils ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {committees.map((post, index) => (
+                <PostsCard
+                  key={`committees ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {committees.map((post, index) => (
-              <PostsCard
-                key={`committees ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+              {govStatistics.map((post, index) => (
+                <PostsCard
+                  key={`bills ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
 
-            {govStatistics.map((post, index) => (
-              <PostsCard
-                key={`bills ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
-
-
-
-            {news.map((post, index) => (
-              <PostsCard
-                key={`news ${index}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            )) }
-
-
+              {news.map((post, index) => (
+                <PostsCard
+                  key={`news ${index}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
+            </PostsContainer>
           </div>
+
           <div>
             <StyledTitle>{t("emails_title1")}</StyledTitle>
-            {googleNews.map((post) => (
-              <PostsCard
-                key={`${post.id} ${post.title}`}
-                item={post}
-                onEmail={() => onSetEditor(post)}
-              />
-            ))}
+            <PostsContainer>
+              {googleNews.map((post) => (
+                <PostsCard
+                  key={`${post.id} ${post.title}`}
+                  item={post}
+                  onEmail={() => onSetEditor(post)}
+                />
+              ))}
+            </PostsContainer>
           </div>
         </Content>
       </Emails>

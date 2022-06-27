@@ -47,10 +47,10 @@ export const usePostsActions = () => {
       ws.send(JSON.stringify({event_type: "test"}))
     })
     ws.addEventListener('message', (e: any) => {
-      const {data } = JSON.parse(e.data)
-      if (data) {
-        console.log('new post')
-        dispatch(postsAddNewPost(data))
+      const data = JSON.parse(e.data)
+      if (data.data) {
+        console.log('new post', data)
+        dispatch(postsAddNewPost(data.data))
       }
     })
     ws.addEventListener('error', (e) => {
