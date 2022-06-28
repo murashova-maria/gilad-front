@@ -16,8 +16,9 @@ import {
   postsGetGovilData,
   postsGetGovilPdf,
   postsSendEmail,
+  PostDelete,
 } from "./actions";
-import { IEmail, IPost, IPostsState } from "./types";
+import { IEmail, IPost, IPostsState, IDeletePost } from "./types";
 import { ws } from "../../api";
 
 export const postsSelector = (state: rootReducerType) => state.posts;
@@ -51,7 +52,26 @@ export const usePostsActions = () => {
       const data = JSON.parse(e.data)
       if (data.data) {
         console.log('new post', data)
-        dispatch(postsAddNewPost(data.data))
+        const stateMepper = {
+          "news":"news",
+          "govil":"govils",
+          "agendas":"agendas",
+          "google_news":"googleNews",
+          "committee_session":"committees",
+          "plenum_session":"plenums",
+          "query":"queries",
+          "bill":"bills",
+          "press_release":"releases",
+          "gov_statisctics":"govStatistics",
+          "govil_data":"govilData",
+          "govil_pdf":"govilPdf"
+        }
+        const keyTyped = data.sender as keyof typeof stateMepper;
+        const value = stateMepper[keyTyped];
+        let b: any = new Object()
+        b[value] = [data.data]
+        // dispatch(postsAddNewPost(data.data))
+        dispatch(postsAddNewPost({st: value, data: data.data}))
       }
     })
     ws.addEventListener('error', (e) => {
@@ -74,8 +94,12 @@ export const usePostsActions = () => {
     dispatch(postsSendEmail(email))
   }
 
+  const onDeletePost = (payload: IDeletePost) => {
+    dispatch(PostDelete(payload))
+  }
+
   return {
-    onGetPosts,
+    onGetPosts, onDeletePost,
     onWatchForPosts,
     onCloseWebSocket,
     onSetEditor,

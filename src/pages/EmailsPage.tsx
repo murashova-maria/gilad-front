@@ -93,6 +93,7 @@ const EmailsPage = () => {
                     key={`bills ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="news"
                   />
                 ))}
 
@@ -101,6 +102,7 @@ const EmailsPage = () => {
                     key={`bills ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="govil_data"
                   />
                 ))}
 
@@ -109,6 +111,7 @@ const EmailsPage = () => {
                     key={`queries ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="query"
                   />
                 ))}
 
@@ -117,6 +120,7 @@ const EmailsPage = () => {
                     key={`bills ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="govil_pdf"
                   />
                 ))}
 
@@ -125,6 +129,7 @@ const EmailsPage = () => {
                     key={`plenums ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="plenum_session"
                   />
                 ))}
 
@@ -133,6 +138,7 @@ const EmailsPage = () => {
                     key={`agendas ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="agendas"
                   />
                 ))}
 
@@ -141,6 +147,7 @@ const EmailsPage = () => {
                     key={`bills ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="bill"
                   />
                 ))}
 
@@ -149,6 +156,7 @@ const EmailsPage = () => {
                     key={`bills ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="press_release"
                   />
                 ))}
 
@@ -157,6 +165,7 @@ const EmailsPage = () => {
                     key={`govils ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="govil"
                   />
                 ))}
 
@@ -165,6 +174,7 @@ const EmailsPage = () => {
                     key={`committees ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="committee_session"
                   />
                 ))}
 
@@ -173,6 +183,7 @@ const EmailsPage = () => {
                     key={`bills ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="gov_statisctics"
                   />
                 ))}
 
@@ -181,6 +192,7 @@ const EmailsPage = () => {
                     key={`news ${index}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="news"
                   />
                 ))}
               </div>
@@ -196,6 +208,7 @@ const EmailsPage = () => {
                     key={`${post.id} ${post.title}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    node="google_news"
                   />
                 ))}
               </div>

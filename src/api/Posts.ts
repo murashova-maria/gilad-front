@@ -1,5 +1,5 @@
 import { axiosInstance } from "."
-import { IEmail } from "../store/posts"
+import { IEmail, IDeletePost } from "../store/posts"
 
 
 export const Posts = {
@@ -92,6 +92,13 @@ export const Posts = {
             headers: {
                 "Authorization": `Token ${token}`
             },
+        })
+    },
+    deletePost: async (payload: IDeletePost, token: string) => {
+        return await axiosInstance.delete(`gilad/${payload.node}/${payload.postId}/`,{
+            headers: {
+                "Authorization": `Token ${token}`
+            }
         })
     }
 }

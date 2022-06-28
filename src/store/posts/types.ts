@@ -1,6 +1,6 @@
 export interface IPost {
     title: string
-    [key: string]: any
+    [key: string]: any | null
 }
 
 export interface IEmail {
@@ -26,3 +26,11 @@ export interface IPostsState {
     newPosts: any[]
 
 }
+
+export interface IDeletePost {
+    node: node
+    postId: number
+}
+
+export type node = 
+"news" |  "govil" |  "agendas" |  "google_news" |  "committee_session" |  "plenum_session" |  "query" |  "bill" |  "press_release" |  "gov_statisctics" |  "govil_data" |  "govil_pdf" 

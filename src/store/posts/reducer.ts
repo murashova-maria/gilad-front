@@ -13,9 +13,10 @@ import {
   postsSetGovStatistics,
   postsAddNewPost,
   postsSetGovilData,
-  postsSetGovilPdf
+  postsSetGovilPdf,
+  successDeleted
 } from "./actions";
-import { IPostsState, IPost } from "./types";
+import { IPostsState, IPost, IDeletePost } from "./types";
 
 const initialState: IPostsState = {
   editorPost: null,
@@ -113,12 +114,23 @@ const posts = createReducer(initialState, {
       govilPdf: action.payload
     };
   },
-  [postsAddNewPost.type]: (state, action: { payload: IPost[] }) => {
+  [postsAddNewPost.type]: (state, action: {payload: any }) => {
+    const s = action.payload.st
+    const keyTyped = s as keyof typeof state;
+    const valueS: any  = state[keyTyped];
+    console.log(valueS, keyTyped, s, state)
+    let new_state:any = {
+      ...state
+    }
+    new_state[s] = [action.payload.data, ...valueS]
+    return new_state
+  },
+  [successDeleted.type]: (state, action: { payload: IPostsState}) => {
     return {
       ...state,
-      newPosts: [action.payload, ...state.newPosts]
-    };
-  },
+      ...action.payload
+    }
+  }
 });
 
 export default posts;

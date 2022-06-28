@@ -2,6 +2,7 @@ import { call, put, select, takeLatest } from "redux-saga/effects";
 import { handle } from "../../api";
 import { Posts } from "../../api/Posts";
 import { userSelector } from "../user/hooks";
+import { usePostsState } from "../posts/hooks";
 import {
   postsGetGovils,
   postsSetGovils,
@@ -27,9 +28,11 @@ import {
   postsSetGovilData,
   postsGetGovilPdf,
   postsSetGovilPdf,
-  postsSendEmail
+  postsSendEmail,
+  PostDelete, successDeleted
 } from "./actions";
-import { IEmail, IPost } from "./types";
+
+import { IEmail, IPost, IDeletePost, IPostsState, node } from "./types";
 
 export function* postsWatcher() {
   yield takeLatest(postsGetGovils, getGovils);
@@ -45,6 +48,7 @@ export function* postsWatcher() {
   yield takeLatest(postsGetGovilData, getGovilData);
   yield takeLatest(postsGetGovilPdf, getGovilPdf);
   yield takeLatest(postsSendEmail, sendEmail);
+  yield takeLatest(PostDelete, deletePost);
 }
 
 function* getGovils(): any {
@@ -212,6 +216,38 @@ function* sendEmail({payload}: {payload: IEmail}) {
       console.log(dataRes)
     }
     if (dataErr) {
+      console.log(dataErr);
+    }
+  }
+}
+
+function* deletePost({payload}: {payload: IDeletePost}){
+  const { token } = yield select(userSelector);
+  if (token) {
+    
+    const [dataRes, dataErr]: [any, any] = yield call(handle, Posts.deletePost(payload, token));
+    if (!dataErr){
+      const maper = {
+        "news":postsGetNews,
+        "govil":postsGetGovils,
+        "agendas":postsGetAgendas,
+        "google_news":postsGetGoogleNews,
+        "committee_session":postsGetCommittees,
+        "plenum_session":postsGetPlenums,
+        "query":postsGetQueries,
+        "bill":postsGetBills,
+        "press_release":postsGetReleases,
+        "gov_statisctics":postsGetGovStatistics,
+        "govil_data":postsGetGovilData,
+        "govil_pdf":postsGetGovilPdf
+      }
+      const keyTyped = payload.node as keyof typeof maper;
+      const value = maper[keyTyped];
+      // console.log(value)
+      yield put(value())
+      // yield put(successDeleted(payload))
+    }
+    else {
       console.log(dataErr);
     }
   }

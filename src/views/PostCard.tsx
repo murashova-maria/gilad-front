@@ -5,6 +5,7 @@ import { Button } from "../components/Button";
 import SourceLogo from "../assets/svg/card-src.svg";
 import { IPostCard } from "./types";
 import { useTranslation } from "react-i18next";
+import { usePostsActions, usePostsState } from "../store/posts/hooks"
 
 const Card = styled.div`
   width: 540px;
@@ -92,10 +93,15 @@ const Btns = styled.div`
 `;
 
 const PostCard = ({
-  onEmail,
-  item: { title, name, cat, tag, description, keywords, clients, text, source_name },
+  onEmail, node,
+  item: { id, title, name, cat, tag, description, keywords, clients, text, source_name },
 }: IPostCard) => {
   const { t } = useTranslation();
+  const {onDeletePost} = usePostsActions();
+  const deleteAction = () => {
+    console.log(id)
+    console.log(node)
+  }
   return (
     <Card>
       <Content>
@@ -126,7 +132,7 @@ const PostCard = ({
         )}
         <Btns>
           <Button type="email" onClick={onEmail} />
-          <Button type="del" />
+          <Button type="del" onClick={() => onDeletePost({node: node, postId: id})}/>
         </Btns>
       </Content>
       <Clients>
