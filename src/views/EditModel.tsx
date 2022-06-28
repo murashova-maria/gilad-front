@@ -309,7 +309,7 @@ const template9 = (post: IPost) => {
     : dash;
   const tempSubCategory = post.subcategory ? post.subcategory : dash;
   const tempStatus = post.status ? post.status : dash;
-  return `יום _______ ה – (תאריך) תעלה במליאת הכנסת הצעה לסדר היום בנושא ${tempTitle} של חה"כ ${tempFirstName} ${tempLastName}. <br>
+  return `ביום _______ ה – (תאריך) תעלה במליאת הכנסת הצעה לסדר היום בנושא ${tempTitle} של חה"כ ${tempFirstName} ${tempLastName}. <br>
   הצעה ${tempSubCategory},   ${tempStatus}
   `;
 };
