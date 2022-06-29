@@ -98,7 +98,7 @@ const EmailsPage = () => {
       ...releases,
     ]
    
-    return all.sort((prev, next) => prev.date_for_sorting - next.date_for_sorting)
+    return all.sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
   }, [
     govils,
     news,
