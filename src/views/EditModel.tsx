@@ -786,8 +786,11 @@ const EditModel = ({ post, onNext }: IProps) => {
 
   //Clients dropdown
   const clientsOptions = useMemo(() => {
-    let options = clients.map((c) => ({ item: c.name, value: c.id }))
-    let filtered = options.filter(option => post.clients.every((client: any) => client.id !== option.value))
+    let filtered: any = []
+    if (clients && clients.length > 0 && post.clients && post.clients.length > 0) {
+      filtered = clients.map((c) => ({ item: c.name, value: c.id }))
+      filtered = filtered.filter((option: any) => post.clients.every((client: any) => client.id !== option.value))
+    }
     return filtered
   }, [clients])
 
