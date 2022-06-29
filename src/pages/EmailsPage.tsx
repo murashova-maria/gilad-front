@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import bg from "../assets/img/bg.png";
-import { EmailEditor, PostsCard } from "../views";
+import { ClientsEditor, EmailEditor, PostsCard } from "../views";
 import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { IPost } from "../store/posts/types";
 import { colors } from "../assets/styles/colors";
 import { useClientsActions, useClientsState } from "../store/clients";
 import { MainButton } from "../components/MainButton";
+import KeywordEditor from "../views/KeywordEditor";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -61,30 +62,35 @@ const StyledTitle = styled(Title)`
 `;
 
 const Clients = styled.div`
-display: flex;
-justify-content: space-between;
-position: absolute;
-bottom: 0;
-left: 0;
-width:100%;
-background: red;
-padding: 30px 70px;
-background: #FFFFFF;
-box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);`
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: red;
+  padding: 30px 70px;
+  background: #ffffff;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);
+`;
 
 const ClientsTitle = styled.h2`
-font-family: 'Gilroy-B';
-font-size: 24px;
-line-height: 30px;
-& > span {font-size: 28px; color: ${colors.orange}; text-decoration: underline;}
-`
+  font-family: "Gilroy-B";
+  font-size: 24px;
+  line-height: 30px;
+  & > span {
+    font-size: 28px;
+    color: ${colors.orange};
+    text-decoration: underline;
+  }
+`;
 
 const ClientsBox = styled.div`
   display: flex;
   gap: 10px;
-`
+`;
 
-type ModalType = null | 'email-editor' | 'client-editor' | 'keyword-editor'
+type ModalType = null | "email-editor" | "client-editor" | "keyword-editor";
 
 const EmailsPage = () => {
   const { t } = useTranslation();
@@ -115,12 +121,12 @@ const EmailsPage = () => {
     onGetPosts();
   }, []);
 
-  const [modal, setModal] = useState<ModalType>(null)
+  const [modal, setModal] = useState<ModalType>(null);
 
   const onCloseModal = () => {
-    setModal(null)
-    onSetEditor(null)
-  }
+    setModal(null);
+    onSetEditor(null);
+  };
 
   const otherPosts: IPost[] = useMemo(() => {
     const all = [
@@ -171,12 +177,12 @@ const EmailsPage = () => {
   // Handle click on 'next' button
   const onNextPost = (post: IPost) => {
     if (post._sender !== "google_news") {
-      const index = otherPosts.indexOf(post)
-      onSetEditor(otherPosts[index + 1] ? otherPosts[index + 1] : null)
+      const index = otherPosts.indexOf(post);
+      onSetEditor(otherPosts[index + 1] ? otherPosts[index + 1] : null);
     }
     if (post._sender === "google_news") {
-      const index = allGoogleNews.indexOf(post)
-      onSetEditor(allGoogleNews[index + 1] ? otherPosts[index + 1] : null)
+      const index = allGoogleNews.indexOf(post);
+      onSetEditor(allGoogleNews[index + 1] ? otherPosts[index + 1] : null);
     }
   };
 
@@ -193,7 +199,7 @@ const EmailsPage = () => {
                     key={index}
                     item={post}
                     onEmail={() => onSetEditor(post)}
-                    onOpenModal={() => setModal('email-editor')}
+                    onOpenModal={() => setModal("email-editor")}
                   />
                 ))}
               </div>
@@ -209,7 +215,7 @@ const EmailsPage = () => {
                     key={index}
                     item={post}
                     onEmail={() => onSetEditor(post)}
-                    onOpenModal={() => setModal(null)}
+                    onOpenModal={() => setModal("email-editor")}
                   />
                 ))}
               </div>
@@ -217,17 +223,36 @@ const EmailsPage = () => {
           </div>
         </Content>
         <Clients>
-          <ClientsTitle>{t('clients_title1')} <span>{clients.length}</span> {t('clients_title2')}</ClientsTitle>
+          <ClientsTitle>
+            {t("clients_title1")} <span>{clients.length}</span>{" "}
+            {t("clients_title2")}
+          </ClientsTitle>
           <ClientsBox>
-          <MainButton color='blue' onClick={() => console.log('clicked')}>{t('clients_edit-keywords')}</MainButton>
-            <MainButton color='orange' onClick={() => console.log('clicked')}>{t('clients_edit-clients')}</MainButton>
+            <MainButton color="blue" onClick={() => setModal("keyword-editor")}>
+              {t("clients_edit-keywords")}
+            </MainButton>
+            <MainButton
+              color="orange"
+              onClick={() => setModal("client-editor")}
+            >
+              {t("clients_edit-clients")}
+            </MainButton>
           </ClientsBox>
         </Clients>
-
       </Emails>
-      {modal === 'email-editor' && (
+      {modal === "email-editor" && (
         <Modal onClose={onCloseModal}>
           {editorPost && <EmailEditor post={editorPost} onNext={onNextPost} />}
+        </Modal>
+      )}
+      {modal === "client-editor" && (
+        <Modal onClose={onCloseModal}>
+          <ClientsEditor />
+        </Modal>
+      )}
+      {modal === "keyword-editor" && (
+        <Modal onClose={onCloseModal}>
+          <KeywordEditor />
         </Modal>
       )}
     </>
