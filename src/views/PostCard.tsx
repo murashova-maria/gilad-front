@@ -23,7 +23,7 @@ const Content = styled.div`
 const Clients = styled.div`
   padding: 20px;
   flex-shrink: 0;
-  min-width: 135px;
+  width: 135px;
   border-inline-start: 1px solid #cccccc;
 `;
 
