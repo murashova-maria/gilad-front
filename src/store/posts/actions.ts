@@ -29,6 +29,10 @@ export const postsSetCommittees = createAction<IPost[]>('posts/setCommittees')
 export const postsGetPlenums = createAction('posts/getPlenums')
 export const postsSetPlenums = createAction<IPost[]>('posts/setPlenums')
 
+// Plenums
+export const postsGetPersons = createAction('posts/getPersons')
+export const postsSetPersons = createAction<IPost[]>('posts/setPersons')
+
 // Queries
 export const postsGetQueries = createAction('posts/getQueries')
 export const postsSetQueries = createAction<IPost[]>('posts/setQueries')

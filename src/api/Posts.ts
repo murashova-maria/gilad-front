@@ -45,6 +45,13 @@ export const Posts = {
             },
         })
     },
+    getPersons: async (token: string) => {
+        return await axiosInstance.get('gilad/person_to_position/', {
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
+    },
     getQueries: async (token: string) => {
         return await axiosInstance.get('gilad/query/', {
             headers: {

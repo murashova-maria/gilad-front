@@ -16,6 +16,8 @@ import {
   postsSetCommittees,
   postsGetPlenums,
   postsSetPlenums,
+  postsGetPersons,
+  postsSetPersons,
   postsGetQueries,
   postsSetQueries,
   postsGetBills,
@@ -41,6 +43,7 @@ export function* postsWatcher() {
   yield takeLatest(postsGetGoogleNews, getGoogleNews);
   yield takeLatest(postsGetCommittees, getCommittees);
   yield takeLatest(postsGetPlenums, getPlenums);
+  yield takeLatest(postsGetPersons, getPersons);
   yield takeLatest(postsGetQueries, getQueries);
   yield takeLatest(postsGetBills, getBills);
   yield takeLatest(postsGetReleases, getReleases);
@@ -127,6 +130,19 @@ function* getPlenums(): any {
         console.log(dataErr);
       }
     }
+}
+
+function* getPersons(): any {
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getPersons(token));
+    if (dataRes) {
+      yield put(postsSetPersons(dataRes));
+    }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
 }
 
 function* getQueries(): any {

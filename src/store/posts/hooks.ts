@@ -17,6 +17,7 @@ import {
   postsGetGovilPdf,
   postsSendEmail,
   PostDelete,
+  postsGetPersons,
 } from "./actions";
 import { IEmail, IPost, IPostsState, IDeletePost } from "./types";
 import { ws } from "../../api";
@@ -35,6 +36,7 @@ export const usePostsActions = () => {
     dispatch(postsGetGoogleNews());
     dispatch(postsGetCommittees());
     dispatch(postsGetPlenums());
+    dispatch(postsGetPersons())
     dispatch(postsGetQueries());
     dispatch(postsGetBills());
     dispatch(postsGetReleases());

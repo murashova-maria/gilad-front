@@ -17,6 +17,7 @@ export interface IPostsState {
     googleNews: IPost[]
     committees: IPost[]
     plenums: IPost[]
+    persons: IPost[]
     queries: IPost[]
     bills: IPost[]
     releases: IPost[]

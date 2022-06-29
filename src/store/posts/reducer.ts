@@ -6,6 +6,7 @@ import {
   postsSetGoogleNews,
   postsSetCommittees,
   postsSetPlenums,
+  postsSetPersons,
   postsSetQueries,
   postsSetBills,
   postsSetReleases,
@@ -26,6 +27,7 @@ const initialState: IPostsState = {
   googleNews: [],
   committees: [],
   plenums: [],
+  persons: [],
   queries: [],
   bills: [],
   releases: [],
@@ -76,6 +78,12 @@ const posts = createReducer(initialState, {
     return {
       ...state,
       plenums: action.payload
+    };
+  },
+  [postsSetPersons.type]: (state, action: { payload: IPost[] }) => {
+    return {
+      ...state,
+      persons: action.payload
     };
   },
   [postsSetQueries.type]: (state, action: { payload: IPost[] }) => {

@@ -113,7 +113,7 @@ const EmailsPage = () => {
     govilPdf,
     releases,newPosts
   ])
-  console.log(allPosts.length)
+
   return (
     <>
       <Emails>
@@ -122,113 +122,6 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {/* {newPosts.map((post, index) => (
-                  <PostsCard
-                    key={`bills ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="news"
-                  />
-                ))}
-
-                {govilData.map((post, index) => (
-                  <PostsCard
-                    key={`bills ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="govil_data"
-                  />
-                ))}
-
-                {queries.map((post, index) => (
-                  <PostsCard
-                    key={`queries ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="query"
-                  />
-                ))}
-
-                {govilPdf.map((post, index) => (
-                  <PostsCard
-                    key={`bills ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="govil_pdf"
-                  />
-                ))}
-
-                {plenums.map((post, index) => (
-                  <PostsCard
-                    key={`plenums ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="plenum_session"
-                  />
-                ))}
-
-                {agendas.map((post, index) => (
-                  <PostsCard
-                    key={`agendas ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="agendas"
-                  />
-                ))}
-
-                {bills.map((post, index) => (
-                  <PostsCard
-                    key={`bills ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="bill"
-                  />
-                ))}
-
-                {releases.map((post, index) => (
-                  <PostsCard
-                    key={`bills ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="press_release"
-                  />
-                ))}
-
-                {govils.map((post, index) => (
-                  <PostsCard
-                    key={`govils ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="govil"
-                  />
-                ))}
-
-                {committees.map((post, index) => (
-                  <PostsCard
-                    key={`committees ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="committee_session"
-                  />
-                ))}
-
-                {govStatistics.map((post, index) => (
-                  <PostsCard
-                    key={`bills ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="gov_statisctics"
-                  />
-                ))}
-
-                {news.map((post, index) => (
-                  <PostsCard
-                    key={`news ${index}`}
-                    item={post}
-                    onEmail={() => onSetEditor(post)}
-                    node="news"
-                  />
-                ))} */}
                 {
                   allPosts.map(( post, index) => (
                     <PostsCard
