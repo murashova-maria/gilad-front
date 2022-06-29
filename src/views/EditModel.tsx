@@ -714,7 +714,7 @@ const emailTitles = {
 
 interface IProps {
   post: IPost;
-  onNext: (post: IPost) => void
+  onNext: (post: IPost) => void;
 }
 
 const EditModel = ({ post, onNext }: IProps) => {
@@ -762,22 +762,21 @@ const EditModel = ({ post, onNext }: IProps) => {
     handleChangeTemplate(option);
   };
 
-
   //Handle send email (btn click)
-  const {onSendEmail} = usePostsActions()
+  const { onSendEmail } = usePostsActions();
   const handleSendEmail = () => {
-    let checkboxClients = clientsList.split(', ')
-    if (checkboxClients[0] === '') checkboxClients = []
+    let checkboxClients = clientsList.split(", ");
+    if (checkboxClients[0] === "") checkboxClients = [];
     //@ts-ignore
-    checkboxClients = checkboxClients.map(id => parseInt(id, 10))
+    checkboxClients = checkboxClients.map((id) => parseInt(id, 10));
 
     const emailData = {
       subject: emailTitle,
       html: text,
-      recipients_ids: [...checkboxClients, ...selectedClients]
-    }
-    onSendEmail(emailData)
-  }
+      recipients_ids: [...checkboxClients, ...selectedClients],
+    };
+    onSendEmail(emailData);
+  };
 
   //Fetch all clients list
   useEffect(() => {
@@ -853,6 +852,16 @@ const EditModel = ({ post, onNext }: IProps) => {
               ) : (
                 "null"
               );
+            }
+
+            // don't need to show date for sorting
+            if (post[key] && key === "date_for_sorting") {
+              return null;
+            }
+
+            // don't need to show endpoint name
+            if (post[key] && key[0] === "_") {
+              return null;
             }
 
             //Return cases when key is last_updated_date
@@ -1077,8 +1086,12 @@ const EditModel = ({ post, onNext }: IProps) => {
               isReversed={true}
             />
             <BtnBox>
-              <MainButton onClick={() => onNext(post)} color="blue">{t("emails_edit-next")}</MainButton>
-              <MainButton onClick={handleSendEmail} color="orange">{t("emails_edit-send")}</MainButton>
+              <MainButton onClick={() => onNext(post)} color="blue">
+                {t("emails_edit-next")}
+              </MainButton>
+              <MainButton onClick={handleSendEmail} color="orange">
+                {t("emails_edit-send")}
+              </MainButton>
             </BtnBox>
           </Selector>
         </div>
