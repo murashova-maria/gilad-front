@@ -7,7 +7,7 @@ import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
 import { useEffect, useMemo, useState } from "react";
-import { useClientsActions, useClientsState } from "../store/clients";
+import { useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
@@ -717,7 +717,7 @@ interface IProps {
   onNext: (post: IPost) => void;
 }
 
-const EditModel = ({ post, onNext }: IProps) => {
+const EmailEditor = ({ post, onNext }: IProps) => {
   const { t } = useTranslation();
   //Templates Dropdown
   const [template, setTemplate] = useState("");
@@ -727,7 +727,6 @@ const EditModel = ({ post, onNext }: IProps) => {
   const [text, setText] = useState("");
   // All Clients (dropdown)
   const { clients } = useClientsState();
-  const { onGetClients } = useClientsActions();
   const [clientsList, setClientsList] = useState("");
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
@@ -781,8 +780,8 @@ const EditModel = ({ post, onNext }: IProps) => {
   //Fetch all clients list
   useEffect(() => {
     selectAccordingTemplate();
-    onGetClients();
   }, []);
+
 
   //Clients dropdown
 
@@ -794,7 +793,7 @@ const EditModel = ({ post, onNext }: IProps) => {
       filtered = filtered.filter((option: any) => post.clients.every((client: any) => client.id !== option.value))
     }
     return filtered
-  }, [clients])
+  }, [clients, post])
 
   const keys = Object.keys(post);
   return (
@@ -1112,4 +1111,4 @@ const EditModel = ({ post, onNext }: IProps) => {
   );
 };
 
-export default EditModel;
+export default EmailEditor;

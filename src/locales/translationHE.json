@@ -115,11 +115,19 @@
 
     "btn_email": "מייל",
     "btn_edit": "עריכה",
-    "btn_delete": "מחיקה"
+    "btn_delete": "מחיקה",
+
+
+    "clients_title1": "You have",
+    "clients_title2": "clients now",
+    "clients_edit-clients": "Edit cleints",
+    "clients_edit-keywords": "Edit keywords",
 
 
 
-  
+    "123": "123"
+
+
   
   
   }

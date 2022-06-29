@@ -1,3 +1,3 @@
 export {default as PostsCard} from './PostCard'
-export {default as EditModel} from './EditModel'
+export {default as EmailEditor} from './EmailEditor'
 
