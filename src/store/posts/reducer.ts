@@ -135,16 +135,11 @@ const posts = createReducer(initialState, {
       govilPdf: newPosts
     };
   },
-  [postsAddNewPost.type]: (state, action: {payload: any }) => {
-    const s = action.payload.st
-    const keyTyped = s as keyof typeof state;
-    const valueS: any  = state[keyTyped];
-    console.log(valueS, keyTyped, s, state)
-    let new_state:any = {
-      ...state
-    }
-    new_state[s] = [action.payload.data, ...valueS]
-    return new_state
+  [postsAddNewPost.type]: (state, action: {payload: IPost }) => {
+   return {
+    ...state,
+    newPosts: [...state.newPosts, action.payload]
+   }
   },
   [successDeleted.type]: (state, action: { payload: IPostsState}) => {
     return {
