@@ -789,7 +789,7 @@ const EditModel = ({ post, onNext }: IProps) => {
   
   const clientsOptions = useMemo(() => {
     let filtered: any = []
-    if (clients && clients.length > 0 && post.clients && post.clients.length > 0) {
+    if (clients && clients.length > 0 && post.clients) {
       filtered = clients.map((c) => ({ item: c.name, value: c.id }))
       filtered = filtered.filter((option: any) => post.clients.every((client: any) => client.id !== option.value))
     }
