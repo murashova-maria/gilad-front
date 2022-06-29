@@ -84,7 +84,7 @@ const ClientsBox = styled.div`
   gap: 10px;
 `
 
-type ModalType = null | 'email-editor' | 'client'
+type ModalType = null | 'email-editor' | 'client-editor' | 'keyword-editor'
 
 const EmailsPage = () => {
   const { t } = useTranslation();
@@ -114,6 +114,13 @@ const EmailsPage = () => {
     onWatchForPosts();
     onGetPosts();
   }, []);
+
+  const [modal, setModal] = useState<ModalType>(null)
+
+  const onCloseModal = () => {
+    setModal(null)
+    onSetEditor(null)
+  }
 
   const otherPosts: IPost[] = useMemo(() => {
     const all = [
@@ -186,6 +193,7 @@ const EmailsPage = () => {
                     key={index}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    onOpenModal={() => setModal('email-editor')}
                   />
                 ))}
               </div>
@@ -201,6 +209,7 @@ const EmailsPage = () => {
                     key={index}
                     item={post}
                     onEmail={() => onSetEditor(post)}
+                    onOpenModal={() => setModal(null)}
                   />
                 ))}
               </div>
@@ -216,9 +225,9 @@ const EmailsPage = () => {
         </Clients>
 
       </Emails>
-      {editorPost && (
-        <Modal onClose={() => onSetEditor(null)}>
-          <EmailEditor post={editorPost} onNext={onNextPost} />
+      {modal === 'email-editor' && (
+        <Modal onClose={onCloseModal}>
+          {editorPost && <EmailEditor post={editorPost} onNext={onNextPost} />}
         </Modal>
       )}
     </>

@@ -94,10 +94,16 @@ const Btns = styled.div`
 
 const PostCard = ({
   onEmail,
+  onOpenModal,
   item: { id, title, name, cat, tag, description, keywords, clients, text, source_name, _sender },
 }: IPostCard) => {
   const { t } = useTranslation();
   const {onDeletePost} = usePostsActions();
+
+  const handleOnEmail = () => {
+    onEmail()
+    onOpenModal()
+  }
 
   return (
     <Card>
@@ -128,7 +134,7 @@ const PostCard = ({
           </>
         )}
         <Btns>
-          <Button type="email" onClick={onEmail} />
+          <Button type="email" onClick={handleOnEmail} />
           <Button type="del" onClick={() => onDeletePost({node: _sender, postId: id})}/>
         </Btns>
       </Content>
