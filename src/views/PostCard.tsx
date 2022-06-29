@@ -93,15 +93,12 @@ const Btns = styled.div`
 `;
 
 const PostCard = ({
-  onEmail, node,
-  item: { id, title, name, cat, tag, description, keywords, clients, text, source_name },
+  onEmail,
+  item: { id, title, name, cat, tag, description, keywords, clients, text, source_name, _sender },
 }: IPostCard) => {
   const { t } = useTranslation();
   const {onDeletePost} = usePostsActions();
-  const deleteAction = () => {
-    console.log(id)
-    console.log(node)
-  }
+
   return (
     <Card>
       <Content>
@@ -132,7 +129,7 @@ const PostCard = ({
         )}
         <Btns>
           <Button type="email" onClick={onEmail} />
-          <Button type="del" onClick={() => onDeletePost({node: node, postId: id})}/>
+          <Button type="del" onClick={() => onDeletePost({node: _sender, postId: id})}/>
         </Btns>
       </Content>
       <Clients>

@@ -128,7 +128,6 @@ const EmailsPage = () => {
                       key={`news ${index}`}
                       item={post}
                       onEmail={() => onSetEditor(post)}
-                      node={post.sender}
                     />
                   ))
                 }
@@ -145,7 +144,6 @@ const EmailsPage = () => {
                     key={`${post.id} ${post.title}`}
                     item={post}
                     onEmail={() => onSetEditor(post)}
-                    node="google_news"
                   />
                 ))}
               </div>
