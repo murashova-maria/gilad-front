@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import bg from "../assets/img/bg.png";
-import { EditModel, PostsCard } from "../views";
+import { EmailEditor, PostsCard } from "../views";
 import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
@@ -68,7 +68,6 @@ bottom: 0;
 left: 0;
 width:100%;
 background: red;
-z-index: 1000;
 padding: 30px 70px;
 background: #FFFFFF;
 box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);`
@@ -85,6 +84,7 @@ const ClientsBox = styled.div`
   gap: 10px;
 `
 
+type ModalType = null | 'email-editor' | 'client'
 
 const EmailsPage = () => {
   const { t } = useTranslation();
@@ -218,7 +218,7 @@ const EmailsPage = () => {
       </Emails>
       {editorPost && (
         <Modal onClose={() => onSetEditor(null)}>
-          <EditModel post={editorPost} onNext={onNextPost} />
+          <EmailEditor post={editorPost} onNext={onNextPost} />
         </Modal>
       )}
     </>

@@ -717,7 +717,7 @@ interface IProps {
   onNext: (post: IPost) => void;
 }
 
-const EditModel = ({ post, onNext }: IProps) => {
+const EmailEditor = ({ post, onNext }: IProps) => {
   const { t } = useTranslation();
   //Templates Dropdown
   const [template, setTemplate] = useState("");
@@ -782,13 +782,13 @@ const EditModel = ({ post, onNext }: IProps) => {
     selectAccordingTemplate();
   }, []);
 
-  
+
   //Clients dropdown
   const clientsOptions = useMemo(() => {
     let filtered = []
     filtered = clients.map((c) => ({ item: c.name, value: c.id }))
     //Remove post's clients from all clients list, collission avoidance
-    if (post.clients.length > 0 && clients.length > 0) {
+    if (post.clients.length > 0 && clients && clients.length > 0) {
       filtered = filtered.filter(option => post.clients.every((client: any) => client.id !== option.value))
     }
     return filtered
@@ -1110,4 +1110,4 @@ const EditModel = ({ post, onNext }: IProps) => {
   );
 };
 
-export default EditModel;
+export default EmailEditor;
