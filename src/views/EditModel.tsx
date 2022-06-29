@@ -785,6 +785,8 @@ const EditModel = ({ post, onNext }: IProps) => {
   }, []);
 
   //Clients dropdown
+
+  
   const clientsOptions = useMemo(() => {
     let filtered: any = []
     if (clients && clients.length > 0 && post.clients && post.clients.length > 0) {
