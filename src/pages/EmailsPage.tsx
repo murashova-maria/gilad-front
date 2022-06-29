@@ -6,6 +6,8 @@ import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePostsActions, usePostsState } from "../store/posts/hooks";
+import { useMemo } from 'react'
+import { IPost } from '../store/posts/types'
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -80,6 +82,38 @@ const EmailsPage = () => {
     onGetPosts();
   }, []);
 
+  const allPosts: IPost[] = useMemo(() => {
+    let all = [
+      ...govils,
+      ...news,
+      ...agendas,
+      ...googleNews,
+      ...committees,
+      ...plenums,
+      ...queries,
+      ...bills,
+      ...govStatistics,
+      ...govilData,
+      ...govilPdf,
+      ...releases,
+    ]
+   
+    return all.sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
+  }, [
+    govils,
+    news,
+    agendas,
+    googleNews,
+    committees,
+    plenums,
+    queries,
+    bills,
+    govStatistics,
+    govilData,
+    govilPdf,
+    releases,newPosts
+  ])
+  console.log(allPosts.length)
   return (
     <>
       <Emails>
@@ -88,7 +122,7 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {newPosts.map((post, index) => (
+                {/* {newPosts.map((post, index) => (
                   <PostsCard
                     key={`bills ${index}`}
                     item={post}
@@ -194,7 +228,17 @@ const EmailsPage = () => {
                     onEmail={() => onSetEditor(post)}
                     node="news"
                   />
-                ))}
+                ))} */}
+                {
+                  allPosts.map(( post, index) => (
+                    <PostsCard
+                      key={`news ${index}`}
+                      item={post}
+                      onEmail={() => onSetEditor(post)}
+                      node={post.sender}
+                    />
+                  ))
+                }
               </div>
             </PostsContainer>
           </div>
