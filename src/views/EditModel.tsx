@@ -6,7 +6,7 @@ import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useClientsActions, useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
@@ -784,6 +784,13 @@ const EditModel = ({ post, onNext }: IProps) => {
     onGetClients();
   }, []);
 
+  //Clients dropdown
+  const clientsOptions = useMemo(() => {
+    let options = clients.map((c) => ({ item: c.name, value: c.id }))
+    let filtered = options.filter(option => post.clients.every((client: any) => client.id !== option.value))
+    return filtered
+  }, [clients])
+
   const keys = Object.keys(post);
   return (
     <StyledModal>
@@ -1081,7 +1088,7 @@ const EditModel = ({ post, onNext }: IProps) => {
               isMultiSelect={true}
               onSelect={(e) => setClientsList(e)}
               value={clientsList}
-              options={clients.map((c) => ({ item: c.name, value: c.id }))}
+              options={clientsOptions}
               label={t("emails_clients-label")}
               isReversed={true}
             />
