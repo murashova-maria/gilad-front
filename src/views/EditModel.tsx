@@ -714,9 +714,10 @@ const emailTitles = {
 
 interface IProps {
   post: IPost;
+  onNext: (post: IPost) => void
 }
 
-const EditModel = ({ post }: IProps) => {
+const EditModel = ({ post, onNext }: IProps) => {
   const { t } = useTranslation();
   //Templates Dropdown
   const [template, setTemplate] = useState("");
@@ -1076,8 +1077,8 @@ const EditModel = ({ post }: IProps) => {
               isReversed={true}
             />
             <BtnBox>
-              <MainButton onClick={() => console.log('next')} color="blue">{t("emails_edit-next")}</MainButton>
-              <MainButton onClick={() => handleSendEmail()} color="orange">{t("emails_edit-send")}</MainButton>
+              <MainButton onClick={() => onNext(post)} color="blue">{t("emails_edit-next")}</MainButton>
+              <MainButton onClick={handleSendEmail} color="orange">{t("emails_edit-send")}</MainButton>
             </BtnBox>
           </Selector>
         </div>

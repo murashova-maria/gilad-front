@@ -95,7 +95,7 @@ export const Posts = {
         })
     },
     sendEmail: async (params: IEmail,token: string) => {
-        return await axiosInstance.post('api/send_email/',params,{
+        return await axiosInstance.post('send_email/',params,{
             headers: {
                 "Authorization": `Token ${token}`
             },

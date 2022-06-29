@@ -24,7 +24,7 @@ export interface IPostsState {
     govStatistics: IPost[]
     govilData: IPost[]
     govilPdf: IPost[]
-    newPosts: any[]
+    newPosts: IPost[]
 
 }
 

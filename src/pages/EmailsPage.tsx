@@ -6,8 +6,8 @@ import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePostsActions, usePostsState } from "../store/posts/hooks";
-import { useMemo } from 'react'
-import { IPost } from '../store/posts/types'
+import { useMemo } from "react";
+import { IPost } from "../store/posts/types";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -82,8 +82,9 @@ const EmailsPage = () => {
     onGetPosts();
   }, []);
 
-  const allPosts: IPost[] = useMemo(() => {
-    let all = [
+  const otherPosts: IPost[] = useMemo(() => {
+    const all = [
+      ...newPosts.filter((post) => post._sender !== "google_news"),
       ...govils,
       ...news,
       ...agendas,
@@ -96,9 +97,11 @@ const EmailsPage = () => {
       ...govilData,
       ...govilPdf,
       ...releases,
-    ]
-   
-    return all.sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
+    ];
+
+    return all.sort(
+      (prev, next) => next.date_for_sorting - prev.date_for_sorting
+    );
   }, [
     govils,
     news,
@@ -111,8 +114,31 @@ const EmailsPage = () => {
     govStatistics,
     govilData,
     govilPdf,
-    releases,newPosts
-  ])
+    releases,
+    newPosts,
+  ]);
+
+  const allGoogleNews: IPost[] = useMemo(() => {
+    const all = [
+      ...newPosts.filter((post) => post._sender === "google_news"),
+      ...googleNews,
+    ];
+    return all.sort(
+      (prev, next) => next.date_for_sorting - prev.date_for_sorting
+    );
+  }, [googleNews, newPosts]);
+
+  // Handle click on 'next' button
+  const onNextPost = (post: IPost) => {
+    if (post._sender !== "google_news") {
+      const index = otherPosts.indexOf(post)
+      onSetEditor(otherPosts[index + 1] ? otherPosts[index + 1] : null)
+    }
+    if (post._sender === "google_news") {
+      const index = allGoogleNews.indexOf(post)
+      onSetEditor(allGoogleNews[index + 1] ? otherPosts[index + 1] : null)
+    }
+  };
 
   return (
     <>
@@ -122,15 +148,13 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {
-                  allPosts.map(( post, index) => (
-                    <PostsCard
-                      key={`news ${index}`}
-                      item={post}
-                      onEmail={() => onSetEditor(post)}
-                    />
-                  ))
-                }
+                {otherPosts.map((post, index) => (
+                  <PostsCard
+                    key={index}
+                    item={post}
+                    onEmail={() => onSetEditor(post)}
+                  />
+                ))}
               </div>
             </PostsContainer>
           </div>
@@ -139,9 +163,9 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title1")}</StyledTitle>
             <PostsContainer>
               <div>
-                {googleNews.map((post) => (
+                {allGoogleNews.map((post, index) => (
                   <PostsCard
-                    key={`${post.id} ${post.title}`}
+                    key={index}
                     item={post}
                     onEmail={() => onSetEditor(post)}
                   />
@@ -153,7 +177,7 @@ const EmailsPage = () => {
       </Emails>
       {editorPost && (
         <Modal onClose={() => onSetEditor(null)}>
-          <EditModel post={editorPost} />
+          <EditModel post={editorPost} onNext={onNextPost} />
         </Modal>
       )}
     </>

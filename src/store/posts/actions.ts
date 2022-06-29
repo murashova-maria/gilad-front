@@ -51,15 +51,15 @@ export const postsSetGovStatistics = createAction<IPost[]>('posts/setGovStatisti
 
 //Govil Data
 export const postsGetGovilData = createAction('posts/getGovilData')
-export const postsSetGovilData = createAction<any[]>('posts/setGovilData')
+export const postsSetGovilData = createAction<IPost[]>('posts/setGovilData')
 
 //Govil PDF
 export const postsGetGovilPdf = createAction('posts/getGovilPdf')
-export const postsSetGovilPdf = createAction<any[]>('posts/setGovilPdf')
+export const postsSetGovilPdf = createAction<IPost[]>('posts/setGovilPdf')
 
 
 //New Posts (Web Socket)
-export const postsAddNewPost = createAction<any>('posts/addNewPost')
+export const postsAddNewPost = createAction<IPost>('posts/addNewPost')
 
 
 //Send modified email
