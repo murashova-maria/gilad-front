@@ -7,7 +7,7 @@ import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
 import { useEffect, useMemo, useState } from "react";
-import { useClientsActions, useClientsState } from "../store/clients";
+import { useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
@@ -727,7 +727,6 @@ const EditModel = ({ post, onNext }: IProps) => {
   const [text, setText] = useState("");
   // All Clients (dropdown)
   const { clients } = useClientsState();
-  const { onGetClients } = useClientsActions();
   const [clientsList, setClientsList] = useState("");
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
@@ -781,15 +780,19 @@ const EditModel = ({ post, onNext }: IProps) => {
   //Fetch all clients list
   useEffect(() => {
     selectAccordingTemplate();
-    onGetClients();
   }, []);
 
+  
   //Clients dropdown
   const clientsOptions = useMemo(() => {
-    let options = clients.map((c) => ({ item: c.name, value: c.id }))
-    let filtered = options.filter(option => post.clients.every((client: any) => client.id !== option.value))
+    let filtered = []
+    filtered = clients.map((c) => ({ item: c.name, value: c.id }))
+    //Remove post's clients from all clients list, collission avoidance
+    if (post.clients.length > 0 && clients.length > 0) {
+      filtered = filtered.filter(option => post.clients.every((client: any) => client.id !== option.value))
+    }
     return filtered
-  }, [clients])
+  }, [clients, post])
 
   const keys = Object.keys(post);
   return (

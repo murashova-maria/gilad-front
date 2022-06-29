@@ -8,6 +8,9 @@ import { useTranslation } from "react-i18next";
 import { usePostsActions, usePostsState } from "../store/posts/hooks";
 import { useMemo } from "react";
 import { IPost } from "../store/posts/types";
+import { colors } from "../assets/styles/colors";
+import { useClientsActions, useClientsState } from "../store/clients";
+import { MainButton } from "../components/MainButton";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -42,6 +45,7 @@ const Content = styled.div`
 
 const PostsContainer = styled.div`
   padding: 20px;
+  min-width: 600px;
   background: #eeeeee;
   border: 1px solid #c2fffd;
   box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
@@ -55,6 +59,32 @@ const PostsContainer = styled.div`
 const StyledTitle = styled(Title)`
   margin-bottom: 10px;
 `;
+
+const Clients = styled.div`
+display: flex;
+justify-content: space-between;
+position: absolute;
+bottom: 0;
+left: 0;
+width:100%;
+background: red;
+z-index: 1000;
+padding: 30px 70px;
+background: #FFFFFF;
+box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);`
+
+const ClientsTitle = styled.h2`
+font-family: 'Gilroy-B';
+font-size: 24px;
+line-height: 30px;
+& > span {font-size: 28px; color: ${colors.orange}; text-decoration: underline;}
+`
+
+const ClientsBox = styled.div`
+  display: flex;
+  gap: 10px;
+`
+
 
 const EmailsPage = () => {
   const { t } = useTranslation();
@@ -74,10 +104,13 @@ const EmailsPage = () => {
     releases,
     newPosts,
   } = usePostsState();
+  const { clients } = useClientsState();
+  const { onGetClients } = useClientsActions();
   // Fetch posts
   const { onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor } =
     usePostsActions();
   useEffect(() => {
+    onGetClients();
     onWatchForPosts();
     onGetPosts();
   }, []);
@@ -174,6 +207,14 @@ const EmailsPage = () => {
             </PostsContainer>
           </div>
         </Content>
+        <Clients>
+          <ClientsTitle>{t('clients_title1')} <span>{clients.length}</span> {t('clients_title2')}</ClientsTitle>
+          <ClientsBox>
+          <MainButton color='blue' onClick={() => console.log('clicked')}>{t('clients_edit-keywords')}</MainButton>
+            <MainButton color='orange' onClick={() => console.log('clicked')}>{t('clients_edit-clients')}</MainButton>
+          </ClientsBox>
+        </Clients>
+
       </Emails>
       {editorPost && (
         <Modal onClose={() => onSetEditor(null)}>
