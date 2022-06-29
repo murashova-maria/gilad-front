@@ -45,81 +45,94 @@ const posts = createReducer(initialState, {
     };
   },
   [postsSetGovils.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "govil"}))
     return {
       ...state,
-      govils: action.payload,
+      govils: newPosts
     };
   },
   [postsSetNews.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "news"}))
     return {
       ...state,
-      news: action.payload,
+      news: newPosts
     };
   },
   [postsSetAgendas.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "agendas"}))
     return {
       ...state,
-      agendas: action.payload,
+      agendas: newPosts
     };
   },
   [postsSetGoogleNews.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "google_news"}))
     return {
       ...state,
-      googleNews: action.payload
+      googleNews: newPosts
     };
   },
   [postsSetCommittees.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "committee_session"}))
     return {
       ...state,
-      committees: action.payload
+      committees: newPosts
     };
   },
   [postsSetPlenums.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "plenum_session"}))
     return {
       ...state,
-      plenums: action.payload
+      plenums: newPosts
     };
   },
   [postsSetPersons.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "person_to_position"}))
     return {
       ...state,
-      persons: action.payload
+      persons: newPosts
     };
   },
   [postsSetQueries.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "query"}))
     return {
       ...state,
-      queries: action.payload
+      queries: newPosts
     };
   },
   [postsSetBills.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "bill"}))
     return {
       ...state,
-      bills: action.payload
+      bills: newPosts
     };
   },
   [postsSetReleases.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "press_release"}))
     return {
       ...state,
-      releases: action.payload
+      releases: newPosts
     };
   },
   [postsSetGovStatistics.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "gov_statisctics"}))
     return {
       ...state,
-      govStatistics: action.payload
+      govStatistics: newPosts
     };
   },
   [postsSetGovilData.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "govil_data"}))
     return {
       ...state,
-      govilData: action.payload
+      govilData: newPosts
     };
   },
   [postsSetGovilPdf.type]: (state, action: { payload: IPost[] }) => {
+    const newPosts = action.payload.map(post => ({...post, _sender: "govil_pdf"}))
     return {
       ...state,
-      govilPdf: action.payload
+      govilPdf: newPosts
     };
   },
   [postsAddNewPost.type]: (state, action: {payload: any }) => {
