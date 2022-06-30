@@ -12,6 +12,7 @@ import { colors } from "../assets/styles/colors";
 import { useClientsActions, useClientsState } from "../store/clients";
 import { MainButton } from "../components/MainButton";
 import KeywordEditor from "../views/KeywordEditor";
+import { useKeywordsActions } from "../store/keywords/hooks";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -112,10 +113,12 @@ const EmailsPage = () => {
   // Fetch posts
   const { onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor } =
     usePostsActions();
+    const { onGetKeywords } = useKeywordsActions()
   useEffect(() => {
-    onGetClients();
-   // onWatchForPosts();
     onGetPosts();
+   // onWatchForPosts();
+    onGetClients();
+    onGetKeywords();
   }, []);
 
   const [modal, setModal] = useState<ModalType>(null);
