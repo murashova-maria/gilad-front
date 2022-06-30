@@ -52,7 +52,7 @@ export const usePostsActions = () => {
     })
     ws.addEventListener('message', (e: any) => {
       const data = JSON.parse(e.data)
-      //console.log('new post', data.data)
+      console.log('new post', data.data)
       if (data.data) {
          dispatch(postsAddNewPost({...data.data, _sender: data.sender}))
       }
@@ -64,7 +64,7 @@ export const usePostsActions = () => {
       console.log('web socket closed ', e)
       ws.addEventListener('message', (e: any) => {
         const data = JSON.parse(e.data)
-        //console.log('new post', data.data)
+        console.log('new post', data.data)
         if (data.data) {
            dispatch(postsAddNewPost({...data.data, _sender: data.sender}))
         }

@@ -143,7 +143,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
   };
 
   const handleEditClient = () => {
-    if (typeof currentClient === 'number') {
+    if (typeof currentClient === 'number' && emails.length > 0) {
       const newData = {
         id: currentClient,
         name,

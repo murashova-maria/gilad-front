@@ -16,6 +16,7 @@ import KeywordEditor from "../views/KeywordEditor";
 const Emails = styled.div`
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   background-image: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
@@ -37,7 +38,8 @@ const Emails = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  padding: 70px 20px 120px;
+  flex-grow: 1;
+  padding: 70px 20px 50px;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
@@ -64,11 +66,6 @@ const StyledTitle = styled(Title)`
 const Clients = styled.div`
   display: flex;
   justify-content: space-between;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: red;
   padding: 30px 70px;
   background: #ffffff;
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);
