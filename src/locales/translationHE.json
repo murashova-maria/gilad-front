@@ -85,6 +85,7 @@
     "article_by_line": "שם הכתבה",
     "datetime_knesset": "תאריך פרסום בכנסת",
     "pulished_page_content": "תוכן הכתבה",
+    "text": "תוכן",
 
 
     "/// Front-End ///": "/// Front-end below ///",
@@ -118,31 +119,31 @@
     "btn_delete": "מחיקה",
 
 
-    "clients_title1": "You have",
-    "clients_title2": "clients now",
-    "clients_edit-clients": "Edit cleints",
-    "clients_edit-keywords": "Edit keywords",
+    "clients_title1": "יש לך ",
+    "clients_title2": "לקוחות עכשיו",
+    "clients_edit-clients": "עריכת לקוחות",
+    "clients_edit-keywords": "עריכת מילות מפתח",
 
 
-    "clients-editor_title1": "Edit clients",
-    "clients-editor_name-plhr": "Client Name",
-    "clients-editor_name-label": "Add new client",
-    "clients-editor_email-plhr": "Add emails",
-    "clients-editor_email-label": "Client mails",
-    "clients-editor_search-label": "Search client",
-    "clients-editor_save": "Save",
-    "clients-editor_close": "Close",
+    "clients-editor_title1": "עריכת לקוחות",
+    "clients-editor_name-plhr": "שם הלקוח",
+    "clients-editor_name-label": "הוסף לקוח",
+    "clients-editor_email-plhr": "הוסף לקוח",
+    "clients-editor_email-label": "דוא״ל",
+    "clients-editor_search-label": "חישוב",
+    "clients-editor_save": "שמירה",
+    "clients-editor_close": "סגירה",
     "clients-editor_title2": "Clients test",
 
-    "keyword-editor_title1": "Edit Keywords",
-    "keyword-editor_keyword-plhr": "Keyword",
-    "keyword-editor_keyword-label": "Keyword",
-    "keyword-editor_clients-plhr": "Clients",
-    "keyword-editor_clients-label": "Clients",
-    "keyword-editor_title2": "Keywords",
-    "keyword-editor_search": "Search",
-    "keyword-editor_save": "Save",
-    "keyword-editor_close": "Close"
+    "keyword-editor_title1": "עריכת מילות מפתח",
+    "keyword-editor_keyword-plhr": "מילות מפתח",
+    "keyword-editor_keyword-label": "מילת מפתח",
+    "keyword-editor_clients-plhr": "לקוחות",
+    "keyword-editor_clients-label": "לקוחות",
+    "keyword-editor_title2": "מילות מפתח",
+    "keyword-editor_search": "חישוב",
+    "keyword-editor_save": "שמירה",
+    "keyword-editor_close": "סגירה"
 
 
 
