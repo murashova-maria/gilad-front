@@ -10,9 +10,10 @@ import {
 } from "../components/CreateableDropdown/types";
 import { MainButton } from "../components/MainButton";
 import { TextInput } from "../components/TextInput";
+import { IClient, useClientsActions, useClientsState } from "../store/clients";
 import { IClientsEditor } from "./types";
 
-const Editor = styled.div`
+const Editor = styled.div<{ isLoading: boolean }>`
   border-radius: 20px;
   width: 80%;
   max-width: 1200px;
@@ -20,6 +21,7 @@ const Editor = styled.div`
   border: 1px solid #c2fffd;
   box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
   overflow: hidden;
+  ${({ isLoading }) => isLoading && "& * {cursor: wait !important;"}
 `;
 
 const Content = styled.div`
@@ -71,7 +73,7 @@ const Clients = styled.div`
   gap: 10px;
 `;
 
-const Client = styled.p`
+const Client = styled.p<{ isActive: boolean }>`
   font-family: "Gilroy-R";
   font-size: 16px;
   line-height: 19px;
@@ -79,6 +81,8 @@ const Client = styled.p`
   color: ${colors.graphite_4};
   cursor: pointer;
   transition: opacity 250ms linear;
+  ${({ isActive }) =>
+    isActive && `color: ${colors.orange}; &:hover { opacity: 1 !important;}`}
   &:hover {
     opacity: 0.65;
   }
@@ -99,73 +103,106 @@ const StyledAction = styled(MainButton)`
   width: 150px;
 `;
 
-const ClientsEditor = ({onClose}: IClientsEditor) => {
-  const {t} = useTranslation()
+const ClientsEditor = ({ onClose }: IClientsEditor) => {
+  //Global State
+  const { t } = useTranslation();
+  const { clients, isLoading } = useClientsState();
+  const { onAddClient } = useClientsActions();
+  //test clients
+  const cl = [
+    { id: 1, name: "Edward", email: "Edvaa@mail.ru" },
+    { id: 2, name: "Edik", email: "Edvaa@mail.ru" },
+    { id: 3, name: "Elon Musk", email: "Edvaa@mail.ru" },
+    { id: 4, name: "Rihanna", email: "Edvaa@mail.ru" },
+  ];
 
-
-  //#ClientName Input
+  const [currentClient, setCurrentClient] = useState<number | null>(null);
   const [name, setName] = useState<string>("");
-  //#Emails Input
   const [emails, setEmails] = useState<CreatableEditableSelectOption[]>([]);
-  //Client Search Input
   const [search, setSearch] = useState<string>("");
 
+  const handleAddClient = () => {
+    setCurrentClient(null);
+    const client = {
+      name,
+      team: "",
+      email: emails.map((e) => e.value),
+    };
+    //@ts-ignore   we don't pass id for new client
+    onAddClient(client);
+  };
+
+  const handleSelectClient = (id: number) => {
+    console.log(id);
+    const client = clients.find((c) => c.id === id);
+    let emails = client?.email ? client.email.map(e => ({value: e, label: e})) : []
+    setName(client?.name ? client.name : "");
+    setEmails(emails)
+    setCurrentClient(id);
+  };
+
   return (
-    <Editor>
+    <Editor isLoading={isLoading}>
       <Content>
-        <Title>{t('clients-editor_title1')}</Title>
+        <Title>{t("clients-editor_title1")}</Title>
         <ClientsBox>
           <StyledInput
             value={name}
             onChange={(val) => setName(val)}
-            placeholder={t('clients-editor_name-plhr')}
-            label={t('clients-editor_name-label')}
+            placeholder={t("clients-editor_name-plhr")}
+            label={t("clients-editor_name-label")}
           />
           <StyledCreateableDropdown
             options={[]}
             value={emails}
             onChange={setEmails}
-            placeholder={t('clients-editor_email-plhr')}
-            label={t('clients-editor_email-label')}
+            placeholder={t("clients-editor_email-plhr")}
+            label={t("clients-editor_email-label")}
           />
-          <StyledBtn onClick={() => console.log("clicked")} />
+          <StyledBtn onClick={handleAddClient} disabled={isLoading} />
         </ClientsBox>
-        <Title>{t('clients-editor_title2')}</Title>
+        <Title>{t("clients-editor_title2")}</Title>
         <StyledInput
           value={search}
           onChange={(val) => setSearch(val)}
-          label={t('clients-editor_search-label')}
+          label={t("clients-editor_search-label")}
           searchBtn={true}
         />
         <Clients>
-          <Client>Client Name 1</Client>
-          <Client>Client Name 2</Client>
-          <Client>Client Name 3</Client>
-          <Client>Client Name 4</Client>
-          <Client>Client Name 5</Client>
-          <Client>Client Name 6</Client>
-          <Client>Client Name 7</Client>
-          <Client>Client Name 8</Client>
-          <Client>Client Name 9</Client>
-          <Client>Client Name 10</Client>
-          <Client>Client Name 1</Client>
-          <Client>Client Name 2</Client>
-          <Client>Client Name 3</Client>
-          <Client>Client Name 4</Client>
-          <Client>Client Name 5</Client>
-          <Client>Client Name 6</Client>
-          <Client>Client Name 7</Client>
-          <Client>Client Name 8</Client>
-          <Client>Client Name 9</Client>
-          <Client>Client Name 10</Client>
+          {search &&
+            clients
+              .filter((c) => {
+                const regex = new RegExp(search, "i");
+                return regex.test(c.name);
+              })
+              .map((c) => (
+                <Client
+                  isActive={c.id === currentClient}
+                  onClick={() => handleSelectClient(c.id)}
+                  key={c.id}
+                >
+                  {c.name}
+                </Client>
+              ))}
+
+          {!search &&
+            clients.map((c) => (
+              <Client
+                isActive={c.id === currentClient}
+                onClick={() => handleSelectClient(c.id)}
+                key={c.id}
+              >
+                {c.name}
+              </Client>
+            ))}
         </Clients>
       </Content>
       <Buttons>
         <StyledAction onClick={() => console.log("save")} color="orange">
-          {t('clients-editor_save')}
+          {t("clients-editor_save")}
         </StyledAction>
         <StyledAction onClick={onClose} color="blue">
-        {t('clients-editor_close')}
+          {t("clients-editor_close")}
         </StyledAction>
       </Buttons>
     </Editor>

@@ -773,7 +773,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
       html: text,
       recipients_ids: [...checkboxClients, ...selectedClients],
       id: post.id,
-      sender: post._sender
+      sender: post._sender,
     };
     onSendEmail(emailData);
   };
@@ -783,18 +783,18 @@ const EmailEditor = ({ post, onNext }: IProps) => {
     selectAccordingTemplate();
   }, []);
 
-
   //Clients dropdown
 
-  
   const clientsOptions = useMemo(() => {
-    let filtered: any = []
+    let filtered: any = [];
     if (clients && clients.length > 0 && post.clients) {
-      filtered = clients.map((c) => ({ item: c.name, value: c.id }))
-      filtered = filtered.filter((option: any) => post.clients.every((client: any) => client.id !== option.value))
+      filtered = clients.map((c) => ({ item: c.name, value: c.id }));
+      filtered = filtered.filter((option: any) =>
+        post.clients.every((client: any) => client.id !== option.value)
+      );
     }
-    return filtered
-  }, [clients, post])
+    return filtered;
+  }, [clients, post]);
 
   const keys = Object.keys(post);
   return (
@@ -804,6 +804,12 @@ const EmailEditor = ({ post, onNext }: IProps) => {
           <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
 
           {keys.map((key) => {
+
+            // don't need to show this values(endpoint name, index in column...)
+            if (key[0] === "_") {
+              return null;
+            }
+
             //Return cases when key is FILES
             if (post[key] && key === "files") {
               let listArray: any[] = [];
@@ -815,9 +821,9 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 );
               });
               return (
-                <>
+                <React.Fragment key={key}>
                   {listArray.length > 0 ? (
-                    <>
+                    <React.Fragment>
                       <PostKey>{t(key)}</PostKey>
                       {listArray.map((item: any, index: number) => {
                         return item.type === "head" ? (
@@ -832,11 +838,11 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                           </FileLink>
                         );
                       })}
-                    </>
+                    </React.Fragment>
                   ) : (
                     "null"
                   )}
-                </>
+                </React.Fragment>
               );
             }
 
@@ -845,8 +851,8 @@ const EmailEditor = ({ post, onNext }: IProps) => {
               const keys = Object.keys(post.files_govdata);
               const elements = keys.map((item: string, index: number) => {
                 return (
-                  <React.Fragment key={key}>
-                    <PostValue key={index}>{item}</PostValue>
+                  <React.Fragment key={index}>
+                    <PostValue>{item}</PostValue>
                     <FileLink href={post.files_govdata[item]} target="_blank">
                       {post.files_govdata[item]}
                     </FileLink>
@@ -854,10 +860,10 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 );
               });
               return elements.length > 0 ? (
-                  <PostItem key={key}>
-                    <PostKey>{t(key)}</PostKey>
-                    {elements}
-                  </PostItem>
+                <PostItem key={key}>
+                  <PostKey>{t(key)}</PostKey>
+                  {elements}
+                </PostItem>
               ) : (
                 "null"
               );
@@ -865,11 +871,6 @@ const EmailEditor = ({ post, onNext }: IProps) => {
 
             // don't need to show date for sorting
             if (post[key] && key === "date_for_sorting") {
-              return null;
-            }
-
-            // don't need to show endpoint name
-            if (post[key] && key[0] === "_") {
               return null;
             }
 
@@ -887,6 +888,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Return cases when key is source
             if (post[key] && key === "source") {
               return (
@@ -898,6 +900,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Return cases when key is root_link
             if (post[key] && key === "root_link") {
               return (
@@ -909,6 +912,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Return null when key is id(we shouldn't show id)
             if (post[key] && key === "id") {
               return null;
@@ -924,6 +928,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Return cases when key is DOCX
             if (post[key] && key === "docx") {
               return (
@@ -934,6 +939,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Return cases when key is PDF
             if (post[key] && key === "pdf") {
               return (
@@ -944,6 +950,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Return cases when key is XLS
             if (post[key] && key === "xls") {
               return (
@@ -954,6 +961,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Cases when key is cmt_session_items array
             if (post[key] && key === "cmt_session_items") {
               return (
@@ -967,6 +975,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Cases when key is plenum_session_items array
             if (post[key] && key === "plenum_session_items") {
               return (
@@ -980,6 +989,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Cases when key is initiator object
             if (post[key] && key === "initiator") {
               return (
@@ -992,6 +1002,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Cases when key is initiators array
             if (post[key] && key === "initiators") {
               const list = post[key].map((initiator: any, index: number) => {
@@ -1011,6 +1022,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </Initiators>
               );
             }
+
             // Return cases when value is primitive
             if (
               (post[key] && typeof post[key] === "string") ||
@@ -1023,6 +1035,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 </PostItem>
               );
             }
+
             // Reuturn 'null' string when primitive value doesn't exist
             if (!post[key]) {
               return (
@@ -1046,12 +1059,16 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             label={t("emails_content-formats")}
           />
 
+
+
           <StyledInput
             value={emailTitle}
             onChange={(val) => setEmailTitle(val)}
             placeholder={t("email_theme")}
             label={t("email_theme")}
           />
+
+
 
           <SunEditor
             setDefaultStyle="font-size: 20px; max-width: 800px;"
@@ -1068,7 +1085,11 @@ const EmailEditor = ({ post, onNext }: IProps) => {
               ],
             }}
           />
+
+
+
           <Selector>
+
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
             {post.clients && post.clients.length > 0 && (
               <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
@@ -1076,7 +1097,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             {post.clients &&
               post.clients.map((client: any) => {
                 return (
-                  <ClientBox>
+                  <ClientBox key={client.id}>
                     <Checkbox
                       checked={selectedClients.includes(client.id)}
                       setIsCheckedCreate={() => selectClient(client)}

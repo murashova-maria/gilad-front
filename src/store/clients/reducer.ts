@@ -1,18 +1,25 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { clientsSetClients } from "./actions";
-import { Client, IClientsState } from "./types";
+import { clientsSetClients, clientsSetLoading } from "./actions";
+import { IClient, IClientsState } from "./types";
 
 
 
 const initialState: IClientsState = {
-    clients: []
+    clients: [],
+    isLoading: false
 }
 
 const clients = createReducer(initialState, {
-    [clientsSetClients.type]: (state, action: {payload: Client[]}) => {
+    [clientsSetClients.type]: (state, action: {payload: IClient[]}) => {
         return {
             ...state,
             clients: action.payload
+        }
+    },
+    [clientsSetLoading.type]: (state, action: {payload: boolean}) => {
+        return {
+            ...state,
+            isLoading: action.payload
         }
     }
 })

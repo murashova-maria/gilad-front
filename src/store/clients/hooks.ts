@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {rootReducerType} from '..'
-import { clientsGetClients } from './actions'
-import { IClientsState } from './types'
+import { clientsGetClients, clientsAddClient } from './actions'
+import { IClient, IClientsState } from './types'
 
 export const clientsSelector = (state: any) => state.clients
 
@@ -14,7 +14,14 @@ export const useClientsActions = () => {
         dispatch(clientsGetClients())
     }
 
+    const onAddClient = (client: IClient) => {
+        if (client.name && client.email.length > 0) {
+            dispatch(clientsAddClient(client))
+        }
+    }
+
     return {
         onGetClients,
+        onAddClient
     }
 }

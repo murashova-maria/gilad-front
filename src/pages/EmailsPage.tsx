@@ -37,7 +37,7 @@ const Emails = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  padding: 70px 20px 70px;
+  padding: 70px 20px 120px;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
@@ -52,7 +52,7 @@ const PostsContainer = styled.div`
   box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
   border-radius: 20px;
   & > div {
-    height: 600px;
+    height: 550px;
     overflow-y: auto;
   }
 `;
