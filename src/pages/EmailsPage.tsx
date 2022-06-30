@@ -114,7 +114,7 @@ const EmailsPage = () => {
     usePostsActions();
   useEffect(() => {
     onGetClients();
-    onWatchForPosts();
+   // onWatchForPosts();
     onGetPosts();
   }, []);
 

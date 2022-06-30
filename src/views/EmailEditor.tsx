@@ -804,7 +804,6 @@ const EmailEditor = ({ post, onNext }: IProps) => {
           <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
 
           {keys.map((key) => {
-
             // don't need to show this values(endpoint name, index in column...)
             if (key[0] === "_") {
               return null;
@@ -840,7 +839,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                       })}
                     </React.Fragment>
                   ) : (
-                    <PostValue>{t('emails_data-no-data')}</PostValue>
+                    <PostValue>{t("emails_data-no-data")}</PostValue>
                   )}
                 </React.Fragment>
               );
@@ -1059,16 +1058,12 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             label={t("emails_content-formats")}
           />
 
-
-
           <StyledInput
             value={emailTitle}
             onChange={(val) => setEmailTitle(val)}
             placeholder={t("email_theme")}
             label={t("email_theme")}
           />
-
-
 
           <SunEditor
             setDefaultStyle="font-size: 20px; max-width: 800px;"
@@ -1080,16 +1075,14 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             onChange={(val) => setText(val)}
             setOptions={{
               buttonList: [
-                ["bold", "underline", "italic", "list", "align", "fontSize"],
+                ["bold", "underline", "italic", "list", "align", "fontSize", "font"],
                 ["link"],
               ],
+              font: ['Open Sans']
             }}
           />
 
-
-
           <Selector>
-
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
             {post.clients && post.clients.length > 0 && (
               <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>

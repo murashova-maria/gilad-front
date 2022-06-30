@@ -12,8 +12,28 @@
 }
 @font-face {
     font-style: normal;
+    font-weight: 400;
+    font-family: 'Gilroy';
+
+    font-display: swap;
+
+    src: url("../fonts/Gilroy-Regular.woff2") format("woff2"),
+    url("../fonts/Gilroy-Regular.woff") format("woff");
+}
+@font-face {
+    font-style: normal;
     font-weight: 700;
     font-family: 'Gilroy-B';
+
+    font-display: swap;
+
+    src: url("../fonts/Gilroy-Bold.woff2") format("woff2"),
+    url("../fonts/Gilroy-Bold.woff") format("woff");
+}
+@font-face {
+    font-style: normal;
+    font-weight: 700;
+    font-family: 'Gilroy';
 
     font-display: swap;
 
