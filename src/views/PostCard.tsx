@@ -83,6 +83,7 @@ const KeywordsTitle = styled.p`
 
 const Keywords = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 `;

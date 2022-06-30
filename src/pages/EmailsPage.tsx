@@ -247,7 +247,7 @@ const EmailsPage = () => {
       )}
       {modal === "client-editor" && (
         <Modal onClose={onCloseModal}>
-          <ClientsEditor />
+          <ClientsEditor  onClose={onCloseModal}/>
         </Modal>
       )}
       {modal === "keyword-editor" && (

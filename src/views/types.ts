@@ -4,3 +4,7 @@ export interface IPostCard {
     onOpenModal: ()=> void
     item: any
 }
+
+export interface IClientsEditor {
+    onClose: () => void
+}

@@ -7,6 +7,9 @@
     height: 90px;
     align-items: flex-start !important;
   }
+  &__control--is-focused {
+    border: #000 solid 2px !important;
+  }
 
   &__multi-value {
     padding: 5px !important;
@@ -43,7 +46,7 @@
     display: none;
   }
   &__menu {
-    display: none !important;
+    //display: none !important;
   }
 
   &__indicators {
