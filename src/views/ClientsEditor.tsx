@@ -34,14 +34,13 @@ const Title = styled.h2`
   font-size: 36px;
   line-height: 45px;
   color: #253238;
-  margin: 40px 0 10px;
+  margin: 10px 0 10px;
 `;
 
 const ClientsBox = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 20px;
-  padding: 0 0 50px;
 `;
 
 const StyledInput = styled(TextInput)<{ searchBtn?: boolean }>`

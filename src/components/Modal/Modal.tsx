@@ -4,16 +4,19 @@ import React, { useEffect, useRef, useCallback } from "react";
 import { useAppActions } from "../../store/app/hooks";
 
 const ModalWrapper = styled.div`
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
+    right: 0;
     width: 100%;
+    min-height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-y: auto;
     backdrop-filter: blur(20px);
+    padding: 50px;
+    z-index: 1000;
 `
 
 const Modal = ({children,  onClose}: IModal): JSX.Element | null => {

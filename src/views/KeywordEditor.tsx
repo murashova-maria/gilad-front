@@ -35,7 +35,6 @@ const KeywordsBox = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 20px;
-  padding: 0 0 50px;
 `;
 
 const StyledInput = styled(TextInput)<{ searchBtn?: boolean }>`

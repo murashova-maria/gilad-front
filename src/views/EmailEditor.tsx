@@ -840,7 +840,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                       })}
                     </React.Fragment>
                   ) : (
-                    "null"
+                    <PostValue>{t('emails_data-no-data')}</PostValue>
                   )}
                 </React.Fragment>
               );

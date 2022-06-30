@@ -104,6 +104,7 @@
     "emails_keywords": "מילות מפתח",
 
     "emails_data-from-db": "נתוני העדכון",
+    "emails_data-no-data": "אין מידע זמין",
     "emails_edit-title": "עריכה",
     "emails_direct-link": "לינק ישיר",
     "emails_content-formats": "טמפלייטים",
@@ -133,7 +134,7 @@
     "clients-editor_search-label": "חישוב",
     "clients-editor_save": "שמירה",
     "clients-editor_close": "סגירה",
-    "clients-editor_title2": "Clients test",
+    "clients-editor_title2": "לקוחות",
 
     "keyword-editor_title1": "עריכת מילות מפתח",
     "keyword-editor_keyword-plhr": "מילות מפתח",
