@@ -8,3 +8,7 @@ export interface IPostCard {
 export interface IClientsEditor {
     onClose: () => void
 }
+
+export interface IKeywordEditor {
+    onClose: () => void
+}

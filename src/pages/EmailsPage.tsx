@@ -176,13 +176,32 @@ const EmailsPage = () => {
 
   // Handle click on 'next' button
   const onNextPost = (post: IPost) => {
-    if (post._sender !== "google_news") {
-      const index = otherPosts.indexOf(post);
-      onSetEditor(otherPosts[index + 1] ? otherPosts[index + 1] : null);
+    if (
+      post._sender !== "google_news" &&
+      typeof post._column_index === "number"
+    ) {
+      const index = post._column_index + 1;
+      if (otherPosts[index]) {
+        onSetEditor({ ...otherPosts[index], _column_index: index });
+      }
+      if (!otherPosts[index]) {
+        onSetEditor(null);
+        setModal(null);
+      }
+      console.log(index);
     }
-    if (post._sender === "google_news") {
-      const index = allGoogleNews.indexOf(post);
-      onSetEditor(allGoogleNews[index + 1] ? otherPosts[index + 1] : null);
+    if (
+      post._sender === "google_news" &&
+      typeof post._column_index === "number"
+    ) {
+      const index = post._column_index + 1;
+      if (allGoogleNews[index]) {
+        onSetEditor({ ...allGoogleNews[index], _column_index: index });
+      }
+      if (!allGoogleNews[index]) {
+        onSetEditor(null);
+        setModal(null);
+      }
     }
   };
 
@@ -198,7 +217,9 @@ const EmailsPage = () => {
                   <PostsCard
                     key={index}
                     item={post}
-                    onEmail={() => onSetEditor(post)}
+                    onEmail={() =>
+                      onSetEditor({ ...post, _column_index: index })
+                    }
                     onOpenModal={() => setModal("email-editor")}
                   />
                 ))}
@@ -214,7 +235,9 @@ const EmailsPage = () => {
                   <PostsCard
                     key={index}
                     item={post}
-                    onEmail={() => onSetEditor(post)}
+                    onEmail={() =>
+                      onSetEditor({ ...post, _column_index: index })
+                    }
                     onOpenModal={() => setModal("email-editor")}
                   />
                 ))}
@@ -247,12 +270,12 @@ const EmailsPage = () => {
       )}
       {modal === "client-editor" && (
         <Modal onClose={onCloseModal}>
-          <ClientsEditor  onClose={onCloseModal}/>
+          <ClientsEditor onClose={onCloseModal} />
         </Modal>
       )}
       {modal === "keyword-editor" && (
         <Modal onClose={onCloseModal}>
-          <KeywordEditor />
+          <KeywordEditor onClose={onCloseModal} />
         </Modal>
       )}
     </>

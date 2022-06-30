@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { colors } from "../assets/styles/colors";
 import { AddButton } from "../components/AddButton";
@@ -58,6 +59,7 @@ const StyledCreateableDropdown = styled(CreateableDropdown)`
 
 const StyledBtn = styled(AddButton)`
   margin-top: 22px;
+  flex-shrink: 0;
 `;
 
 const Clients = styled.div`
@@ -98,6 +100,9 @@ const StyledAction = styled(MainButton)`
 `;
 
 const ClientsEditor = ({onClose}: IClientsEditor) => {
+  const {t} = useTranslation()
+
+
   //#ClientName Input
   const [name, setName] = useState<string>("");
   //#Emails Input
@@ -108,28 +113,28 @@ const ClientsEditor = ({onClose}: IClientsEditor) => {
   return (
     <Editor>
       <Content>
-        <Title>Edit clients</Title>
+        <Title>{t('clients-editor_title1')}</Title>
         <ClientsBox>
           <StyledInput
             value={name}
             onChange={(val) => setName(val)}
-            placeholder="Client Name"
-            label="Add new client"
+            placeholder={t('clients-editor_name-plhr')}
+            label={t('clients-editor_name-label')}
           />
           <StyledCreateableDropdown
             options={[]}
             value={emails}
             onChange={setEmails}
-            placeholder="Add emails"
-            label="Client mails"
+            placeholder={t('clients-editor_email-plhr')}
+            label={t('clients-editor_email-label')}
           />
           <StyledBtn onClick={() => console.log("clicked")} />
         </ClientsBox>
-        <Title>Clients</Title>
+        <Title>{t('clients-editor_title2')}</Title>
         <StyledInput
           value={search}
           onChange={(val) => setSearch(val)}
-          label="Search client"
+          label={t('clients-editor_search-label')}
           searchBtn={true}
         />
         <Clients>
@@ -157,10 +162,10 @@ const ClientsEditor = ({onClose}: IClientsEditor) => {
       </Content>
       <Buttons>
         <StyledAction onClick={() => console.log("save")} color="orange">
-          Save
+          {t('clients-editor_save')}
         </StyledAction>
         <StyledAction onClick={onClose} color="blue">
-          Close
+        {t('clients-editor_close')}
         </StyledAction>
       </Buttons>
     </Editor>

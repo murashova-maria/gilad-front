@@ -124,8 +124,26 @@
     "clients_edit-keywords": "Edit keywords",
 
 
+    "clients-editor_title1": "Edit clients",
+    "clients-editor_name-plhr": "Client Name",
+    "clients-editor_name-label": "Add new client",
+    "clients-editor_email-plhr": "Add emails",
+    "clients-editor_email-label": "Client mails",
+    "clients-editor_search-label": "Search client",
+    "clients-editor_save": "Save",
+    "clients-editor_close": "Close",
+    "clients-editor_title2": "Clients test",
 
-    "123": "123"
+    "keyword-editor_title1": "Edit Keywords",
+    "keyword-editor_keyword-plhr": "Keyword",
+    "keyword-editor_keyword-label": "Keyword",
+    "keyword-editor_clients-plhr": "Clients",
+    "keyword-editor_clients-label": "Clients",
+    "keyword-editor_title2": "Keywords",
+    "keyword-editor_search": "Search",
+    "keyword-editor_save": "Save",
+    "keyword-editor_close": "Close"
+
 
 
   

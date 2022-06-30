@@ -6,7 +6,7 @@ import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
@@ -768,11 +768,12 @@ const EmailEditor = ({ post, onNext }: IProps) => {
     if (checkboxClients[0] === "") checkboxClients = [];
     //@ts-ignore
     checkboxClients = checkboxClients.map((id) => parseInt(id, 10));
-
     const emailData = {
       subject: emailTitle,
       html: text,
       recipients_ids: [...checkboxClients, ...selectedClients],
+      id: post.id,
+      sender: post._sender
     };
     onSendEmail(emailData);
   };
@@ -842,24 +843,21 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             //Files GOV data
             if (post[key] && key === "files_govdata") {
               const keys = Object.keys(post.files_govdata);
-              const elements = keys.map((item: string) => {
+              const elements = keys.map((item: string, index: number) => {
                 return (
-                  <>
-                    <PostValue>{item}</PostValue>
+                  <React.Fragment key={key}>
+                    <PostValue key={index}>{item}</PostValue>
                     <FileLink href={post.files_govdata[item]} target="_blank">
                       {post.files_govdata[item]}
                     </FileLink>
-                  </>
+                  </React.Fragment>
                 );
               });
               return elements.length > 0 ? (
-                <>
-                  {" "}
                   <PostItem key={key}>
                     <PostKey>{t(key)}</PostKey>
                     {elements}
                   </PostItem>
-                </>
               ) : (
                 "null"
               );
@@ -1007,7 +1005,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 );
               });
               return (
-                <Initiators>
+                <Initiators key={key}>
                   <PostKey>{t(key)}</PostKey>
                   {list.length > 0 ? list : "null"}
                 </Initiators>
