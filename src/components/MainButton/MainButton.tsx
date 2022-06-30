@@ -39,12 +39,12 @@ const BlueBtn = styled(Btn)`
   box-shadow: 0px 10px 20px rgba(${colors.cyan_3}, 0.2);
 `;
 
-const MainButton = ({ children, color, className, disabled, onClick }: IMainButton) => {
+const MainButton = ({ children, color, className, disabled, onClick, type }: IMainButton) => {
   if (color === "orange")
-    return <OrangeBtn className={className} disabled={disabled} onClick={onClick}>{children}</OrangeBtn>;
+    return <OrangeBtn className={className} disabled={disabled} onClick={onClick} type={type ? type : 'submit'}>{children}</OrangeBtn>;
   if (color === "blue")
-    return <BlueBtn className={className} disabled={disabled} onClick={onClick}>{children}</BlueBtn>;
-  return <Btn className={className} disabled={disabled} onClick={onClick}>{children}</Btn>;
+    return <BlueBtn className={className} disabled={disabled} onClick={onClick} type={type ? type : 'submit'}>{children}</BlueBtn>;
+  return <Btn className={className} disabled={disabled} onClick={onClick} type={type ? type : 'submit'}>{children}</Btn>;
 };
 
 export default MainButton;

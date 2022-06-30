@@ -107,7 +107,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
   //Global State
   const { t } = useTranslation();
   const { clients, isLoading } = useClientsState();
-  const { onAddClient } = useClientsActions();
+  const { onAddClient, onEditClient } = useClientsActions();
   //test clients
   const cl = [
     { id: 1, name: "Edward", email: "Edvaa@mail.ru" },
@@ -130,10 +130,11 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
     };
     //@ts-ignore   we don't pass id for new client
     onAddClient(client);
+    setName('')
+    setEmails([])
   };
 
   const handleSelectClient = (id: number) => {
-    console.log(id);
     const client = clients.find((c) => c.id === id);
     let emails = client?.email ? client.email.map(e => ({value: e, label: e})) : []
     setName(client?.name ? client.name : "");
@@ -141,6 +142,17 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
     setCurrentClient(id);
   };
 
+  const handleEditClient = () => {
+    if (typeof currentClient === 'number') {
+      const newData = {
+        id: currentClient,
+        name,
+        team: '',
+        email: emails.map(e => e.value)
+      }
+      onEditClient(newData)
+    }
+  }
   return (
     <Editor isLoading={isLoading}>
       <Content>
@@ -198,7 +210,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
         </Clients>
       </Content>
       <Buttons>
-        <StyledAction onClick={() => console.log("save")} color="orange">
+        <StyledAction onClick={handleEditClient} color="orange" disabled={isLoading || !currentClient}>
           {t("clients-editor_save")}
         </StyledAction>
         <StyledAction onClick={onClose} color="blue">

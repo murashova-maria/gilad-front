@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {rootReducerType} from '..'
-import { clientsGetClients, clientsAddClient } from './actions'
+import { clientsGetClients, clientsAddClient, clientsEditClient } from './actions'
 import { IClient, IClientsState } from './types'
 
 export const clientsSelector = (state: any) => state.clients
@@ -20,8 +20,13 @@ export const useClientsActions = () => {
         }
     }
 
+    const onEditClient = (client: IClient) => {
+        dispatch(clientsEditClient(client))
+    }
+
     return {
         onGetClients,
+        onEditClient,
         onAddClient
     }
 }

@@ -15,5 +15,12 @@ export const Clients = {
                 "Authorization": `Token ${token}`
             },
         })
+    },
+    editClient: async (client: IClient ,token: string) => {
+        return await axiosInstance.post(`clients/${client.id}/`, client, {
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
     }
 }

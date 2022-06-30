@@ -4,4 +4,5 @@ export interface IMainButton {
     disabled?: boolean
     children?: string
     className?: string
+    type?: 'button' | 'submit' | 'reset'
 }

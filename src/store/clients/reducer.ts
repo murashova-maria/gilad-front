@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { clientsSetClients, clientsSetLoading } from "./actions";
+import { clientsSetClients, clientsSetLoading, clientsAppendClient,clientsUpdateClient } from "./actions";
 import { IClient, IClientsState } from "./types";
 
 
@@ -20,6 +20,21 @@ const clients = createReducer(initialState, {
         return {
             ...state,
             isLoading: action.payload
+        }
+    },
+    [clientsAppendClient.type]: (state, action: {payload: IClient}) => {
+        return {
+            ...state,
+            clients: [...state.clients, action.payload]
+        }
+    },
+    [clientsUpdateClient.type]: (state, action: {payload: IClient}) => {
+        const index = state.clients.findIndex(c => c.id === action.payload.id)
+        let allClients = [...state.clients]
+        allClients.splice(index, 1, action.payload)
+        return {
+            ...state,
+            clients: allClients
         }
     }
 })
