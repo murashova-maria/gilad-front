@@ -5,4 +5,5 @@ export interface IKeyword {
 
 export interface IKeywordsState {
     keywords: IKeyword[]
+    isLoading: boolean
 }

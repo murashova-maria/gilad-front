@@ -7,8 +7,10 @@ import { AddButton } from "../components/AddButton";
 import { colors } from "../assets/styles/colors";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
+import { useKeywordsState } from "../store/keywords/hooks";
+import { useClientsState } from "../store/clients";
 
-const Editor = styled.div`
+const Editor = styled.div<{isLoading: boolean}>`
   border-radius: 20px;
   width: 80%;
   max-width: 1200px;
@@ -16,6 +18,7 @@ const Editor = styled.div`
   border: 1px solid #c2fffd;
   box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
   overflow: hidden;
+  ${({isLoading}) => isLoading && '& * {cursor: wait !important;}'}
 `;
 
 const Content = styled.div`
@@ -63,21 +66,22 @@ const Keywords = styled.div`
 `;
 
 const Keyword = styled.p`
-padding: 3px 10px;
-background: #FFFFFF;
-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
-border-radius: 13px;
-font-family: 'Gilroy-R';
-font-weight: 400;
-font-size: 14px;
-line-height: 17px;
-text-decoration-line: underline;
-color: ${colors.graphite_6};
-cursor: pointer;
-transition: opacity 250ms linear;
-&:hover {
-    opacity: .60;
-}`
+  padding: 3px 10px;
+  background: #ffffff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 13px;
+  font-family: "Gilroy-R";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration-line: underline;
+  color: ${colors.graphite_6};
+  cursor: pointer;
+  transition: opacity 250ms linear;
+  &:hover {
+    opacity: 0.6;
+  }
+`;
 
 const Buttons = styled.div`
   display: flex;
@@ -95,58 +99,53 @@ const StyledAction = styled(MainButton)`
 `;
 
 const KeywordEditor = ({ onClose }: IKeywordEditor) => {
-    const {t} = useTranslation()
-  const [keyword, setKeyword] = useState('');
-  const [search, setSearch] = useState('');
+  const { t } = useTranslation();
+  const { keywords, isLoading } = useKeywordsState();
+  const {clients} = useClientsState();
+  const [selectedClients, setSelectedClients] = useState('')
+  const [keyword, setKeyword] = useState("");
+  const [search, setSearch] = useState("");
+
   return (
-    <Editor>
+    <Editor isLoading={isLoading}>
       <Content>
-        <Title>{t('keyword-editor_title1')}</Title>
+        <Title>{t("keyword-editor_title1")}</Title>
         <KeywordsBox>
           <StyledInput
             value={keyword}
             onChange={(val) => setKeyword(val)}
-            placeholder={t('keyword-editor_keyword-plhr')}
-            label={t('keyword-editor_keyword-label')}
+            placeholder={t("keyword-editor_keyword-plhr")}
+            label={t("keyword-editor_keyword-label")}
           />
           <Dropdown
-            value=""
-            onSelect={(e) => console.log(e)}
-            options={[
-              { item: "213", value: 123 },
-              { item: "213", value: 121 },
-              { item: "213", value: 122 },
-            ]}
+            value={selectedClients}
+            onSelect={(e) => setSelectedClients(e)}
+            options={clients.map(c => ({item: c.name, value: c.id}))}
             isMultiSelect={true}
-            placeholder={t('keyword-editor_clients-plhr')}
-            label={t('keyword-editor_clients-label')}
+            placeholder={t("keyword-editor_clients-plhr")}
+            label={t("keyword-editor_clients-label")}
           />
-          <StyledBtn onClick={() => console.log("clicked")} />
+          <StyledBtn onClick={() => console.log("clicked")} disabled={isLoading} />
         </KeywordsBox>
-        <Title>{t('keyword-editor_title2')}</Title>
+        <Title>{t("keyword-editor_title2")}</Title>
         <StyledInput
           value={search}
           onChange={(val) => setSearch(val)}
-          label={t('keyword-editor_search')}
+          label={t("keyword-editor_search")}
           searchBtn={true}
         />
         <Keywords>
-            <Keyword>Gillette</Keyword>
-            <Keyword>Gillette</Keyword>
-            <Keyword>Gillette</Keyword>
-            <Keyword>Gillette</Keyword>
-            <Keyword>Gillette</Keyword>
-            <Keyword>Gillette</Keyword>
-            <Keyword>Gillette</Keyword>
-            <Keyword>Gillette</Keyword>
+          {keywords.map((keyword) => (
+            <Keyword key={keyword.id}>{keyword.keyword}</Keyword>
+          ))}
         </Keywords>
       </Content>
       <Buttons>
         <StyledAction onClick={() => console.log("save")} color="orange">
-          {t('keyword-editor_save')}
+          {t("keyword-editor_save")}
         </StyledAction>
         <StyledAction onClick={onClose} color="blue">
-        {t('keyword-editor_close')}
+          {t("keyword-editor_close")}
         </StyledAction>
       </Buttons>
     </Editor>

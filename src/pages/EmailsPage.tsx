@@ -116,7 +116,7 @@ const EmailsPage = () => {
     const { onGetKeywords } = useKeywordsActions()
   useEffect(() => {
     onGetPosts();
-   // onWatchForPosts();
+    onWatchForPosts();
     onGetClients();
     onGetKeywords();
   }, []);
