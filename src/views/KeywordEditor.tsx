@@ -152,6 +152,15 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
     onClose();
   };
 
+
+  //Clear selected post on unmount
+  useEffect(() => {
+    return () => {
+      console.log("called");
+      onDeselectKeyword();
+    };
+  }, []);
+
   //Edit Selected keyword in DB
   const handleSave = () => {
     if (selectedKeyword) {
@@ -163,7 +172,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         keyword,
         clients,
       };
-      onEditKeyword(data)
+      onEditKeyword(data);
     }
   };
 
@@ -183,8 +192,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
             onSelect={(e) => setSelectedClients(e)}
             options={clients.map((c) => ({ item: c.name, value: c.id }))}
             isMultiSelect={true}
-            // placeholder={t("keyword-editor_clients-plhr")}
-            placeholder={"placeholder"}
+            placeholder={t("keyword-editor_clients-plhr")}
             label={t("keyword-editor_clients-label")}
           />
           <StyledBtn onClick={handleAdd} disabled={isLoading} />
@@ -227,7 +235,11 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         </Keywords>
       </Content>
       <Buttons>
-        <StyledAction onClick={handleSave} color="orange" disabled={isLoading || !selectedKeyword}>
+        <StyledAction
+          onClick={handleSave}
+          color="orange"
+          disabled={isLoading || !selectedKeyword}
+        >
           {t("keyword-editor_save")}
         </StyledAction>
         <StyledAction onClick={handleClose} color="blue" disabled={isLoading}>
