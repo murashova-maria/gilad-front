@@ -106,6 +106,19 @@ function Dropdown({
     []
   );
 
+  // Set dropdown values when value from props changes
+  useEffect(() => {
+    if (typeof value === 'string') {
+      let newItems = value.split(', ')
+      if (!newItems[0]) newItems = []
+      let selectedIds = newItems.map(id => parseInt(id ,10))
+      if(selectedItems.length !== selectedIds.length) {
+        setSelectedItems(selectedIds)
+      }
+    }
+  }, [value])
+
+
   const selectItem = useMemo(() => {
     if (!isMultiSelect) {
       return options.filter((item) => item.value == value)[0] || null;
