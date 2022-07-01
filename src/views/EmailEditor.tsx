@@ -795,7 +795,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
     }
     return filtered;
   }, [clients, post]);
-  console.log(post)
+
   const keys = Object.keys(post);
   return (
     <StyledModal>
@@ -877,7 +877,6 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             if (post[key] && key === "last_updated_date") {
               let rawDate = new Date(post[key]);
               let date = rawDate.toLocaleDateString('en-GB').replaceAll('/','-')
-              console.log(date)
               let time = rawDate.getHours() + ":" + rawDate.getMinutes();
               let formatedDate = time + " " + date;
 
@@ -1079,7 +1078,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 ["bold", "underline", "list", "align", "fontSize", "font"],
                 ["link"],
               ],
-              font: ['Open Sans','Arimo', 'Rubik', 'David Libre']
+              font: ['Arial', 'Verdana', 'Georgia', 'Times New Roman']
             }}
           />
 

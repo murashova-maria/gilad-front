@@ -163,9 +163,7 @@ const EmailsPage = () => {
   ]);
 
   const allGoogleNews: IPost[] = useMemo(() => {
-    const all = [
-      ...googleNews,
-    ];
+    const all = [...googleNews];
     return all.sort(
       (prev, next) => next.date_for_sorting - prev.date_for_sorting
     );

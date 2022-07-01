@@ -52,7 +52,7 @@ export const usePostsActions = () => {
     })
     ws.addEventListener('message', (e: any) => {
       const data = JSON.parse(e.data)
-      console.log('new post', data)
+      console.log('Web Socket:', data)
       if (data.data) {
          dispatch(postsAddNewPost({...data.data, _sender: data.sender}))
       }
