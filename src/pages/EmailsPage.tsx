@@ -113,7 +113,7 @@ const EmailsPage = () => {
   // Fetch posts
   const { onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor } =
     usePostsActions();
-    const { onGetKeywords } = useKeywordsActions()
+  const { onGetKeywords } = useKeywordsActions();
   useEffect(() => {
     onGetPosts();
     onWatchForPosts();
@@ -130,7 +130,6 @@ const EmailsPage = () => {
 
   const otherPosts: IPost[] = useMemo(() => {
     const all = [
-      ...newPosts.filter((post) => post._sender !== "google_news"),
       ...govils,
       ...news,
       ...agendas,
@@ -161,18 +160,16 @@ const EmailsPage = () => {
     govilData,
     govilPdf,
     releases,
-    newPosts,
   ]);
 
   const allGoogleNews: IPost[] = useMemo(() => {
     const all = [
-      ...newPosts.filter((post) => post._sender === "google_news"),
       ...googleNews,
     ];
     return all.sort(
       (prev, next) => next.date_for_sorting - prev.date_for_sorting
     );
-  }, [googleNews, newPosts]);
+  }, [googleNews]);
 
   // Handle click on 'next' button
   const onNextPost = (post: IPost) => {
@@ -213,6 +210,21 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
+                {
+                  // Posts from websocket
+                  newPosts
+                    .filter((post) => post._sender !== "google_news")
+                    .map((post, index) => (
+                      <PostsCard
+                        key={index}
+                        item={post}
+                        onEmail={() =>
+                          onSetEditor({ ...post, _column_index: index })
+                        }
+                        onOpenModal={() => setModal("email-editor")}
+                      />
+                    ))
+                }
                 {otherPosts.map((post, index) => (
                   <PostsCard
                     key={index}
@@ -231,6 +243,21 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title1")}</StyledTitle>
             <PostsContainer>
               <div>
+                {
+                  // Posts from websocket
+                  newPosts
+                    .filter((post) => post._sender === "google_news")
+                    .map((post, index) => (
+                      <PostsCard
+                        key={index}
+                        item={post}
+                        onEmail={() =>
+                          onSetEditor({ ...post, _column_index: index })
+                        }
+                        onOpenModal={() => setModal("email-editor")}
+                      />
+                    ))
+                }
                 {allGoogleNews.map((post, index) => (
                   <PostsCard
                     key={index}

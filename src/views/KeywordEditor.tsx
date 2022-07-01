@@ -7,10 +7,10 @@ import { AddButton } from "../components/AddButton";
 import { colors } from "../assets/styles/colors";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
-import { useKeywordsState } from "../store/keywords/hooks";
+import { useKeywordsActions, useKeywordsState } from "../store/keywords/hooks";
 import { useClientsState } from "../store/clients";
 
-const Editor = styled.div<{isLoading: boolean}>`
+const Editor = styled.div<{ isLoading: boolean }>`
   border-radius: 20px;
   width: 80%;
   max-width: 1200px;
@@ -18,7 +18,7 @@ const Editor = styled.div<{isLoading: boolean}>`
   border: 1px solid #c2fffd;
   box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
   overflow: hidden;
-  ${({isLoading}) => isLoading && '& * {cursor: wait !important;}'}
+  ${({ isLoading }) => isLoading && "& * {cursor: wait !important;}"}
 `;
 
 const Content = styled.div`
@@ -101,10 +101,23 @@ const StyledAction = styled(MainButton)`
 const KeywordEditor = ({ onClose }: IKeywordEditor) => {
   const { t } = useTranslation();
   const { keywords, isLoading } = useKeywordsState();
-  const {clients} = useClientsState();
-  const [selectedClients, setSelectedClients] = useState('')
+  const { onAddKeyword } = useKeywordsActions();
+  const { clients } = useClientsState();
+  const [selectedClients, setSelectedClients] = useState("");
   const [keyword, setKeyword] = useState("");
   const [search, setSearch] = useState("");
+
+  const handleAdd = () => {
+    let clients: string[] = selectedClients.split(", ");
+    let clientsData: number[] = [];
+    if (clients.length > 0 && clients[0])
+      clientsData = clients.map((c) => parseInt(c, 10));
+    const data = {
+      keyword,
+      clients: clientsData,
+    };
+    onAddKeyword(data);
+  };
 
   return (
     <Editor isLoading={isLoading}>
@@ -120,12 +133,12 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
           <Dropdown
             value={selectedClients}
             onSelect={(e) => setSelectedClients(e)}
-            options={clients.map(c => ({item: c.name, value: c.id}))}
+            options={clients.map((c) => ({ item: c.name, value: c.id }))}
             isMultiSelect={true}
             placeholder={t("keyword-editor_clients-plhr")}
             label={t("keyword-editor_clients-label")}
           />
-          <StyledBtn onClick={() => console.log("clicked")} disabled={isLoading} />
+          <StyledBtn onClick={handleAdd} disabled={isLoading} />
         </KeywordsBox>
         <Title>{t("keyword-editor_title2")}</Title>
         <StyledInput
@@ -135,9 +148,15 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
           searchBtn={true}
         />
         <Keywords>
-          {keywords.map((keyword) => (
-            <Keyword key={keyword.id}>{keyword.keyword}</Keyword>
-          ))}
+          {!search &&
+            keywords.map((k) => <Keyword key={k.id}>{k.keyword}</Keyword>)}
+          {search &&
+            keywords
+              .filter((c) => {
+                const regex = new RegExp(search, "i");
+                return regex.test(c.keyword);
+              })
+              .map((k) => <Keyword key={k.id}>{k.keyword}</Keyword>)}
         </Keywords>
       </Content>
       <Buttons>

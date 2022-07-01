@@ -795,7 +795,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
     }
     return filtered;
   }, [clients, post]);
-
+  console.log(post)
   const keys = Object.keys(post);
   return (
     <StyledModal>

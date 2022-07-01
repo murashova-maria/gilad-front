@@ -3,6 +3,11 @@ export interface IKeyword {
     keyword: string
 }
 
+export type AddKeyword = {
+    keyword: string
+    clients: number[]
+}
+
 export interface IKeywordsState {
     keywords: IKeyword[]
     isLoading: boolean

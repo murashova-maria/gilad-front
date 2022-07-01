@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { IKeyword, IKeywordsState } from "./types";
-import { keywordsSetKeywords, keywordsSetLoading } from "./actions";
+import { keywordsSetKeywords, keywordsSetLoading, keywordsAppendKeyword } from "./actions";
 
 const initialState: IKeywordsState = {
   keywords: [],
@@ -18,6 +18,12 @@ const keywords = createReducer(initialState, {
     return {
       ...state,
       isLoading: action.payload,
+    };
+  },
+  [keywordsAppendKeyword.type]: (state, action: { payload: IKeyword }) => {
+    return {
+      ...state,
+      keywords: [...state.keywords, action.payload]
     };
   },
 });
