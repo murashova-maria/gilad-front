@@ -1,5 +1,5 @@
 import { IKeywordEditor } from "./types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { TextInput } from "../components/TextInput";
 import { Dropdown } from "../components/Dropdown";
@@ -65,7 +65,7 @@ const Keywords = styled.div`
   gap: 10px;
 `;
 
-const Keyword = styled.p`
+const Keyword = styled.p<{ isSelected: boolean; isLoading: boolean }>`
   padding: 3px 10px;
   background: #ffffff;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
@@ -81,6 +81,16 @@ const Keyword = styled.p`
   &:hover {
     opacity: 0.6;
   }
+  ${({ isSelected }) => {
+    return (
+      isSelected &&
+      `
+      color: ${colors.orange};
+      &:hover { opacity: 1;}
+    `
+    );
+  }}
+  ${({ isLoading }) => isLoading && "cursor: wait;"}
 `;
 
 const Buttons = styled.div`
@@ -100,13 +110,18 @@ const StyledAction = styled(MainButton)`
 
 const KeywordEditor = ({ onClose }: IKeywordEditor) => {
   const { t } = useTranslation();
-  const { keywords, isLoading } = useKeywordsState();
-  const { onAddKeyword } = useKeywordsActions();
+  const { keywords, isLoading, selectedKeyword } = useKeywordsState();
+  const { onAddKeyword, onSelectKeyword, onDeselectKeyword } =
+    useKeywordsActions();
   const { clients } = useClientsState();
   const [selectedClients, setSelectedClients] = useState("");
   const [keyword, setKeyword] = useState("");
   const [search, setSearch] = useState("");
 
+
+
+
+  //Add new keyword in DB
   const handleAdd = () => {
     let clients: string[] = selectedClients.split(", ");
     let clientsData: number[] = [];
@@ -118,6 +133,35 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
     };
     onAddKeyword(data);
   };
+
+
+
+
+
+  //Fetch selected keyword with clients
+  const handleSelect = (id: number) => {
+    if (!isLoading) onSelectKeyword(id);
+  };
+
+  //Set fields for editing keyword
+  useEffect(() => {
+    if (selectedKeyword) {
+      setKeyword(selectedKeyword.keyword)
+      const clientsList = selectedKeyword.clients.map((c) => c.id).join(", ");
+      setSelectedClients(clientsList)
+    }
+  }, [selectedKeyword]);
+
+
+
+
+  //Close modal and deselect keyword
+  const handleClose = () => {
+    onDeselectKeyword();
+    onClose();
+  };
+
+
 
   return (
     <Editor isLoading={isLoading}>
@@ -135,7 +179,9 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
             onSelect={(e) => setSelectedClients(e)}
             options={clients.map((c) => ({ item: c.name, value: c.id }))}
             isMultiSelect={true}
-            placeholder={t("keyword-editor_clients-plhr")}
+           // placeholder={t("keyword-editor_clients-plhr")}
+           placeholder={'placeholder'}
+
             label={t("keyword-editor_clients-label")}
           />
           <StyledBtn onClick={handleAdd} disabled={isLoading} />
@@ -149,21 +195,43 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         />
         <Keywords>
           {!search &&
-            keywords.map((k) => <Keyword key={k.id}>{k.keyword}</Keyword>)}
+            keywords.map((k) => (
+              <Keyword
+                isSelected={selectedKeyword?.id === k.id}
+                isLoading={isLoading}
+                onClick={() => handleSelect(k.id)}
+                key={k.id}
+              >
+                {k.keyword}
+              </Keyword>
+            ))}
           {search &&
             keywords
               .filter((c) => {
                 const regex = new RegExp(search, "i");
                 return regex.test(c.keyword);
               })
-              .map((k) => <Keyword key={k.id}>{k.keyword}</Keyword>)}
+              .map((k) => (
+                <Keyword
+                  isSelected={selectedKeyword?.id === k.id}
+                  isLoading={isLoading}
+                  onClick={() => handleSelect(k.id)}
+                  key={k.id}
+                >
+                  {k.keyword}
+                </Keyword>
+              ))}
         </Keywords>
       </Content>
       <Buttons>
-        <StyledAction onClick={() => console.log("save")} color="orange">
+        <StyledAction
+          onClick={() => console.log("save")}
+          color="orange"
+          disabled={isLoading}
+        >
           {t("keyword-editor_save")}
         </StyledAction>
-        <StyledAction onClick={onClose} color="blue">
+        <StyledAction onClick={handleClose} color="blue">
           {t("keyword-editor_close")}
         </StyledAction>
       </Buttons>

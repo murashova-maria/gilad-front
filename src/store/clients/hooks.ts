@@ -15,7 +15,7 @@ export const useClientsActions = () => {
     }
 
     const onAddClient = (client: IClient) => {
-        if (client.name && client.email.length > 0) {
+        if (client.name && client.email && client.email.length > 0) {
             dispatch(clientsAddClient(client))
         }
     }

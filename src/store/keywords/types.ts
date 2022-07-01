@@ -1,9 +1,15 @@
+import { IClient } from "../clients"
+
 export interface IKeyword {
     id: number
     keyword: string
 }
 
-export type AddKeyword = {
+export interface ISelectedKeyword extends IKeyword {
+    clients: IClient[]
+}
+
+export interface IAddKeyword {
     keyword: string
     clients: number[]
 }
@@ -11,4 +17,5 @@ export type AddKeyword = {
 export interface IKeywordsState {
     keywords: IKeyword[]
     isLoading: boolean
+    selectedKeyword: ISelectedKeyword | null
 }
