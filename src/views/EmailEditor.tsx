@@ -232,7 +232,7 @@ const template4 = (post: IPost) => {
 
 const template6 = (post: IPost) => {
   const tempUpdatedDate = post.last_updated_date
-    ? new Date(post.last_updated_date).toISOString().slice(0, 10)
+    ? new Date(post.last_updated_date).toLocaleDateString('en-GB').replaceAll('/','-')
     : dash;
   const tempTitle = post.title ? post.title : null;
   const tempInitiators = post.initiators
@@ -876,7 +876,8 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             //Return cases when key is last_updated_date
             if (post[key] && key === "last_updated_date") {
               let rawDate = new Date(post[key]);
-              let date = rawDate.toISOString().slice(0, 10);
+              let date = rawDate.toLocaleDateString('en-GB').replaceAll('/','-')
+              console.log(date)
               let time = rawDate.getHours() + ":" + rawDate.getMinutes();
               let formatedDate = time + " " + date;
 
