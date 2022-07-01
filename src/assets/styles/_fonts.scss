@@ -1,42 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400;1,700&family=David+Libre:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+/* 
+
+font-family: 'Arimo', sans-serif;
+font-family: 'David Libre', serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Rubik', sans-serif;
+
+*/
 
 @font-face {
-    font-style: normal;
-    font-weight: 400;
-    font-family: 'Gilroy-R';
+  font-style: normal;
+  font-weight: 400;
+  font-family: "Gilroy-R";
 
-    font-display: swap;
+  font-display: swap;
 
-    src: url("../fonts/Gilroy-Regular.woff2") format("woff2"),
+  src: url("../fonts/Gilroy-Regular.woff2") format("woff2"),
     url("../fonts/Gilroy-Regular.woff") format("woff");
 }
+
 @font-face {
-    font-style: normal;
-    font-weight: 400;
-    font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 700;
+  font-family: "Gilroy-B";
 
-    font-display: swap;
+  font-display: swap;
 
-    src: url("../fonts/Gilroy-Regular.woff2") format("woff2"),
-    url("../fonts/Gilroy-Regular.woff") format("woff");
-}
-@font-face {
-    font-style: normal;
-    font-weight: 700;
-    font-family: 'Gilroy-B';
-
-    font-display: swap;
-
-    src: url("../fonts/Gilroy-Bold.woff2") format("woff2"),
-    url("../fonts/Gilroy-Bold.woff") format("woff");
-}
-@font-face {
-    font-style: normal;
-    font-weight: 700;
-    font-family: 'Gilroy';
-
-    font-display: swap;
-
-    src: url("../fonts/Gilroy-Bold.woff2") format("woff2"),
+  src: url("../fonts/Gilroy-Bold.woff2") format("woff2"),
     url("../fonts/Gilroy-Bold.woff") format("woff");
 }

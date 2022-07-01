@@ -155,10 +155,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
 
   //Clear selected post on unmount
   useEffect(() => {
-    return () => {
-      console.log("called");
-      onDeselectKeyword();
-    };
+    return onDeselectKeyword
   }, []);
 
   //Edit Selected keyword in DB
@@ -242,7 +239,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         >
           {t("keyword-editor_save")}
         </StyledAction>
-        <StyledAction onClick={handleClose} color="blue" disabled={isLoading}>
+        <StyledAction onClick={handleClose} color="blue">
           {t("keyword-editor_close")}
         </StyledAction>
       </Buttons>

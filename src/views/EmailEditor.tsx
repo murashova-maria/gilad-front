@@ -1075,10 +1075,10 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             onChange={(val) => setText(val)}
             setOptions={{
               buttonList: [
-                ["bold", "underline", "italic", "list", "align", "fontSize", "font"],
+                ["bold", "underline", "list", "align", "fontSize", "font"],
                 ["link"],
               ],
-              font: ['Open Sans']
+              font: ['Open Sans','Arimo', 'Rubik', 'David Libre']
             }}
           />
 
