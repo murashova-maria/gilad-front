@@ -9,14 +9,18 @@ import {
   keywordsAddKeyword,
   keywordsAppendKeyword,
   keywordsSelectKeyword,
-  keywordsSetSelected
+  keywordsSetSelected,
+  keywordsEditKeyword,
+  keywordsUpdateKeyword
 } from "./actions";
-import { IAddKeyword, IKeyword, ISelectedKeyword } from "./types";
+import { IAddKeyword, IEditKeyword, IKeyword, ISelectedKeyword } from "./types";
 
 export function* keywordsWatcher() {
   yield takeLatest(keywordsGetKeywords, getKeywords);
   yield takeLatest(keywordsAddKeyword, addKeyword);
   yield takeLatest(keywordsSelectKeyword, selectKeyword);
+  yield takeLatest(keywordsEditKeyword, editKeyword);
+
 }
 
 function* getKeywords(): any {
@@ -59,6 +63,23 @@ function* selectKeyword({payload}: {type: string, payload: number}): any {
     yield put(keywordsSetLoading(false));
     if (dataRes) {
       yield put(keywordsSetSelected(dataRes))
+    }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
+}
+
+
+function* editKeyword({payload}: {type: string, payload: IEditKeyword}) {
+  const { token } = yield select(userSelector);
+  if (token) {
+    yield put(keywordsSetLoading(true));
+    const [dataRes, dataErr]: [ISelectedKeyword | undefined, any] = yield call(handle, Keywords.editKeyword(payload, token));
+    yield put(keywordsSetLoading(false));
+    if (dataRes) {
+      console.log(dataRes)
+      yield put(keywordsUpdateKeyword(dataRes))
     }
     if (dataErr) {
       console.log(dataErr);

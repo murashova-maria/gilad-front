@@ -5,6 +5,7 @@ import {
   keywordsSetLoading,
   keywordsAppendKeyword,
   keywordsSetSelected,
+  keywordsUpdateKeyword
 } from "./actions";
 
 const initialState: IKeywordsState = {
@@ -37,6 +38,29 @@ const keywords = createReducer(initialState, {
       ...state,
       selectedKeyword: action.payload
     };
+  },
+  [keywordsUpdateKeyword.type]: (state, action: { payload: ISelectedKeyword }) => {
+    // case when updateable keyword is not the selected keyword
+    if (action.payload.id !== state.selectedKeyword?.id) {
+      let newKeywords = [...state.keywords]
+      const index = newKeywords.findIndex(k => k.id === action.payload.id)
+      newKeywords.splice(index, 1, action.payload)
+      return {
+        ...state,
+        keywords: newKeywords
+      }
+    }
+    // Cases when we update selected keyword
+    if (action.payload.id === state.selectedKeyword?.id) {
+      let newKeywords = [...state.keywords]
+      const index = newKeywords.findIndex(k => k.id === action.payload.id)
+      newKeywords.splice(index, 1, action.payload)
+      return {
+        ...state,
+        selectedKeyword: action.payload,
+        keywords: newKeywords
+      }
+    }
   },
 });
 

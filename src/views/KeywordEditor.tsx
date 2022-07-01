@@ -9,6 +9,7 @@ import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { useKeywordsActions, useKeywordsState } from "../store/keywords/hooks";
 import { useClientsState } from "../store/clients";
+import { IEditKeyword } from "../store/keywords";
 
 const Editor = styled.div<{ isLoading: boolean }>`
   border-radius: 20px;
@@ -111,15 +112,12 @@ const StyledAction = styled(MainButton)`
 const KeywordEditor = ({ onClose }: IKeywordEditor) => {
   const { t } = useTranslation();
   const { keywords, isLoading, selectedKeyword } = useKeywordsState();
-  const { onAddKeyword, onSelectKeyword, onDeselectKeyword } =
+  const { onAddKeyword, onSelectKeyword, onDeselectKeyword, onEditKeyword } =
     useKeywordsActions();
   const { clients } = useClientsState();
   const [selectedClients, setSelectedClients] = useState("");
   const [keyword, setKeyword] = useState("");
   const [search, setSearch] = useState("");
-
-
-
 
   //Add new keyword in DB
   const handleAdd = () => {
@@ -134,10 +132,6 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
     onAddKeyword(data);
   };
 
-
-
-
-
   //Fetch selected keyword with clients
   const handleSelect = (id: number) => {
     if (!isLoading) onSelectKeyword(id);
@@ -146,14 +140,11 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
   //Set fields for editing keyword
   useEffect(() => {
     if (selectedKeyword) {
-      setKeyword(selectedKeyword.keyword)
+      setKeyword(selectedKeyword.keyword);
       const clientsList = selectedKeyword.clients.map((c) => c.id).join(", ");
-      setSelectedClients(clientsList)
+      setSelectedClients(clientsList);
     }
   }, [selectedKeyword]);
-
-
-
 
   //Close modal and deselect keyword
   const handleClose = () => {
@@ -161,7 +152,20 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
     onClose();
   };
 
-
+  //Edit Selected keyword in DB
+  const handleSave = () => {
+    if (selectedKeyword) {
+      let clients: any = selectedClients.split(", ");
+      if (!clients[0]) clients = [];
+      clients = clients.map((id: string) => parseInt(id, 10));
+      const data: IEditKeyword = {
+        id: selectedKeyword?.id,
+        keyword,
+        clients,
+      };
+      onEditKeyword(data)
+    }
+  };
 
   return (
     <Editor isLoading={isLoading}>
@@ -179,9 +183,8 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
             onSelect={(e) => setSelectedClients(e)}
             options={clients.map((c) => ({ item: c.name, value: c.id }))}
             isMultiSelect={true}
-           // placeholder={t("keyword-editor_clients-plhr")}
-           placeholder={'placeholder'}
-
+            // placeholder={t("keyword-editor_clients-plhr")}
+            placeholder={"placeholder"}
             label={t("keyword-editor_clients-label")}
           />
           <StyledBtn onClick={handleAdd} disabled={isLoading} />
@@ -224,14 +227,10 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         </Keywords>
       </Content>
       <Buttons>
-        <StyledAction
-          onClick={() => console.log("save")}
-          color="orange"
-          disabled={isLoading}
-        >
+        <StyledAction onClick={handleSave} color="orange" disabled={isLoading || !selectedKeyword}>
           {t("keyword-editor_save")}
         </StyledAction>
-        <StyledAction onClick={handleClose} color="blue">
+        <StyledAction onClick={handleClose} color="blue" disabled={isLoading}>
           {t("keyword-editor_close")}
         </StyledAction>
       </Buttons>

@@ -14,6 +14,10 @@ export interface IAddKeyword {
     clients: number[]
 }
 
+export interface IEditKeyword extends IAddKeyword {
+    id: number
+}
+
 export interface IKeywordsState {
     keywords: IKeyword[]
     isLoading: boolean

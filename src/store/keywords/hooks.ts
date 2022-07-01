@@ -1,7 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { rootReducerType } from "..";
-import { keywordsGetKeywords, keywordsAddKeyword, keywordsSelectKeyword, keywordsSetSelected } from "./actions";
-import { IKeywordsState } from "./types";
+import {
+  keywordsGetKeywords,
+  keywordsAddKeyword,
+  keywordsSelectKeyword,
+  keywordsSetSelected,
+  keywordsEditKeyword,
+} from "./actions";
+import { IAddKeyword, IEditKeyword, IKeywordsState } from "./types";
 
 export const keywordsSelector = (state: rootReducerType) => state.keywords;
 
@@ -15,24 +21,31 @@ export const useKeywordsActions = () => {
     dispatch(keywordsGetKeywords());
   };
 
-  const onAddKeyword = (params: { keyword: string; clients: number[] }) => {
-    if (params.keyword) {
-      dispatch(keywordsAddKeyword(params));
+  const onAddKeyword = (keyword: IAddKeyword) => {
+    if (keyword.keyword) {
+      dispatch(keywordsAddKeyword(keyword));
     }
   };
 
   const onSelectKeyword = (id: number) => {
-    dispatch(keywordsSelectKeyword(id))
-  }
+    dispatch(keywordsSelectKeyword(id));
+  };
 
   const onDeselectKeyword = () => {
-    dispatch(keywordsSetSelected(null))
-  }
+    dispatch(keywordsSetSelected(null));
+  };
+
+  const onEditKeyword = (keyword: IEditKeyword) => {
+    if (keyword.keyword) {
+      dispatch(keywordsEditKeyword(keyword))
+    }
+  };
 
   return {
     onGetKeywords,
     onAddKeyword,
     onSelectKeyword,
     onDeselectKeyword,
+    onEditKeyword,
   };
 };
