@@ -76,7 +76,7 @@ const StyledKeyword = styled(PostKeyword)<{
       isSelected &&
       `
     & p {color: ${colors.orange}};
-    &:hover { opacity: 1;}
+    &:hover p { opacity: 1;}
   `
     );
   }}

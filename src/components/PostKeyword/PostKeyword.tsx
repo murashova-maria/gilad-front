@@ -11,16 +11,6 @@ const Keyword = styled.div`
   background: #ffffff;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
   border-radius: 13px;
-  font-size: 14px;
-  line-height: 17px;
-  color: ${colors.graphite_6};
-  cursor: pointer;
-  & > p {
-    transition: 150ms linear;
-    &:hover {
-      opacity: 0.45;
-    }
-  }
 `;
 
 const Pic = styled.img`
@@ -34,11 +24,23 @@ const Pic = styled.img`
   }
 `;
 
+const Text = styled.p<{clickable: Function | undefined}>`
+font-size: 14px;
+line-height: 17px;
+color: ${colors.graphite_6};
+${({clickable}) => clickable && `
+transition: 150ms linear;
+cursor: pointer;
+&:hover {
+  opacity: 0.45;
+}`}
+`
+
 const PostKeyword = ({ children, onClick, onDelete, className }: IProps) => {
   return (
     <Keyword className={className}>
-      <p onClick={onClick}>{children}</p>
-      <Pic onClick={onDelete} src={closePic} />
+      <Text clickable={onClick} onClick={onClick}>{children}</Text>
+      {onDelete && <Pic onClick={onDelete} src={closePic} />}
     </Keyword>
   );
 };
