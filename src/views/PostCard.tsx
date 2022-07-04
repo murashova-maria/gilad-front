@@ -27,10 +27,10 @@ const Clients = styled.div`
   border-inline-start: 1px solid #cccccc;
 `;
 
-const Client = styled.p`
+const Client = styled.p<{sended: boolean}>`
   margin-bottom: 8px;
   text-decoration: underline;
-  color: ${colors.graphite_4};
+  color: ${({sended}) => sended ? 'green' : colors.graphite_4};
   cursor: pointer;
   transition: opacity 250ms linear;
   &:hover {opacity: .65;}
@@ -146,7 +146,7 @@ const PostCard = ({
       <Clients>
         {clients &&
           clients.map((client: any, index: number) =>  (
-            <Client onClick={() => onSelectClient(client.id)} key={index}>{client.name}</Client>
+            <Client sended={client.sended} onClick={() => onSelectClient(client.id)} key={index}>{client.name}</Client>
           ))}
       </Clients>
     </Card>
