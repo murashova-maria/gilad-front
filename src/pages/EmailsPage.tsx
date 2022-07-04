@@ -9,7 +9,11 @@ import { usePostsActions, usePostsState } from "../store/posts/hooks";
 import { useMemo } from "react";
 import { IPost } from "../store/posts/types";
 import { colors } from "../assets/styles/colors";
-import { useClientsActions, useClientsState } from "../store/clients";
+import {
+  IPostCardClient,
+  useClientsActions,
+  useClientsState,
+} from "../store/clients";
 import { MainButton } from "../components/MainButton";
 import KeywordEditor from "../views/KeywordEditor";
 import { useKeywordsActions } from "../store/keywords/hooks";
@@ -122,7 +126,7 @@ const EmailsPage = () => {
   }, []);
 
   const [modal, setModal] = useState<ModalType>(null);
-
+  const [clientsFilter, setClientsFilter] = useState<number | null>(null);
   const onCloseModal = () => {
     setModal(null);
     onSetEditor(null);
@@ -144,9 +148,17 @@ const EmailsPage = () => {
       ...releases,
     ];
 
-    return all.sort(
-      (prev, next) => next.date_for_sorting - prev.date_for_sorting
-    );
+    return all
+      .sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
+      .filter((post) => {
+        if (clientsFilter && !post.clients) return false;
+        if (clientsFilter && post.clients) {
+          return post.clients.some(
+            (client: IPostCardClient) => client.id === clientsFilter
+          );
+        }
+        if (!clientsFilter) return true;
+      });
   }, [
     govils,
     news,
@@ -160,14 +172,25 @@ const EmailsPage = () => {
     govilData,
     govilPdf,
     releases,
+    clientsFilter,
   ]);
 
   const allGoogleNews: IPost[] = useMemo(() => {
     const all = [...googleNews];
-    return all.sort(
-      (prev, next) => next.date_for_sorting - prev.date_for_sorting
-    );
-  }, [googleNews]);
+    return all
+      .sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
+      .filter((post) => {
+        if (clientsFilter && !post.clients) return false;
+        if (clientsFilter && post.clients) {
+          return post.clients.some(
+            (client: IPostCardClient) => {
+              return client.id === clientsFilter
+            }
+          );
+        }
+        if (!clientsFilter) return true;
+      });
+  }, [googleNews, clientsFilter]);
 
   // Handle click on 'next' button
   const onNextPost = (post: IPost) => {
@@ -183,7 +206,6 @@ const EmailsPage = () => {
         onSetEditor(null);
         setModal(null);
       }
-      console.log(index);
     }
     if (
       post._sender === "google_news" &&
@@ -198,6 +220,12 @@ const EmailsPage = () => {
         setModal(null);
       }
     }
+  };
+
+  //Handle on client click in cards
+  const handleSelectClient = (id: number) => {
+    if (id === clientsFilter) setClientsFilter(null);
+    if (id !== clientsFilter) setClientsFilter(id);
   };
 
   return (
@@ -215,6 +243,8 @@ const EmailsPage = () => {
                     .map((post, index) => (
                       <PostsCard
                         key={index}
+                        onSelectClient={handleSelectClient}
+                        selectedClient={clientsFilter}
                         item={post}
                         onEmail={() =>
                           onSetEditor({ ...post, _column_index: index })
@@ -226,6 +256,8 @@ const EmailsPage = () => {
                 {otherPosts.map((post, index) => (
                   <PostsCard
                     key={index}
+                    onSelectClient={handleSelectClient}
+                    selectedClient={clientsFilter}
                     item={post}
                     onEmail={() =>
                       onSetEditor({ ...post, _column_index: index })
@@ -248,6 +280,8 @@ const EmailsPage = () => {
                     .map((post, index) => (
                       <PostsCard
                         key={index}
+                        onSelectClient={handleSelectClient}
+                        selectedClient={clientsFilter}
                         item={post}
                         onEmail={() =>
                           onSetEditor({ ...post, _column_index: index })
@@ -259,6 +293,8 @@ const EmailsPage = () => {
                 {allGoogleNews.map((post, index) => (
                   <PostsCard
                     key={index}
+                    onSelectClient={handleSelectClient}
+                    selectedClient={clientsFilter}
                     item={post}
                     onEmail={() =>
                       onSetEditor({ ...post, _column_index: index })

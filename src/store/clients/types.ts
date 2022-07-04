@@ -5,6 +5,10 @@ export interface IClient {
     email: string[] | null
 }
 
+export interface IPostCardClient extends IClient {
+    sended: boolean
+}
+
 export interface IClientsState {
     clients: IClient[]
     isLoading: boolean

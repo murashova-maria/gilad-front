@@ -138,7 +138,7 @@ const posts = createReducer(initialState, {
   [postsAddNewPost.type]: (state, action: {payload: IPost }) => {
    return {
     ...state,
-    newPosts: [...state.newPosts, action.payload]
+    newPosts: [action.payload, ...state.newPosts]
    }
   },
   [successDeleted.type]: (state, action: { payload: IPostsState}) => {

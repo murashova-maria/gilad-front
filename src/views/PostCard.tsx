@@ -31,6 +31,9 @@ const Client = styled.p`
   margin-bottom: 8px;
   text-decoration: underline;
   color: ${colors.graphite_4};
+  cursor: pointer;
+  transition: opacity 250ms linear;
+  &:hover {opacity: .65;}
 `;
 
 const Title = styled.h2`
@@ -96,6 +99,7 @@ const Btns = styled.div`
 const PostCard = ({
   onEmail,
   onOpenModal,
+  onSelectClient,
   item: { id, title, name, cat, tag, description, keywords, clients, text, source_name, _sender },
 }: IPostCard) => {
   const { t } = useTranslation();
@@ -141,8 +145,8 @@ const PostCard = ({
       </Content>
       <Clients>
         {clients &&
-          clients.map((client: any, index: number) => (
-            <Client key={index}>{client.name}</Client>
+          clients.map((client: any, index: number) =>  (
+            <Client onClick={() => onSelectClient(client.id)} key={index}>{client.name}</Client>
           ))}
       </Clients>
     </Card>

@@ -1,5 +1,4 @@
 export interface IPost {
-    title: string
     [key: string]: any | null
 }
 

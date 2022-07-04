@@ -3,6 +3,8 @@ export interface IPostCard {
     onEmail: ()=> void
     onOpenModal: ()=> void
     item: any
+    onSelectClient: (id: number) => void
+    selectedClient: number | null
 }
 
 export interface IClientsEditor {
