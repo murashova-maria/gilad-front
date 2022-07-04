@@ -102,7 +102,7 @@ const Btns = styled.div`
 `;
 
 const StyledDate = styled.p`
-  margin-top: 10px;
+  margin-top: 18px;
 `;
 
 const PostCard = ({
@@ -134,9 +134,18 @@ const PostCard = ({
 
   const sortDate = useMemo(() => {
     if (date_for_sorting) {
-      return new Date(date_for_sorting * 1000)
-        .toLocaleDateString("en-GB")
-        .replaceAll("/", ".");
+      const data = new Date(new Date().toLocaleString("en-US", {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    })).toLocaleString('en-GB').split(', ')
+    const date = data[0].replaceAll('/', '.')
+    const time = data[1].slice(0,5)
+      return`${date} ${time}`
     }
     if (!date_for_sorting) return null;
   }, [date_for_sorting]);
@@ -176,7 +185,11 @@ const PostCard = ({
             onClick={() => onDeletePost({ node: _sender, postId: id })}
           />
         </Btns>
-        {sortDate && <StyledDate>{sortDate}</StyledDate>}
+        {sortDate && (
+          <StyledDate>
+            {t("post-card_sort-date")} {sortDate}
+          </StyledDate>
+        )}
       </Content>
       <Clients>
         {clients &&
