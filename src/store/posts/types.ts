@@ -34,3 +34,5 @@ export interface IDeletePost {
 
 export type node = 
 "news" |  "govil" |  "agendas" |  "google_news" |  "committee_session" |  "plenum_session" |  "query" |  "bill" |  "press_release" |  "gov_statisctics" |  "govil_data" |  "govil_pdf" 
+
+export type FilterClient = {id: number ,client: string}

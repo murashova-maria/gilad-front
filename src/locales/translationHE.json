@@ -102,6 +102,9 @@
     "emails_title1": "חדשות",
     "emails_title2": "פרסומי מוסדות רשמיים",
     "emails_keywords": "מילות מפתח",
+    "emails_selected-filter": "לקוח נבחר:",
+    "emails_selected-clear": "נקה בחירה",
+
 
     "emails_data-from-db": "נתוני העדכון",
     "emails_data-no-data": "אין מידע זמין",

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePostsActions, usePostsState } from "../store/posts/hooks";
 import { useMemo } from "react";
-import { IPost } from "../store/posts/types";
+import { FilterClient, IPost } from "../store/posts/types";
 import { colors } from "../assets/styles/colors";
 import {
   IPostCardClient,
@@ -17,6 +17,7 @@ import {
 import { MainButton } from "../components/MainButton";
 import KeywordEditor from "../views/KeywordEditor";
 import { useKeywordsActions } from "../store/keywords/hooks";
+import { Button } from "../components/Button";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -26,6 +27,7 @@ const Emails = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  padding-top: 70px;
   &::after {
     content: "";
     position: absolute;
@@ -44,7 +46,7 @@ const Emails = styled.div`
 const Content = styled.div`
   width: 100%;
   flex-grow: 1;
-  padding: 70px 20px 50px;
+  padding: 28px 20px 50px;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
@@ -92,6 +94,17 @@ const ClientsBox = styled.div`
   gap: 10px;
 `;
 
+const Filter = styled.p`
+  position: absolute;
+  margin-inline-start: 30px;
+`;
+
+const FilterClearBtn = styled(Button)`
+  display: inline-flex;
+  margin-inline-start: 10px;
+  cursor: pointer;
+`;
+
 type ModalType = null | "email-editor" | "client-editor" | "keyword-editor";
 
 const EmailsPage = () => {
@@ -126,7 +139,8 @@ const EmailsPage = () => {
   }, []);
 
   const [modal, setModal] = useState<ModalType>(null);
-  const [clientsFilter, setClientsFilter] = useState<number | null>(null);
+  const [clientsFilter, setClientsFilter] = useState<FilterClient | null>(null);
+
   const onCloseModal = () => {
     setModal(null);
     onSetEditor(null);
@@ -137,7 +151,6 @@ const EmailsPage = () => {
       ...govils,
       ...news,
       ...agendas,
-      ...googleNews,
       ...committees,
       ...plenums,
       ...queries,
@@ -154,7 +167,7 @@ const EmailsPage = () => {
         if (clientsFilter && !post.clients) return false;
         if (clientsFilter && post.clients) {
           return post.clients.some(
-            (client: IPostCardClient) => client.id === clientsFilter
+            (client: IPostCardClient) => client.id === clientsFilter.id
           );
         }
         if (!clientsFilter) return true;
@@ -163,7 +176,6 @@ const EmailsPage = () => {
     govils,
     news,
     agendas,
-    googleNews,
     committees,
     plenums,
     queries,
@@ -182,11 +194,9 @@ const EmailsPage = () => {
       .filter((post) => {
         if (clientsFilter && !post.clients) return false;
         if (clientsFilter && post.clients) {
-          return post.clients.some(
-            (client: IPostCardClient) => {
-              return client.id === clientsFilter
-            }
-          );
+          return post.clients.some((client: IPostCardClient) => {
+            return client.id === clientsFilter.id;
+          });
         }
         if (!clientsFilter) return true;
       });
@@ -223,14 +233,22 @@ const EmailsPage = () => {
   };
 
   //Handle on client click in cards
-  const handleSelectClient = (id: number) => {
-    if (id === clientsFilter) setClientsFilter(null);
-    if (id !== clientsFilter) setClientsFilter(id);
+  const handleSelectClient = (client: FilterClient) => {
+    if (client.id === clientsFilter?.id) setClientsFilter(null);
+    if (client.id !== clientsFilter?.id) setClientsFilter(client);
   };
 
   return (
     <>
       <Emails>
+        {clientsFilter && (
+          <Filter>
+            {t("emails_selected-filter")} {clientsFilter.client}{" "}
+            <FilterClearBtn type="clear" onClick={() => setClientsFilter(null)}>
+              {t("emails_selected-clear")}
+            </FilterClearBtn>
+          </Filter>
+        )}
         <Content>
           <div>
             <StyledTitle>{t("emails_title2")}</StyledTitle>

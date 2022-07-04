@@ -47,26 +47,32 @@ const DelBtn = styled(Btn)`
   color: ${colors.red};
 `;
 
-
-const Button = ({ type, ...props  }: IButton) => {
-  const {t} = useTranslation()
+const Button = ({ type, ...props }: IButton) => {
+  const { t } = useTranslation();
   switch (type) {
     case "email":
       return (
         <EmailBtn {...props}>
-          {t('btn_email')} <Pic src={email} />
+          {t("btn_email")} <Pic src={email} />
         </EmailBtn>
       );
     case "edit":
       return (
         <EditBtn {...props}>
-          {t('btn_edit')} <Pic src={edit} />
+          {t("btn_edit")} <Pic src={edit} />
         </EditBtn>
       );
     case "del":
       return (
         <DelBtn {...props}>
-          {t('btn_delete')}
+          {t("btn_delete")}
+          <Pic src={del} />
+        </DelBtn>
+      );
+    case "clear":
+      return (
+        <DelBtn {...props}>
+          {t("emails_selected-clear")}
           <Pic src={del} />
         </DelBtn>
       );

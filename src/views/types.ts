@@ -1,10 +1,10 @@
-import { node } from "../store/posts/types"
+import { FilterClient, node } from "../store/posts/types"
 export interface IPostCard {
     onEmail: ()=> void
     onOpenModal: ()=> void
     item: any
-    onSelectClient: (id: number) => void
-    selectedClient: number | null
+    onSelectClient: (client: FilterClient) => void
+    selectedClient: FilterClient | null
 }
 
 export interface IClientsEditor {

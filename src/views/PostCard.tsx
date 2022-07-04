@@ -6,6 +6,7 @@ import SourceLogo from "../assets/svg/card-src.svg";
 import { IPostCard } from "./types";
 import { useTranslation } from "react-i18next";
 import { usePostsActions, usePostsState } from "../store/posts/hooks"
+import { IPostCardClient } from "../store/clients";
 
 const Card = styled.div`
   width: 540px;
@@ -145,8 +146,8 @@ const PostCard = ({
       </Content>
       <Clients>
         {clients &&
-          clients.map((client: any, index: number) =>  (
-            <Client sended={client.sended} onClick={() => onSelectClient(client.id)} key={index}>{client.name}</Client>
+          clients.map((client: IPostCardClient, index: number) =>  (
+            <Client sended={client.sended} onClick={() => onSelectClient({id: client.id, client: client.name})} key={index}>{client.name}</Client>
           ))}
       </Clients>
     </Card>
