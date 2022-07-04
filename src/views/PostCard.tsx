@@ -5,16 +5,18 @@ import { Button } from "../components/Button";
 import SourceLogo from "../assets/svg/card-src.svg";
 import { IPostCard } from "./types";
 import { useTranslation } from "react-i18next";
-import { usePostsActions, usePostsState } from "../store/posts/hooks"
+import { usePostsActions, usePostsState } from "../store/posts/hooks";
 import { IPostCardClient } from "../store/clients";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const Card = styled.div`
+const Card = styled.div<{ mounted: boolean }>`
   width: 540px;
   display: flex;
   background-color: #fff;
   border-radius: 20px;
   margin-bottom: 30px;
+  transition: opacity 500ms linear;
+  opacity: ${({ mounted }) => (mounted ? 1 : 0)};
 `;
 
 const Content = styled.div`
@@ -29,13 +31,15 @@ const Clients = styled.div`
   border-inline-start: 1px solid #cccccc;
 `;
 
-const Client = styled.p<{sended: boolean}>`
+const Client = styled.p<{ sended: boolean }>`
   margin-bottom: 8px;
   text-decoration: underline;
-  color: ${({sended}) => sended ? 'green' : colors.graphite_4};
+  color: ${({ sended }) => (sended ? "green" : colors.graphite_4)};
   cursor: pointer;
   transition: opacity 250ms linear;
-  &:hover {opacity: .65;}
+  &:hover {
+    opacity: 0.65;
+  }
 `;
 
 const Title = styled.h2`
@@ -100,37 +104,58 @@ const Btns = styled.div`
 
 const StyledDate = styled.p`
   margin-top: 10px;
-`
+`;
 
 const PostCard = ({
   onEmail,
   onOpenModal,
   onSelectClient,
-  item: { id, title, name, cat, tag, description, keywords, clients, text, source_name, _sender, date_for_sorting },
+  item: {
+    id,
+    title,
+    name,
+    cat,
+    tag,
+    description,
+    keywords,
+    clients,
+    text,
+    source_name,
+    _sender,
+    date_for_sorting,
+  },
 }: IPostCard) => {
   const { t } = useTranslation();
-  const {onDeletePost} = usePostsActions();
+  const { onDeletePost } = usePostsActions();
+  const [mounted, setMounted] = useState(false);
 
   const handleOnEmail = () => {
-    onEmail()
-    onOpenModal()
-  }
+    onEmail();
+    onOpenModal();
+  };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setMounted(true);
+    }, 200);
+  }, []);
 
   const sortDate = useMemo(() => {
     if (date_for_sorting) {
-      return new Date(date_for_sorting * 1000).toLocaleDateString('en-GB').replaceAll('/', '.')
+      return new Date(date_for_sorting * 1000)
+        .toLocaleDateString("en-GB")
+        .replaceAll("/", ".");
     }
-    if (!date_for_sorting) return null
-  }, [date_for_sorting])
+    if (!date_for_sorting) return null;
+  }, [date_for_sorting]);
 
   return (
-    <Card>
+    <Card mounted={mounted}>
       <Content>
         {title && <Title>{title}</Title>}
         {name && <Title>{name}</Title>}
         <Source>
-          {(tag || source_name)&& (
+          {(tag || source_name) && (
             <SourceBox>
               <SourcePic src={SourceLogo} />
               {tag || source_name}
@@ -154,14 +179,25 @@ const PostCard = ({
         )}
         <Btns>
           <Button type="email" onClick={handleOnEmail} />
-          <Button type="del" onClick={() => onDeletePost({node: _sender, postId: id})}/>
+          <Button
+            type="del"
+            onClick={() => onDeletePost({ node: _sender, postId: id })}
+          />
         </Btns>
         {sortDate && <StyledDate>{sortDate}</StyledDate>}
       </Content>
       <Clients>
         {clients &&
-          clients.map((client: IPostCardClient, index: number) =>  (
-            <Client sended={client.sended} onClick={() => onSelectClient({id: client.id, client: client.name})} key={index}>{client.name}</Client>
+          clients.map((client: IPostCardClient, index: number) => (
+            <Client
+              sended={client.sended}
+              onClick={() =>
+                onSelectClient({ id: client.id, client: client.name })
+              }
+              key={index}
+            >
+              {client.name}
+            </Client>
           ))}
       </Clients>
     </Card>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { colors } from "../assets/styles/colors";
@@ -9,6 +9,7 @@ import {
   CreatableEditableSelectValue,
 } from "../components/CreateableDropdown/types";
 import { MainButton } from "../components/MainButton";
+import { PostKeyword } from "../components/PostKeyword";
 import { TextInput } from "../components/TextInput";
 import { IClient, useClientsActions, useClientsState } from "../store/clients";
 import { IClientsEditor } from "./types";
@@ -87,6 +88,22 @@ const Client = styled.p<{ isActive: boolean }>`
   }
 `;
 
+const StyledClient = styled(PostKeyword)<{
+  isSelected: boolean;
+  isLoading: boolean;
+}>`
+  ${({ isSelected }) => {
+    return (
+      isSelected &&
+      `
+  color: ${colors.orange};
+  &:hover { opacity: 1;}
+`
+    );
+  }}
+  ${({ isLoading }) => isLoading && "cursor: wait;"}
+`;
+
 const Buttons = styled.div`
   display: flex;
   justify-content: center;
@@ -129,29 +146,41 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
     };
     //@ts-ignore   we don't pass id for new client
     onAddClient(client);
-    setName('')
-    setEmails([])
+    setName("");
+    setEmails([]);
   };
 
   const handleSelectClient = (id: number) => {
     const client = clients.find((c) => c.id === id);
-    let emails = client?.email ? client.email.map(e => ({value: e, label: e})) : []
+    let emails = client?.email
+      ? client.email.map((e) => ({ value: e, label: e }))
+      : [];
     setName(client?.name ? client.name : "");
-    setEmails(emails)
+    setEmails(emails);
     setCurrentClient(id);
   };
 
   const handleEditClient = () => {
-    if (typeof currentClient === 'number' && emails.length > 0) {
+    if (typeof currentClient === "number" && emails.length > 0) {
       const newData = {
         id: currentClient,
         name,
-        team: '',
-        email: emails.map(e => e.value)
-      }
-      onEditClient(newData)
+        team: "",
+        email: emails.map((e) => e.value),
+      };
+      onEditClient(newData);
     }
-  }
+  };
+
+  const clientElements = useMemo(() => {
+    return search
+      ? clients.filter((c) => {
+          const regex = new RegExp(search, "i");
+          return regex.test(c.name);
+        })
+      : clients;
+  }, [clients, search]);
+
   return (
     <Editor isLoading={isLoading}>
       <Content>
@@ -180,36 +209,25 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
           searchBtn={true}
         />
         <Clients>
-          {search &&
-            clients
-              .filter((c) => {
-                const regex = new RegExp(search, "i");
-                return regex.test(c.name);
-              })
-              .map((c) => (
-                <Client
-                  isActive={c.id === currentClient}
-                  onClick={() => handleSelectClient(c.id)}
-                  key={c.id}
-                >
-                  {c.name}
-                </Client>
-              ))}
-
-          {!search &&
-            clients.map((c) => (
-              <Client
-                isActive={c.id === currentClient}
-                onClick={() => handleSelectClient(c.id)}
-                key={c.id}
-              >
-                {c.name}
-              </Client>
-            ))}
+          {clientElements.map((c) => (
+            <StyledClient
+              isSelected={c.id === currentClient}
+              isLoading={isLoading}
+              onDelete={() => console.log('delc')}
+              onClick={() => handleSelectClient(c.id)}
+              key={c.id}
+            >
+              {c.name}
+            </StyledClient>
+          ))}
         </Clients>
       </Content>
       <Buttons>
-        <StyledAction onClick={handleEditClient} color="orange" disabled={isLoading || !currentClient}>
+        <StyledAction
+          onClick={handleEditClient}
+          color="orange"
+          disabled={isLoading || !currentClient}
+        >
           {t("clients-editor_save")}
         </StyledAction>
         <StyledAction onClick={onClose} color="blue">

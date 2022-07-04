@@ -1,5 +1,5 @@
 import { IKeywordEditor } from "./types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { TextInput } from "../components/TextInput";
 import { Dropdown } from "../components/Dropdown";
@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useKeywordsActions, useKeywordsState } from "../store/keywords/hooks";
 import { useClientsState } from "../store/clients";
 import { IEditKeyword } from "../store/keywords";
+import { PostKeyword } from "../components/PostKeyword";
 
 const Editor = styled.div<{ isLoading: boolean }>`
   border-radius: 20px;
@@ -66,29 +67,18 @@ const Keywords = styled.div`
   gap: 10px;
 `;
 
-const Keyword = styled.p<{ isSelected: boolean; isLoading: boolean }>`
-  padding: 3px 10px;
-  background: #ffffff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
-  border-radius: 13px;
-  font-family: "Gilroy-R";
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  text-decoration-line: underline;
-  color: ${colors.graphite_6};
-  cursor: pointer;
-  transition: opacity 250ms linear;
-  &:hover {
-    opacity: 0.6;
-  }
+
+const StyledKeyword = styled(PostKeyword)<{
+  isSelected: boolean;
+  isLoading: boolean;
+}>`
   ${({ isSelected }) => {
     return (
       isSelected &&
       `
-      color: ${colors.orange};
-      &:hover { opacity: 1;}
-    `
+    color: ${colors.orange};
+    &:hover { opacity: 1;}
+  `
     );
   }}
   ${({ isLoading }) => isLoading && "cursor: wait;"}
@@ -152,10 +142,9 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
     onClose();
   };
 
-
   //Clear selected post on unmount
   useEffect(() => {
-    return onDeselectKeyword
+    return onDeselectKeyword;
   }, []);
 
   //Edit Selected keyword in DB
@@ -172,6 +161,15 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
       onEditKeyword(data);
     }
   };
+
+  const keywordElements = useMemo(() => {
+    return search
+      ? keywords.filter((c) => {
+          const regex = new RegExp(search, "i");
+          return regex.test(c.keyword);
+        })
+      : keywords
+  }, [keywords, search]);
 
   return (
     <Editor isLoading={isLoading}>
@@ -202,33 +200,17 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
           searchBtn={true}
         />
         <Keywords>
-          {!search &&
-            keywords.map((k) => (
-              <Keyword
-                isSelected={selectedKeyword?.id === k.id}
-                isLoading={isLoading}
-                onClick={() => handleSelect(k.id)}
-                key={k.id}
-              >
-                {k.keyword}
-              </Keyword>
-            ))}
-          {search &&
-            keywords
-              .filter((c) => {
-                const regex = new RegExp(search, "i");
-                return regex.test(c.keyword);
-              })
-              .map((k) => (
-                <Keyword
-                  isSelected={selectedKeyword?.id === k.id}
-                  isLoading={isLoading}
-                  onClick={() => handleSelect(k.id)}
-                  key={k.id}
-                >
-                  {k.keyword}
-                </Keyword>
-              ))}
+          {keywordElements.map((k) => (
+            <StyledKeyword
+              isSelected={selectedKeyword?.id === k.id}
+              onDelete={() => console.log("delk")}
+              isLoading={isLoading}
+              onClick={() => handleSelect(k.id)}
+              key={k.id}
+            >
+              {k.keyword}
+            </StyledKeyword>
+          ))}
         </Keywords>
       </Content>
       <Buttons>

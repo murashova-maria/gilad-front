@@ -26,11 +26,11 @@ const Pic = styled.img`
   object-position: center;
 `;
 
-const PostKeyword = ({ children }: IProps) => {
+const PostKeyword = ({ children, onClick, onDelete, className }: IProps) => {
   return (
-    <Keyword>
-      {children}
-      <Pic src={closePic} />
+    <Keyword className={className}>
+      <p onClick={onClick}>{children}</p>
+      <Pic onClick={onDelete} src={closePic} />
     </Keyword>
   );
 };
