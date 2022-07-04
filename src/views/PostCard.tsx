@@ -145,7 +145,7 @@ const PostCard = ({
     })).toLocaleString('en-GB').split(', ')
     const date = data[0].replaceAll('/', '.')
     const time = data[1].slice(0,5)
-      return`${date} ${time}`
+      return`${time} ${date}`
     }
     if (!date_for_sorting) return null;
   }, [date_for_sorting]);
