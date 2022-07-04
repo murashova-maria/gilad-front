@@ -7,6 +7,7 @@ import { IPostCard } from "./types";
 import { useTranslation } from "react-i18next";
 import { usePostsActions, usePostsState } from "../store/posts/hooks"
 import { IPostCardClient } from "../store/clients";
+import { useMemo } from "react";
 
 const Card = styled.div`
   width: 540px;
@@ -97,11 +98,15 @@ const Btns = styled.div`
   gap: 15px;
 `;
 
+const StyledDate = styled.p`
+  margin-top: 10px;
+`
+
 const PostCard = ({
   onEmail,
   onOpenModal,
   onSelectClient,
-  item: { id, title, name, cat, tag, description, keywords, clients, text, source_name, _sender },
+  item: { id, title, name, cat, tag, description, keywords, clients, text, source_name, _sender, date_for_sorting },
 }: IPostCard) => {
   const { t } = useTranslation();
   const {onDeletePost} = usePostsActions();
@@ -110,6 +115,14 @@ const PostCard = ({
     onEmail()
     onOpenModal()
   }
+
+
+  const sortDate = useMemo(() => {
+    if (date_for_sorting) {
+      return new Date(date_for_sorting * 1000).toLocaleDateString('en-GB').replaceAll('/', '.')
+    }
+    if (!date_for_sorting) return null
+  }, [date_for_sorting])
 
   return (
     <Card>
@@ -143,6 +156,7 @@ const PostCard = ({
           <Button type="email" onClick={handleOnEmail} />
           <Button type="del" onClick={() => onDeletePost({node: _sender, postId: id})}/>
         </Btns>
+        {sortDate && <StyledDate>{sortDate}</StyledDate>}
       </Content>
       <Clients>
         {clients &&
