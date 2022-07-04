@@ -96,7 +96,7 @@ const StyledClient = styled(PostKeyword)<{
     return (
       isSelected &&
       `
-  color: ${colors.orange};
+  & > p {color: ${colors.orange}};
   &:hover { opacity: 1;}
 `
     );
@@ -123,7 +123,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
   //Global State
   const { t } = useTranslation();
   const { clients, isLoading } = useClientsState();
-  const { onAddClient, onEditClient } = useClientsActions();
+  const { onAddClient, onEditClient, onDeleteClient } = useClientsActions();
   //test clients
   const cl = [
     { id: 1, name: "Edward", email: "Edvaa@mail.ru" },
@@ -213,7 +213,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
             <StyledClient
               isSelected={c.id === currentClient}
               isLoading={isLoading}
-              onDelete={() => console.log('delc')}
+              onDelete={() => onDeleteClient(c.id)}
               onClick={() => handleSelectClient(c.id)}
               key={c.id}
             >

@@ -22,5 +22,12 @@ export const Clients = {
                 "Authorization": `Token ${token}`
             },
         })
+    },
+    deleteClient: async (id: number, token:string) => {
+        return await axiosInstance.delete(`clients/${id}`, {
+            headers: {
+                "Authorization": `Token ${token}`
+            },
+        })
     }
 }

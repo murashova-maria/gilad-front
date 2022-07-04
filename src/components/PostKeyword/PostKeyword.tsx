@@ -15,8 +15,12 @@ const Keyword = styled.div`
   line-height: 17px;
   color: ${colors.graphite_6};
   cursor: pointer;
-  transition: 250ms linear;
-  &:hover {opacity: .65;}
+  & > p {
+    transition: 150ms linear;
+    &:hover {
+      opacity: 0.45;
+    }
+  }
 `;
 
 const Pic = styled.img`
@@ -24,6 +28,10 @@ const Pic = styled.img`
   width: 14px;
   object-fit: contain;
   object-position: center;
+  transition: 250ms linear;
+  &:hover {
+    opacity: 0.65;
+  }
 `;
 
 const PostKeyword = ({ children, onClick, onDelete, className }: IProps) => {

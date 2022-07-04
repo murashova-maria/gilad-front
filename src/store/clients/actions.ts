@@ -12,3 +12,5 @@ export const clientsAppendClient = createAction<IClient>('clients/appendClient')
 export const clientsEditClient = createAction<IClient>('clients/editClient')
 export const clientsUpdateClient = createAction<IClient>('clients/updateClient')
 
+export const clientsDeleteClient = createAction<number>('clients/deleteClient')
+export const clientsRemoveClient = createAction<number>('clients/removeClient')

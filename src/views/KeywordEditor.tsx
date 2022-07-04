@@ -67,7 +67,6 @@ const Keywords = styled.div`
   gap: 10px;
 `;
 
-
 const StyledKeyword = styled(PostKeyword)<{
   isSelected: boolean;
   isLoading: boolean;
@@ -76,7 +75,7 @@ const StyledKeyword = styled(PostKeyword)<{
     return (
       isSelected &&
       `
-    color: ${colors.orange};
+    & p {color: ${colors.orange}};
     &:hover { opacity: 1;}
   `
     );
@@ -102,8 +101,13 @@ const StyledAction = styled(MainButton)`
 const KeywordEditor = ({ onClose }: IKeywordEditor) => {
   const { t } = useTranslation();
   const { keywords, isLoading, selectedKeyword } = useKeywordsState();
-  const { onAddKeyword, onSelectKeyword, onDeselectKeyword, onEditKeyword } =
-    useKeywordsActions();
+  const {
+    onAddKeyword,
+    onSelectKeyword,
+    onDeselectKeyword,
+    onEditKeyword,
+    onDeleteKeyword,
+  } = useKeywordsActions();
   const { clients } = useClientsState();
   const [selectedClients, setSelectedClients] = useState("");
   const [keyword, setKeyword] = useState("");
@@ -168,7 +172,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
           const regex = new RegExp(search, "i");
           return regex.test(c.keyword);
         })
-      : keywords
+      : keywords;
   }, [keywords, search]);
 
   return (
@@ -203,7 +207,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
           {keywordElements.map((k) => (
             <StyledKeyword
               isSelected={selectedKeyword?.id === k.id}
-              onDelete={() => console.log("delk")}
+              onDelete={() => onDeleteKeyword(k.id)}
               isLoading={isLoading}
               onClick={() => handleSelect(k.id)}
               key={k.id}

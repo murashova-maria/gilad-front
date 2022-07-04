@@ -6,6 +6,7 @@ import {
   keywordsSelectKeyword,
   keywordsSetSelected,
   keywordsEditKeyword,
+  keywordsDeleteKeyword,
 } from "./actions";
 import { IAddKeyword, IEditKeyword, IKeywordsState } from "./types";
 
@@ -41,11 +42,16 @@ export const useKeywordsActions = () => {
     }
   };
 
+  const onDeleteKeyword = (id: number) => {
+    dispatch(keywordsDeleteKeyword(id))
+  }
+
   return {
     onGetKeywords,
     onAddKeyword,
     onSelectKeyword,
     onDeselectKeyword,
     onEditKeyword,
+    onDeleteKeyword,
   };
 };

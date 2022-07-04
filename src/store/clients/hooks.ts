@@ -1,32 +1,42 @@
-import { useDispatch, useSelector } from 'react-redux'
-import {rootReducerType} from '..'
-import { clientsGetClients, clientsAddClient, clientsEditClient } from './actions'
-import { IClient, IClientsState } from './types'
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clientsGetClients,
+  clientsAddClient,
+  clientsEditClient,
+  clientsDeleteClient,
+} from "./actions";
+import { IClient, IClientsState } from "./types";
 
-export const clientsSelector = (state: any) => state.clients
+export const clientsSelector = (state: any) => state.clients;
 
-export const useClientsState = ():IClientsState => useSelector(clientsSelector)
+export const useClientsState = (): IClientsState =>
+  useSelector(clientsSelector);
 
 export const useClientsActions = () => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-    const onGetClients = () => {
-        dispatch(clientsGetClients())
-    }
+  const onGetClients = () => {
+    dispatch(clientsGetClients());
+  };
 
-    const onAddClient = (client: IClient) => {
-        if (client.name && client.email && client.email.length > 0) {
-            dispatch(clientsAddClient(client))
-        }
+  const onAddClient = (client: IClient) => {
+    if (client.name && client.email && client.email.length > 0) {
+      dispatch(clientsAddClient(client));
     }
+  };
 
-    const onEditClient = (client: IClient) => {
-        dispatch(clientsEditClient(client))
-    }
+  const onEditClient = (client: IClient) => {
+    dispatch(clientsEditClient(client));
+  };
 
-    return {
-        onGetClients,
-        onEditClient,
-        onAddClient
-    }
-}
+  const onDeleteClient = (id: number) => {
+    dispatch(clientsDeleteClient(id));
+  };
+
+  return {
+    onGetClients,
+    onEditClient,
+    onAddClient,
+    onDeleteClient,
+  };
+};

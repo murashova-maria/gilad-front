@@ -11,7 +11,9 @@ import {
   keywordsSelectKeyword,
   keywordsSetSelected,
   keywordsEditKeyword,
-  keywordsUpdateKeyword
+  keywordsUpdateKeyword,
+  keywordsDeleteKeyword,
+  keywordsRemoveKeyword
 } from "./actions";
 import { IAddKeyword, IEditKeyword, IKeyword, ISelectedKeyword } from "./types";
 
@@ -20,6 +22,7 @@ export function* keywordsWatcher() {
   yield takeLatest(keywordsAddKeyword, addKeyword);
   yield takeLatest(keywordsSelectKeyword, selectKeyword);
   yield takeLatest(keywordsEditKeyword, editKeyword);
+  yield takeLatest(keywordsDeleteKeyword, deleteKeyword);
 
 }
 
@@ -80,6 +83,22 @@ function* editKeyword({payload}: {type: string, payload: IEditKeyword}) {
     if (dataRes) {
       console.log(dataRes)
       yield put(keywordsUpdateKeyword(dataRes))
+    }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
+}
+
+function* deleteKeyword({payload}: {payload: number}) {
+  const { token } = yield select(userSelector);
+  if (token) {
+    yield put(keywordsSetLoading(true));
+    const [dataRes, dataErr]: [ISelectedKeyword | undefined, any] = yield call(handle, Keywords.deleteKeyword(payload, token));
+    yield put(keywordsSetLoading(false));
+    if (!dataErr) {
+      yield put(keywordsRemoveKeyword(payload))
+      console.log(dataRes)
     }
     if (dataErr) {
       console.log(dataErr);

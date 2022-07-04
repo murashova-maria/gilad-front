@@ -17,3 +17,6 @@ export const keywordsSetSelected = createAction<ISelectedKeyword | null>('keywor
 export const keywordsEditKeyword = createAction<IEditKeyword>('keywords/editKeyword')
 
 export const keywordsUpdateKeyword = createAction<ISelectedKeyword>('keywords/updateKeyword')
+
+export const keywordsDeleteKeyword = createAction<number>('keywords/deleteKeyword')
+export const keywordsRemoveKeyword = createAction<number>('keywords/removeKeyword')

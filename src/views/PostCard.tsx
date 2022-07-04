@@ -9,14 +9,13 @@ import { usePostsActions, usePostsState } from "../store/posts/hooks";
 import { IPostCardClient } from "../store/clients";
 import { useEffect, useMemo, useState } from "react";
 
-const Card = styled.div<{ mounted: boolean }>`
+const Card = styled.div`
   width: 540px;
   display: flex;
   background-color: #fff;
   border-radius: 20px;
   margin-bottom: 30px;
   transition: opacity 500ms linear;
-  opacity: ${({ mounted }) => (mounted ? 1 : 0)};
 `;
 
 const Content = styled.div`
@@ -127,18 +126,11 @@ const PostCard = ({
 }: IPostCard) => {
   const { t } = useTranslation();
   const { onDeletePost } = usePostsActions();
-  const [mounted, setMounted] = useState(false);
 
   const handleOnEmail = () => {
     onEmail();
     onOpenModal();
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setMounted(true);
-    }, 200);
-  }, []);
 
   const sortDate = useMemo(() => {
     if (date_for_sorting) {
@@ -150,7 +142,7 @@ const PostCard = ({
   }, [date_for_sorting]);
 
   return (
-    <Card mounted={mounted}>
+    <Card>
       <Content>
         {title && <Title>{title}</Title>}
         {name && <Title>{name}</Title>}

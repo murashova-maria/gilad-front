@@ -30,4 +30,11 @@ export const Keywords = {
       },
     });
   },
+  deleteKeyword: async (id: number, token: string) => {
+    return await axiosInstance.delete(`keywords/${id}`,{
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    })
+  }
 };

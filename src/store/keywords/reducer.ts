@@ -5,7 +5,8 @@ import {
   keywordsSetLoading,
   keywordsAppendKeyword,
   keywordsSetSelected,
-  keywordsUpdateKeyword
+  keywordsUpdateKeyword,
+  keywordsRemoveKeyword
 } from "./actions";
 
 const initialState: IKeywordsState = {
@@ -61,6 +62,13 @@ const keywords = createReducer(initialState, {
         keywords: newKeywords
       }
     }
+  },
+  [keywordsRemoveKeyword.type]: (state, action: { payload: number }) => {
+    const withoutRemoved = state.keywords.filter(k => k.id !== action.payload)
+    return {
+      ...state,
+      keywords: withoutRemoved
+    };
   },
 });
 
