@@ -5,7 +5,7 @@ import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { usePostsActions, usePostsState } from "../store/posts/hooks";
+import { useAllPosts, useGoogleNews, useOtherPosts, usePostsActions, usePostsState } from "../store/posts/hooks";
 import { useMemo } from "react";
 import { FilterClient, IPost } from "../store/posts/types";
 import { colors } from "../assets/styles/colors";
@@ -109,26 +109,13 @@ type ModalType = null | "email-editor" | "client-editor" | "keyword-editor";
 
 const EmailsPage = () => {
   const { t } = useTranslation();
-  const {
-    editorPost,
-    govils,
-    news,
-    agendas,
-    googleNews,
-    committees,
-    plenums,
-    queries,
-    bills,
-    govStatistics,
-    govilData,
-    govilPdf,
-    releases,
-    newPosts,
-  } = usePostsState();
+  const otherPosts = useOtherPosts()
+  const googleNews = useGoogleNews()
+  const {editorPost} = usePostsState()
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
   // Fetch posts
-  const { onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor } =
+  const { onGetPosts, onWatchForPosts, onSetEditor } =
     usePostsActions();
   const { onGetKeywords } = useKeywordsActions();
   useEffect(() => {
@@ -146,23 +133,8 @@ const EmailsPage = () => {
     onSetEditor(null);
   };
 
-  const otherPosts: IPost[] = useMemo(() => {
-    const all = [
-      ...govils,
-      ...news,
-      ...agendas,
-      ...committees,
-      ...plenums,
-      ...queries,
-      ...bills,
-      ...govStatistics,
-      ...govilData,
-      ...govilPdf,
-      ...releases,
-    ];
-
-    return all
-      .sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
+  const otherPostsFiltered: IPost[] = useMemo(() => {
+    return otherPosts
       .filter((post) => {
         if (clientsFilter && !post.clients) return false;
         if (clientsFilter && post.clients) {
@@ -173,34 +145,26 @@ const EmailsPage = () => {
         if (!clientsFilter) return true;
       });
   }, [
-    govils,
-    news,
-    agendas,
-    committees,
-    plenums,
-    queries,
-    bills,
-    govStatistics,
-    govilData,
-    govilPdf,
-    releases,
-    clientsFilter,
+    otherPosts,
+    clientsFilter
   ]);
 
-  const allGoogleNews: IPost[] = useMemo(() => {
-    const all = [...googleNews];
-    return all
-      .sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
+  const googleNewsFiltered: IPost[] = useMemo(() => {
+    return googleNews
       .filter((post) => {
         if (clientsFilter && !post.clients) return false;
         if (clientsFilter && post.clients) {
-          return post.clients.some((client: IPostCardClient) => {
-            return client.id === clientsFilter.id;
-          });
+          return post.clients.some(
+            (client: IPostCardClient) => client.id === clientsFilter.id
+          );
         }
         if (!clientsFilter) return true;
       });
-  }, [googleNews, clientsFilter]);
+  }, [
+    googleNews,
+    clientsFilter
+  ]);
+
 
   // Handle click on 'next' button
   const onNextPost = (post: IPost) => {
@@ -209,10 +173,10 @@ const EmailsPage = () => {
       typeof post._column_index === "number"
     ) {
       const index = post._column_index + 1;
-      if (otherPosts[index]) {
-        onSetEditor({ ...otherPosts[index], _column_index: index });
+      if (otherPostsFiltered[index]) {
+        onSetEditor({ ...otherPostsFiltered[index], _column_index: index });
       }
-      if (!otherPosts[index]) {
+      if (!otherPostsFiltered[index]) {
         onSetEditor(null);
         setModal(null);
       }
@@ -222,10 +186,10 @@ const EmailsPage = () => {
       typeof post._column_index === "number"
     ) {
       const index = post._column_index + 1;
-      if (allGoogleNews[index]) {
-        onSetEditor({ ...allGoogleNews[index], _column_index: index });
+      if (googleNewsFiltered[index]) {
+        onSetEditor({ ...googleNewsFiltered[index], _column_index: index });
       }
-      if (!allGoogleNews[index]) {
+      if (!googleNewsFiltered[index]) {
         onSetEditor(null);
         setModal(null);
       }
@@ -254,24 +218,8 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {
-                  // Posts from websocket
-                  newPosts
-                    .filter((post) => post._sender !== "google_news")
-                    .map((post, index) => (
-                      <PostsCard
-                        key={index}
-                        onSelectClient={handleSelectClient}
-                        selectedClient={clientsFilter}
-                        item={post}
-                        onEmail={() =>
-                          onSetEditor({ ...post, _column_index: index })
-                        }
-                        onOpenModal={() => setModal("email-editor")}
-                      />
-                    ))
-                }
-                {otherPosts.map((post, index) => (
+                {otherPostsFiltered
+                .map((post, index) => (
                   <PostsCard
                     key={index}
                     onSelectClient={handleSelectClient}
@@ -291,24 +239,7 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title1")}</StyledTitle>
             <PostsContainer>
               <div>
-                {
-                  // Posts from websocket
-                  newPosts
-                    .filter((post) => post._sender === "google_news")
-                    .map((post, index) => (
-                      <PostsCard
-                        key={index}
-                        onSelectClient={handleSelectClient}
-                        selectedClient={clientsFilter}
-                        item={post}
-                        onEmail={() =>
-                          onSetEditor({ ...post, _column_index: index })
-                        }
-                        onOpenModal={() => setModal("email-editor")}
-                      />
-                    ))
-                }
-                {allGoogleNews.map((post, index) => (
+                {googleNewsFiltered.map((post, index) => (
                   <PostsCard
                     key={index}
                     onSelectClient={handleSelectClient}

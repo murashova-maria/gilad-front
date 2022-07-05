@@ -11,7 +11,7 @@ import { useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
-import { usePostsActions } from "../store/posts/hooks";
+import { usePostsActions, usePostsState, } from "../store/posts/hooks";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -717,8 +717,9 @@ interface IProps {
   onNext: (post: IPost) => void;
 }
 
-const EmailEditor = ({ post, onNext }: IProps) => {
+const EmailEditor = ({post, onNext }: IProps) => {
   const { t } = useTranslation();
+  // All posts (for dropdown)
   //Templates Dropdown
   const [template, setTemplate] = useState("");
   //Email theme
@@ -762,7 +763,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
   };
 
   //Handle send email (btn click)
-  const { onSendEmail } = usePostsActions();
+  const { onSendEmail, onSetEditor } = usePostsActions();
   const handleSendEmail = () => {
     let checkboxClients = clientsList.split(", ");
     if (checkboxClients[0] === "") checkboxClients = [];
@@ -802,7 +803,6 @@ const EmailEditor = ({ post, onNext }: IProps) => {
       <Container>
         <InitialPost>
           <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
-
           {keys.map((key) => {
             // don't need to show this values(endpoint name, index in column...)
             if (key[0] === "_") {
@@ -1049,7 +1049,6 @@ const EmailEditor = ({ post, onNext }: IProps) => {
 
         <div>
           <StyledTitle>{t("emails_edit-title")}</StyledTitle>
-
           <TemplatesDropdown
             placeholder=""
             onSelect={(e) => handleChangeTemplate(e)}

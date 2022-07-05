@@ -26,6 +26,58 @@ export const postsSelector = (state: rootReducerType) => state.posts;
 
 export const usePostsState = (): IPostsState => useSelector(postsSelector);
 
+export const useAllPosts = (): IPost[] => {
+  return useSelector((state: rootReducerType) => {
+    return [
+      ...state.posts.newPosts,
+      ...state.posts.govils,
+      ...state.posts.news,
+      ...state.posts.agendas,
+      ...state.posts.googleNews,
+      ...state.posts.committees,
+      ...state.posts.plenums,
+      ...state.posts.persons,
+      ...state.posts.queries,
+      ...state.posts.bills,
+      ...state.posts.releases,
+      ...state.posts.govStatistics,
+      ...state.posts.govilData,
+      ...state.posts.govilPdf,
+    ].sort((prev, next) => next.date_for_sorting - prev.date_for_sorting);
+  });
+};
+
+export const useGoogleNews = (): IPost[] => {
+  return useSelector((state: rootReducerType) => {
+    const filteredNew = state.posts.newPosts.filter((post) => post._sender === 'google_news')
+    return [
+      ...filteredNew,
+      ...state.posts.googleNews,
+    ].sort((prev, next) => next.date_for_sorting - prev.date_for_sorting);
+  });
+}
+
+export const useOtherPosts = (): IPost[] => {
+  return useSelector((state: rootReducerType) => {
+    const filteredNew = state.posts.newPosts.filter((post) => post._sender !== 'google_news')
+    return [
+      ...filteredNew,
+      ...state.posts.govils,
+      ...state.posts.news,
+      ...state.posts.agendas,
+      ...state.posts.committees,
+      ...state.posts.plenums,
+      ...state.posts.persons,
+      ...state.posts.queries,
+      ...state.posts.bills,
+      ...state.posts.releases,
+      ...state.posts.govStatistics,
+      ...state.posts.govilData,
+      ...state.posts.govilPdf,
+    ].sort((prev, next) => next.date_for_sorting - prev.date_for_sorting);
+  });
+}
+
 export const usePostsActions = () => {
   const dispatch = useDispatch();
 
@@ -36,7 +88,7 @@ export const usePostsActions = () => {
     dispatch(postsGetGoogleNews());
     dispatch(postsGetCommittees());
     dispatch(postsGetPlenums());
-    dispatch(postsGetPersons())
+    dispatch(postsGetPersons());
     dispatch(postsGetQueries());
     dispatch(postsGetBills());
     dispatch(postsGetReleases());
@@ -47,52 +99,53 @@ export const usePostsActions = () => {
 
   // Add new posts from WebSocket
   const onWatchForPosts = () => {
-    ws.addEventListener('open', () => {
-      ws.send(JSON.stringify({event_type: "test"}))
-    })
-    ws.addEventListener('message', (e: any) => {
-      const data = JSON.parse(e.data)
-      console.log('Web Socket:', data)
+    ws.addEventListener("open", () => {
+      ws.send(JSON.stringify({ event_type: "test" }));
+    });
+    ws.addEventListener("message", (e: any) => {
+      const data = JSON.parse(e.data);
+      console.log("Web Socket:", data);
       if (data.data) {
-         dispatch(postsAddNewPost({...data.data, _sender: data.sender}))
+        dispatch(postsAddNewPost({ ...data.data, _sender: data.sender }));
       }
-    })
-    ws.addEventListener('error', (e) => {
-      console.log('web socket closed with error:', e)
-    })
-    ws.addEventListener('close', (e) => {
-      console.log('web socket closed ', e)
-      ws.addEventListener('message', (e: any) => {
-        const data = JSON.parse(e.data)
-        console.log('new post', data.data)
+    });
+    ws.addEventListener("error", (e) => {
+      console.log("web socket closed with error:", e);
+    });
+    ws.addEventListener("close", (e) => {
+      console.log("web socket closed ", e);
+      ws.addEventListener("message", (e: any) => {
+        const data = JSON.parse(e.data);
+        console.log("new post", data.data);
         if (data.data) {
-           dispatch(postsAddNewPost({...data.data, _sender: data.sender}))
+          dispatch(postsAddNewPost({ ...data.data, _sender: data.sender }));
         }
-      })
-    })
-  }
+      });
+    });
+  };
 
   const onCloseWebSocket = () => {
-    ws.close()
-  }
+    ws.close();
+  };
 
   const onSetEditor = (post: IPost | null) => {
-    dispatch(postsSetEditor(post))
-  }
+    dispatch(postsSetEditor(post));
+  };
 
-  const  onSendEmail = (email: IEmail) => {
-    dispatch(postsSendEmail(email))
-  }
+  const onSendEmail = (email: IEmail) => {
+    dispatch(postsSendEmail(email));
+  };
 
   const onDeletePost = (payload: IDeletePost) => {
-    dispatch(PostDelete(payload))
-  }
+    dispatch(PostDelete(payload));
+  };
 
   return {
-    onGetPosts, onDeletePost,
+    onGetPosts,
+    onDeletePost,
     onWatchForPosts,
     onCloseWebSocket,
     onSetEditor,
-    onSendEmail
+    onSendEmail,
   };
 };
