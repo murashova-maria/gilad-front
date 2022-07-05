@@ -19,6 +19,7 @@ const Pic = styled.img`
   object-fit: contain;
   object-position: center;
   transition: 250ms linear;
+  cursor: pointer;
   &:hover {
     opacity: 0.65;
   }
