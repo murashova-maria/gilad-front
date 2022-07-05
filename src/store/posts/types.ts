@@ -6,6 +6,9 @@ export interface IEmail {
     subject: string
     html: string
     recipients_ids: Array<string | number>
+    items: {
+        [key: string] : number[]
+    }
 }
 
 export interface IPostsState {

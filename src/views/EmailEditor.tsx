@@ -5,7 +5,7 @@ import { colors } from "../assets/styles/colors";
 import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
-import { IPost } from "../store/posts";
+import { IEmail, IPost } from "../store/posts";
 import React, { useEffect, useMemo, useState } from "react";
 import { IClient, useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
@@ -66,10 +66,10 @@ const SelectorLabel = styled.p`
 `;
 
 const ClientBox = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin: 0 10px 20px 0;
+  margin: 0 10px 15px 0;
 `;
 
 const ClientName = styled.p`
@@ -765,18 +765,26 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   //Handle send email (btn click)
   const { onSendEmail, onSetEditor } = usePostsActions();
   const handleSendEmail = () => {
+    const items: {[key: string] : number[]} = {}
+    openedPostsIndices.forEach(postIndex => {
+      const _sender = posts[postIndex]._sender
+      if (items[_sender]) items[_sender].push(posts[postIndex].id)
+      if (!items[_sender]) items[_sender] = [posts[postIndex].id]
+    })
+    /////////////////////////////
     let checkboxClients = clientsList.split(", ");
     if (checkboxClients[0] === "") checkboxClients = [];
     //@ts-ignore
     checkboxClients = checkboxClients.map((id) => parseInt(id, 10));
+    ///////////////////////////
     const emailData = {
       subject: emailTitle,
       html: text,
       recipients_ids: [...checkboxClients, ...selectedClients],
-      id: post.id,
-      sender: post._sender,
+      items: items 
     };
-    onSendEmail(emailData);
+    console.log(items)
+   // onSendEmail(emailData);
   };
 
   //Fetch all clients list
@@ -1126,7 +1134,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
 
           <Selector>
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
-            {post.clients && post.clients.length > 0 && (
+            {suggestedClients.length > 0 && (
               <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
             )}
             {suggestedClients.map((client: any) => {
