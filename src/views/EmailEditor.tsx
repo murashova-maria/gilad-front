@@ -7,11 +7,12 @@ import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { IPost } from "../store/posts";
 import React, { useEffect, useMemo, useState } from "react";
-import { useClientsState } from "../store/clients";
+import { IClient, useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
-import { usePostsActions, usePostsState, } from "../store/posts/hooks";
+import { usePostsActions } from "../store/posts/hooks";
+import { IEmailEditor } from "./types";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -32,7 +33,7 @@ const Container = styled.div`
   grid-template-columns: 1fr 2fr;
 `;
 
-const TemplatesDropdown = styled(Dropdown)`
+const StyledDropdown = styled(Dropdown)`
   margin: 0px 30px 10px;
   width: calc(100% - 60px);
   margin-top: 25px;
@@ -65,7 +66,7 @@ const SelectorLabel = styled.p`
 `;
 
 const ClientBox = styled.div`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 5px;
   margin: 0 10px 20px 0;
@@ -232,7 +233,9 @@ const template4 = (post: IPost) => {
 
 const template6 = (post: IPost) => {
   const tempUpdatedDate = post.last_updated_date
-    ? new Date(post.last_updated_date).toLocaleDateString('en-GB').replaceAll('/','-')
+    ? new Date(post.last_updated_date)
+        .toLocaleDateString("en-GB")
+        .replaceAll("/", "-")
     : dash;
   const tempTitle = post.title ? post.title : null;
   const tempInitiators = post.initiators
@@ -712,14 +715,10 @@ const emailTitles = {
   },
 };
 
-interface IProps {
-  post: IPost;
-  onNext: (post: IPost) => void;
-}
-
-const EmailEditor = ({post, onNext }: IProps) => {
+const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   const { t } = useTranslation();
-  // All posts (for dropdown)
+  // Store opened posts indices, in this modal(using dropdown)
+  const [openedPostsIndices, setOpenedPostsIndices] = useState<number[]>([]);
   //Templates Dropdown
   const [template, setTemplate] = useState("");
   //Email theme
@@ -731,6 +730,7 @@ const EmailEditor = ({post, onNext }: IProps) => {
   const [clientsList, setClientsList] = useState("");
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
+
   // Add remove/clients using checkbox
   const selectClient = (client: any) => {
     if (selectedClients.includes(client.id)) {
@@ -784,18 +784,46 @@ const EmailEditor = ({post, onNext }: IProps) => {
     selectAccordingTemplate();
   }, []);
 
-  //Clients dropdown
-
-  const clientsOptions = useMemo(() => {
-    let filtered: any = [];
-    if (clients && clients.length > 0 && post.clients) {
-      filtered = clients.map((c) => ({ item: c.name, value: c.id }));
-      filtered = filtered.filter((option: any) =>
-        post.clients.every((client: any) => client.id !== option.value)
-      );
+  //Add opened posts
+  useEffect(() => {
+    const index = posts.findIndex(
+      (p) => p.id === post.id && p._sender === post._sender
+    );
+    if (!openedPostsIndices.includes(index)) {
+      setOpenedPostsIndices((prev) => [...prev, index]);
     }
-    return filtered;
-  }, [clients, post]);
+  }, [post]);
+
+  //Clients dropdown
+  const clientsOptions = useMemo(() => {
+    let options = clients.map((c) => ({ item: c.name, value: c.id }));
+    openedPostsIndices.forEach((postIndex) => {
+      if (clients && clients.length > 0 && posts[postIndex].clients) {
+        options = options.filter((option: any) =>
+          posts[postIndex].clients.every(
+            (client: any) => client.id !== option.value
+          )
+        );
+      }
+    });
+    return options;
+  }, [clients, openedPostsIndices]);
+
+  //Clients checkboxes
+  const suggestedClients = useMemo(() => {
+    let clients: Array<{ id: number; name: string }> = [];
+    openedPostsIndices.forEach((postIndex) => {
+      if (posts[postIndex].clients?.length > 0) {
+        posts[postIndex].clients.forEach((client: IClient) => {
+          if (clients.every(c => c.id !== client.id))
+          clients.push({ id: client.id, name: client.name })
+        }
+          
+        );
+      }
+    });
+    return clients;
+  }, [openedPostsIndices]);
 
   const keys = Object.keys(post);
   return (
@@ -876,7 +904,9 @@ const EmailEditor = ({post, onNext }: IProps) => {
             //Return cases when key is last_updated_date
             if (post[key] && key === "last_updated_date") {
               let rawDate = new Date(post[key]);
-              let date = rawDate.toLocaleDateString('en-GB').replaceAll('/','-')
+              let date = rawDate
+                .toLocaleDateString("en-GB")
+                .replaceAll("/", "-");
               let time = rawDate.getHours() + ":" + rawDate.getMinutes();
               let formatedDate = time + " " + date;
 
@@ -1049,7 +1079,20 @@ const EmailEditor = ({post, onNext }: IProps) => {
 
         <div>
           <StyledTitle>{t("emails_edit-title")}</StyledTitle>
-          <TemplatesDropdown
+
+          <StyledDropdown
+            placeholder=""
+            onSelect={(index) => onSetEditor(posts[index])}
+            value={posts.findIndex(
+              (p) => p.id === post.id && post._sender === p._sender
+            )}
+            options={posts.map((p, index) => ({
+              item: p.title || p.name,
+              value: index,
+            }))}
+            label={t("emails_posts")}
+          />
+          <StyledDropdown
             placeholder=""
             onSelect={(e) => handleChangeTemplate(e)}
             value={template}
@@ -1077,7 +1120,7 @@ const EmailEditor = ({post, onNext }: IProps) => {
                 ["bold", "underline", "list", "align", "fontSize", "font"],
                 ["link"],
               ],
-              font: ['Arial', 'Verdana', 'Georgia', 'Times New Roman']
+              font: ["Arial", "Verdana", "Georgia", "Times New Roman"],
             }}
           />
 
@@ -1086,18 +1129,17 @@ const EmailEditor = ({post, onNext }: IProps) => {
             {post.clients && post.clients.length > 0 && (
               <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
             )}
-            {post.clients &&
-              post.clients.map((client: any) => {
-                return (
-                  <ClientBox key={client.id}>
-                    <Checkbox
-                      checked={selectedClients.includes(client.id)}
-                      setIsCheckedCreate={() => selectClient(client)}
-                    />
-                    <ClientName>{client.name}</ClientName>
-                  </ClientBox>
-                );
-              })}
+            {suggestedClients.map((client: any) => {
+              return (
+                <ClientBox key={client.id}>
+                  <Checkbox
+                    checked={selectedClients.includes(client.id)}
+                    setIsCheckedCreate={() => selectClient(client)}
+                  />
+                  <ClientName>{client.name}</ClientName>
+                </ClientBox>
+              );
+            })}
             <ClientDropdown
               placeholder=""
               isMultiSelect={true}

@@ -112,6 +112,7 @@
     "emails_edit-title": "עריכה",
     "emails_direct-link": "לינק ישיר",
     "emails_content-formats": "טמפלייטים",
+    "emails_posts": "Posts",
     "emails_select-clients": "בחר לקוחות נוספים",
     "emails_suggested-clients": "ממלצים לעדכון זה",
     "emails_clients-label": "לקוחות",
@@ -141,7 +142,7 @@
     "clients-editor_title2": "לקוחות",
 
     "keyword-editor_title1": "עריכת מילות מפתח",
-    "keyword-editor_keyword-plhr": "מילות מפתח",
+    "keyword-editor_keyword-plhr": "הוסף כאן מילת חיפוש",
     "keyword-editor_keyword-label": "מילת מפתח",
     "keyword-editor_clients-plhr": "לקוחות",
     "keyword-editor_clients-label": "לקוחות",

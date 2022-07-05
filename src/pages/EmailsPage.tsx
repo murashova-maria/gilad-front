@@ -275,7 +275,7 @@ const EmailsPage = () => {
       </Emails>
       {modal === "email-editor" && (
         <Modal onClose={onCloseModal}>
-          {editorPost && <EmailEditor post={editorPost} onNext={onNextPost} />}
+          {editorPost && <EmailEditor posts={editorPost._sender === 'google_news' ? googleNewsFiltered : otherPostsFiltered} post={editorPost} onNext={onNextPost} />}
         </Modal>
       )}
       {modal === "client-editor" && (
