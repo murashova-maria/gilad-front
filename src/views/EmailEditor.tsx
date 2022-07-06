@@ -765,12 +765,12 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   //Handle send email (btn click)
   const { onSendEmail, onSetEditor } = usePostsActions();
   const handleSendEmail = () => {
-    const items: {[key: string] : number[]} = {}
-    openedPostsIndices.forEach(postIndex => {
-      const _sender = posts[postIndex]._sender
-      if (items[_sender]) items[_sender].push(posts[postIndex].id)
-      if (!items[_sender]) items[_sender] = [posts[postIndex].id]
-    })
+    const items: { [key: string]: number[] } = {};
+    openedPostsIndices.forEach((postIndex) => {
+      const _sender = posts[postIndex]._sender;
+      if (items[_sender]) items[_sender].push(posts[postIndex].id);
+      if (!items[_sender]) items[_sender] = [posts[postIndex].id];
+    });
     /////////////////////////////
     let checkboxClients = clientsList.split(", ");
     if (checkboxClients[0] === "") checkboxClients = [];
@@ -781,7 +781,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
       subject: emailTitle,
       html: text,
       recipients_ids: [...checkboxClients, ...selectedClients],
-      items: items 
+      items: items,
     };
     onSendEmail(emailData);
   };
@@ -822,11 +822,9 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
     openedPostsIndices.forEach((postIndex) => {
       if (posts[postIndex].clients?.length > 0) {
         posts[postIndex].clients.forEach((client: IClient) => {
-          if (clients.every(c => c.id !== client.id))
-          clients.push({ id: client.id, name: client.name })
-        }
-          
-        );
+          if (clients.every((c) => c.id !== client.id))
+            clients.push({ id: client.id, name: client.name });
+        });
       }
     });
     return clients;
@@ -899,7 +897,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
                   {elements}
                 </PostItem>
               ) : (
-                "null"
+                <PostItem>{t("emails_data-no-data")}</PostItem>
               );
             }
 
@@ -1003,11 +1001,13 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {post[key].length > 0
-                    ? post[key].map((item: any, index: number) => (
-                        <PostValue key={index}>{item.name}</PostValue>
-                      ))
-                    : "null"}
+                  {post[key].length > 0 ? (
+                    post[key].map((item: any, index: number) => (
+                      <PostValue key={index}>{item.name}</PostValue>
+                    ))
+                  ) : (
+                    <>{t("emails_data-no-data")}</>
+                  )}
                 </PostItem>
               );
             }
@@ -1017,11 +1017,13 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {post[key].length > 0
-                    ? post[key].map((item: any, index: number) => (
-                        <PostValue key={index}>{item.name}</PostValue>
-                      ))
-                    : "null"}
+                  {post[key].length > 0 ? (
+                    post[key].map((item: any, index: number) => (
+                      <PostValue key={index}>{item.name}</PostValue>
+                    ))
+                  ) : (
+                    <>{t("emails_data-no-data")}</>
+                  )}
                 </PostItem>
               );
             }
@@ -1054,7 +1056,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
               return (
                 <Initiators key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {list.length > 0 ? list : "null"}
+                  {list.length > 0 ? list : <>{t("emails_data-no-data")}</>}
                 </Initiators>
               );
             }
@@ -1077,7 +1079,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  <PostValue>null</PostValue>
+                  <PostValue>{t("emails_data-no-data")}</PostValue>
                 </PostItem>
               );
             }
