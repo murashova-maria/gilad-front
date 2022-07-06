@@ -119,11 +119,17 @@ const StyledAction = styled(MainButton)`
   width: 150px;
 `;
 
+const StyledError = styled.p`
+  text-align: center;
+  font-size: 17px;
+  color: ${colors.red};
+`
+
 const ClientsEditor = ({ onClose }: IClientsEditor) => {
   //Global State
   const { t } = useTranslation();
-  const { clients, isLoading } = useClientsState();
-  const { onAddClient, onEditClient, onDeleteClient } = useClientsActions();
+  const { clients, isLoading, errorMessage } = useClientsState();
+  const { onAddClient, onEditClient, onDeleteClient, onSetErrorMessage } = useClientsActions();
   //test clients
   const cl = [
     { id: 1, name: "Edward", email: "Edvaa@mail.ru" },
@@ -144,10 +150,16 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
       team: "",
       email: emails.map((e) => e.value),
     };
-    //@ts-ignore   we don't pass id for new client
-    onAddClient(client);
-    setName("");
-    setEmails([]);
+    if (client.name && client.email && client.email.length > 0) {
+      onAddClient(client);
+      setName("");
+      setEmails([]);
+    } else {
+      onSetErrorMessage(t('clients_name-email-empty'))
+      setTimeout(() => {
+        onSetErrorMessage(null)
+      }, 5000)
+    }
   };
 
   const handleSelectClient = (id: number) => {
@@ -185,6 +197,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
     <Editor isLoading={isLoading}>
       <Content>
         <Title>{t("clients-editor_title1")}</Title>
+        {errorMessage && <StyledError>{errorMessage}</StyledError>}
         <ClientsBox>
           <StyledInput
             value={name}

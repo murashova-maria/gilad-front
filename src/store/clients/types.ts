@@ -12,4 +12,5 @@ export interface IPostCardClient extends IClient {
 export interface IClientsState {
     clients: IClient[]
     isLoading: boolean
+    errorMessage: string | null
 }

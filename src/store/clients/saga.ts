@@ -38,7 +38,7 @@ function* getClients(): any {
   }
 }
 
-function* addClient({ payload }: { payload: IClient }): any {
+function* addClient({ payload }: { payload: Omit<IClient, 'id'> }): any {
   const { token } = yield select(userSelector);
   if (token) {
     yield put(clientsSetLoading(true));

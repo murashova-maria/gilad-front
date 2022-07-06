@@ -9,7 +9,7 @@ export const Clients = {
             },
         })
     },
-    addClient: async (client: IClient ,token: string) => {
+    addClient: async (client: Omit<IClient, 'id'> ,token: string) => {
         return await axiosInstance.post('clients/', client, {
             headers: {
                 "Authorization": `Token ${token}`
