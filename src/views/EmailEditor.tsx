@@ -783,8 +783,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
       recipients_ids: [...checkboxClients, ...selectedClients],
       items: items 
     };
-    console.log(items)
-   // onSendEmail(emailData);
+    onSendEmail(emailData);
   };
 
   //Fetch all clients list
