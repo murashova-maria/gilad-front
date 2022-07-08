@@ -1,23 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { rootReducerType } from "..";
 import {
-  postsGetGovils,
-  postsGetNews,
-  postsGetAgendas,
-  postsGetGoogleNews,
-  postsGetCommittees,
-  postsGetPlenums,
-  postsGetQueries,
-  postsGetBills,
-  postsGetReleases,
   postsSetEditor,
-  postsGetGovStatistics,
-  postsAddNewPost,
-  postsGetGovilData,
-  postsGetGovilPdf,
   postsSendEmail,
   PostDelete,
-  postsGetPersons,
+  postsSetNewPostsAvailable,
+  postsGetAllPosts,
 } from "./actions";
 import { IEmail, IPost, IPostsState, IDeletePost } from "./types";
 import { ws } from "../../api";
@@ -29,7 +17,6 @@ export const usePostsState = (): IPostsState => useSelector(postsSelector);
 export const useAllPosts = (): IPost[] => {
   return useSelector((state: rootReducerType) => {
     return [
-      ...state.posts.newPosts,
       ...state.posts.govils,
       ...state.posts.news,
       ...state.posts.agendas,
@@ -49,19 +36,15 @@ export const useAllPosts = (): IPost[] => {
 
 export const useGoogleNews = (): IPost[] => {
   return useSelector((state: rootReducerType) => {
-    const filteredNew = state.posts.newPosts.filter((post) => post._sender === 'google_news')
-    return [
-      ...filteredNew,
-      ...state.posts.googleNews,
-    ].sort((prev, next) => next.date_for_sorting - prev.date_for_sorting);
+    return [...state.posts.googleNews].sort(
+      (prev, next) => next.date_for_sorting - prev.date_for_sorting
+    );
   });
-}
+};
 
 export const useOtherPosts = (): IPost[] => {
   return useSelector((state: rootReducerType) => {
-    const filteredNew = state.posts.newPosts.filter((post) => post._sender !== 'google_news')
     return [
-      ...filteredNew,
       ...state.posts.govils,
       ...state.posts.news,
       ...state.posts.agendas,
@@ -76,56 +59,29 @@ export const useOtherPosts = (): IPost[] => {
       ...state.posts.govilPdf,
     ].sort((prev, next) => next.date_for_sorting - prev.date_for_sorting);
   });
-}
+};
 
 export const usePostsActions = () => {
   const dispatch = useDispatch();
 
   const onGetPosts = () => {
-    dispatch(postsGetGovils());
-    dispatch(postsGetNews());
-    dispatch(postsGetAgendas());
-    dispatch(postsGetGoogleNews());
-    dispatch(postsGetCommittees());
-    dispatch(postsGetPlenums());
-    dispatch(postsGetPersons());
-    dispatch(postsGetQueries());
-    dispatch(postsGetBills());
-    dispatch(postsGetReleases());
-    dispatch(postsGetGovStatistics());
-    dispatch(postsGetGovilData());
-    dispatch(postsGetGovilPdf());
+    dispatch(postsGetAllPosts())
   };
 
   // Add new posts from WebSocket
-  const onWatchForPosts = () => {
-    ws.addEventListener("open", () => {
-      ws.send(JSON.stringify({ event_type: "test" }));
-    });
-    ws.addEventListener("message", (e: any) => {
-      const data = JSON.parse(e.data);
-      console.log("Web Socket:", data);
-      if (data.data) {
-        dispatch(postsAddNewPost({ ...data.data, _sender: data.sender }));
-      }
-    });
-    ws.addEventListener("error", (e) => {
-      console.log("web socket closed with error:", e);
-    });
-    ws.addEventListener("close", (e) => {
-      console.log("web socket closed ", e);
-      ws.addEventListener("message", (e: any) => {
-        const data = JSON.parse(e.data);
-        console.log("new post", data.data);
-        if (data.data) {
-          dispatch(postsAddNewPost({ ...data.data, _sender: data.sender }));
-        }
-      });
-    });
-  };
+  const onWatchForPosts = (token: string) => {
+    const channel = ws(token);
+    //@ts-ignore
+    window.channel = channel
+    channel.addEventListener('open', () => {
 
-  const onCloseWebSocket = () => {
-    ws.close();
+    })
+    channel.addEventListener('message', (e) => {
+      if (e.data) {
+        const {data} = JSON.parse(e.data)
+        if (data) dispatch(postsSetNewPostsAvailable(true))
+      }
+    })
   };
 
   const onSetEditor = (post: IPost | null) => {
@@ -144,7 +100,6 @@ export const usePostsActions = () => {
     onGetPosts,
     onDeletePost,
     onWatchForPosts,
-    onCloseWebSocket,
     onSetEditor,
     onSendEmail,
   };

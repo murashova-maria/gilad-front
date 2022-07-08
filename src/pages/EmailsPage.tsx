@@ -5,7 +5,13 @@ import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAllPosts, useGoogleNews, useOtherPosts, usePostsActions, usePostsState } from "../store/posts/hooks";
+import {
+  useAllPosts,
+  useGoogleNews,
+  useOtherPosts,
+  usePostsActions,
+  usePostsState,
+} from "../store/posts/hooks";
 import { useMemo } from "react";
 import { FilterClient, IPost } from "../store/posts/types";
 import { colors } from "../assets/styles/colors";
@@ -18,6 +24,7 @@ import { MainButton } from "../components/MainButton";
 import KeywordEditor from "../views/KeywordEditor";
 import { useKeywordsActions } from "../store/keywords/hooks";
 import { Button } from "../components/Button";
+import { useUserState } from "../store/user/hooks";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -105,25 +112,32 @@ const FilterClearBtn = styled(Button)`
   cursor: pointer;
 `;
 
+const NewPostsBtn = styled(MainButton)`
+  display: block;
+  margin: 30px auto;
+`;
+
 type ModalType = null | "email-editor" | "client-editor" | "keyword-editor";
 
 const EmailsPage = () => {
   const { t } = useTranslation();
-  const otherPosts = useOtherPosts()
-  const googleNews = useGoogleNews()
-  const {editorPost} = usePostsState()
+  const otherPosts = useOtherPosts();
+  const googleNews = useGoogleNews();
+  const { editorPost, newPostsAvailable } = usePostsState();
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
+  const {token} = useUserState()
   // Fetch posts
-  const { onGetPosts, onWatchForPosts, onSetEditor } =
-    usePostsActions();
+  const { onGetPosts, onWatchForPosts, onSetEditor } = usePostsActions();
   const { onGetKeywords } = useKeywordsActions();
   useEffect(() => {
     onGetPosts();
-    onWatchForPosts();
     onGetClients();
     onGetKeywords();
   }, []);
+  useEffect(() => {
+    if (token) onWatchForPosts(token)
+  }, [token])
 
   const [modal, setModal] = useState<ModalType>(null);
   const [clientsFilter, setClientsFilter] = useState<FilterClient | null>(null);
@@ -134,37 +148,28 @@ const EmailsPage = () => {
   };
 
   const otherPostsFiltered: IPost[] = useMemo(() => {
-    return otherPosts
-      .filter((post) => {
-        if (clientsFilter && !post.clients) return false;
-        if (clientsFilter && post.clients) {
-          return post.clients.some(
-            (client: IPostCardClient) => client.id === clientsFilter.id
-          );
-        }
-        if (!clientsFilter) return true;
-      });
-  }, [
-    otherPosts,
-    clientsFilter
-  ]);
+    return otherPosts.filter((post) => {
+      if (clientsFilter && !post.clients) return false;
+      if (clientsFilter && post.clients) {
+        return post.clients.some(
+          (client: IPostCardClient) => client.id === clientsFilter.id
+        );
+      }
+      if (!clientsFilter) return true;
+    });
+  }, [otherPosts, clientsFilter]);
 
   const googleNewsFiltered: IPost[] = useMemo(() => {
-    return googleNews
-      .filter((post) => {
-        if (clientsFilter && !post.clients) return false;
-        if (clientsFilter && post.clients) {
-          return post.clients.some(
-            (client: IPostCardClient) => client.id === clientsFilter.id
-          );
-        }
-        if (!clientsFilter) return true;
-      });
-  }, [
-    googleNews,
-    clientsFilter
-  ]);
-
+    return googleNews.filter((post) => {
+      if (clientsFilter && !post.clients) return false;
+      if (clientsFilter && post.clients) {
+        return post.clients.some(
+          (client: IPostCardClient) => client.id === clientsFilter.id
+        );
+      }
+      if (!clientsFilter) return true;
+    });
+  }, [googleNews, clientsFilter]);
 
   // Handle click on 'next' button
   const onNextPost = (post: IPost) => {
@@ -218,8 +223,15 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {otherPostsFiltered
-                .map((post, index) => (
+                {newPostsAvailable && (
+                  <NewPostsBtn
+                    color="orange"
+                    onClick={() => onGetPosts()}
+                  >
+                    New posts available...
+                  </NewPostsBtn>
+                )}
+                {otherPostsFiltered.map((post, index) => (
                   <PostsCard
                     key={index}
                     onSelectClient={handleSelectClient}
@@ -239,6 +251,14 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title1")}</StyledTitle>
             <PostsContainer>
               <div>
+                {newPostsAvailable && (
+                  <NewPostsBtn
+                    color="orange"
+                    onClick={() => onGetPosts()}
+                  >
+                    New posts available...
+                  </NewPostsBtn>
+                )}
                 {googleNewsFiltered.map((post, index) => (
                   <PostsCard
                     key={index}
@@ -275,7 +295,17 @@ const EmailsPage = () => {
       </Emails>
       {modal === "email-editor" && (
         <Modal onClose={onCloseModal}>
-          {editorPost && <EmailEditor posts={editorPost._sender === 'google_news' ? googleNewsFiltered : otherPostsFiltered} post={editorPost} onNext={onNextPost} />}
+          {editorPost && (
+            <EmailEditor
+              posts={
+                editorPost._sender === "google_news"
+                  ? googleNewsFiltered
+                  : otherPostsFiltered
+              }
+              post={editorPost}
+              onNext={onNextPost}
+            />
+          )}
         </Modal>
       )}
       {modal === "client-editor" && (

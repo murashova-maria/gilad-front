@@ -13,6 +13,7 @@ export interface IEmail {
 
 export interface IPostsState {
     editorPost: IPost | null
+    newPostsAvailable: boolean
     govils: IPost[]
     news: IPost[]
     agendas: IPost[]
@@ -26,8 +27,6 @@ export interface IPostsState {
     govStatistics: IPost[]
     govilData: IPost[]
     govilPdf: IPost[]
-    newPosts: IPost[]
-
 }
 
 export interface IDeletePost {

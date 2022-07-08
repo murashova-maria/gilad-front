@@ -12,15 +12,16 @@ import {
   postsSetReleases,
   postsSetEditor,
   postsSetGovStatistics,
-  postsAddNewPost,
   postsSetGovilData,
   postsSetGovilPdf,
+  postsSetNewPostsAvailable,
   successDeleted
 } from "./actions";
 import { IPostsState, IPost, IDeletePost } from "./types";
 
 const initialState: IPostsState = {
   editorPost: null,
+  newPostsAvailable: false,
   govils: [],
   news: [],
   agendas: [],
@@ -34,7 +35,6 @@ const initialState: IPostsState = {
   govStatistics: [],
   govilData: [],
   govilPdf: [],
-  newPosts: [],
 };
 
 const posts = createReducer(initialState, {
@@ -135,16 +135,16 @@ const posts = createReducer(initialState, {
       govilPdf: newPosts
     };
   },
-  [postsAddNewPost.type]: (state, action: {payload: IPost }) => {
-   return {
-    ...state,
-    newPosts: [action.payload, ...state.newPosts]
-   }
-  },
   [successDeleted.type]: (state, action: { payload: IPostsState}) => {
     return {
       ...state,
       ...action.payload
+    }
+  },
+  [postsSetNewPostsAvailable.type]: (state, action: { payload: boolean}) => {
+    return {
+      ...state,
+      newPostsAvailable: action.payload
     }
   }
 });
