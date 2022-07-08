@@ -16,6 +16,7 @@ import {
   postsSetGovilPdf,
   postsIncrementNewPosts,
   postsResetNewPosts,
+  postsSetIsFetching,
   successDeleted
 } from "./actions";
 import { IPostsState, IPost, IDeletePost } from "./types";
@@ -23,6 +24,7 @@ import { IPostsState, IPost, IDeletePost } from "./types";
 const initialState: IPostsState = {
   editorPost: null,
   newPostsAvailable: 0,
+  isFetching: false,
   govils: [],
   news: [],
   agendas: [],
@@ -152,6 +154,12 @@ const posts = createReducer(initialState, {
     return {
       ...state,
       newPostsAvailable: 0
+    }
+  },
+  [postsSetIsFetching.type]: (state, action: {payload: boolean}) => {
+    return {
+      ...state,
+      isFetching: action.payload
     }
   }
 });

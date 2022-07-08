@@ -59,3 +59,6 @@ export const successDeleted = createAction<{node: string}>("posts/successDeleteA
 //Set new posts available
 export const postsIncrementNewPosts = createAction("posts/incrementNewPosts")
 export const postsResetNewPosts = createAction("posts/resetNewPosts")
+
+//Set is fetching
+export const postsSetIsFetching = createAction<boolean>("posts/setIsFetching")

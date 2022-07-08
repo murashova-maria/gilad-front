@@ -21,6 +21,7 @@ import {
   PostDelete,
   postsGetAllPosts,
   postsResetNewPosts,
+  postsSetIsFetching,
 } from "./actions";
 
 import { IEmail, IPost, IDeletePost, IPostsState, node } from "./types";
@@ -32,6 +33,7 @@ export function* postsWatcher() {
 }
 
 function* getAll(): any {
+  yield put(postsSetIsFetching(true))
   yield all([
     call(getGovils),
     call(getNews),
@@ -47,6 +49,7 @@ function* getAll(): any {
     call(getGovilData),
     call(getGovilPdf),
   ]);
+  yield put(postsSetIsFetching(false))
   yield put(postsResetNewPosts());
 }
 

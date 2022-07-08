@@ -14,6 +14,7 @@ export interface IEmail {
 export interface IPostsState {
     editorPost: IPost | null
     newPostsAvailable: number
+    isFetching: boolean
     govils: IPost[]
     news: IPost[]
     agendas: IPost[]

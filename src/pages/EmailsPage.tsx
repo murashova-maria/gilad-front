@@ -25,6 +25,7 @@ import KeywordEditor from "../views/KeywordEditor";
 import { useKeywordsActions } from "../store/keywords/hooks";
 import { Button } from "../components/Button";
 import { useUserState } from "../store/user/hooks";
+import { Preloader } from "../components/Preloader";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -123,7 +124,7 @@ const EmailsPage = () => {
   const { t } = useTranslation();
   const otherPosts = useOtherPosts();
   const googleNews = useGoogleNews();
-  const { editorPost, newPostsAvailable } = usePostsState();
+  const { editorPost, newPostsAvailable, isFetching } = usePostsState();
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
   const { token } = useUserState();
@@ -223,9 +224,10 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {newPostsAvailable > 0 && (
+                {isFetching && <Preloader />}
+                {newPostsAvailable > 0 && !isFetching && (
                   <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
-                    {`${newPostsAvailable} ${t('emails_new-available')}`}
+                    {`${newPostsAvailable} ${t("emails_new-available")}`}
                   </NewPostsBtn>
                 )}
                 {otherPostsFiltered.map((post, index) => (
@@ -248,9 +250,10 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title1")}</StyledTitle>
             <PostsContainer>
               <div>
-                {newPostsAvailable > 0 && (
+                {isFetching && <Preloader />}
+                {newPostsAvailable > 0 && !isFetching && (
                   <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
-                    {`${newPostsAvailable} ${t('emails_new-available')}`}
+                    {`${newPostsAvailable} ${t("emails_new-available")}`}
                   </NewPostsBtn>
                 )}
                 {googleNewsFiltered.map((post, index) => (
