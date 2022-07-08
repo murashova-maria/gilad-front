@@ -1,4 +1,4 @@
-import { call, fork, put, select, takeLatest } from "redux-saga/effects";
+import { call, fork, all, put, select, takeLatest } from "redux-saga/effects";
 import { handle } from "../../api";
 import { Posts } from "../../api/Posts";
 import { userSelector } from "../user/hooks";
@@ -20,7 +20,7 @@ import {
   postsSendEmail,
   PostDelete,
   postsGetAllPosts,
-  postsSetNewPostsAvailable
+  postsResetNewPosts,
 } from "./actions";
 
 import { IEmail, IPost, IDeletePost, IPostsState, node } from "./types";
@@ -32,24 +32,22 @@ export function* postsWatcher() {
 }
 
 function* getAll(): any {
-  yield fork(getGovils)
-  yield fork(getNews)
-  yield fork(getAgendas)
-  yield fork(getGoogleNews)
-  yield fork(getCommittees)
-  yield fork(getPlenums)
-  yield fork(getPersons)
-  yield fork(getQueries)
-  yield fork(getBills)
-  yield fork(getReleases)
-  yield fork(getGovStatistics)
-  yield fork(getGovilData)
-  yield fork(getGovilPdf)
-  yield fork(getGovils)
-  yield put(postsSetNewPostsAvailable(false))
-
-
-
+  yield all([
+    call(getGovils),
+    call(getNews),
+    call(getAgendas),
+    call(getGoogleNews),
+    call(getCommittees),
+    call(getPlenums),
+    call(getPersons),
+    call(getQueries),
+    call(getBills),
+    call(getReleases),
+    call(getGovStatistics),
+    call(getGovilData),
+    call(getGovilPdf),
+  ]);
+  yield put(postsResetNewPosts());
 }
 
 function* getGovils(): any {

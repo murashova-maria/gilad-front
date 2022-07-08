@@ -13,7 +13,7 @@ export interface IEmail {
 
 export interface IPostsState {
     editorPost: IPost | null
-    newPostsAvailable: boolean
+    newPostsAvailable: number
     govils: IPost[]
     news: IPost[]
     agendas: IPost[]

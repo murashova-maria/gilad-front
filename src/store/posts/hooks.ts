@@ -4,7 +4,7 @@ import {
   postsSetEditor,
   postsSendEmail,
   PostDelete,
-  postsSetNewPostsAvailable,
+  postsIncrementNewPosts,
   postsGetAllPosts,
 } from "./actions";
 import { IEmail, IPost, IPostsState, IDeletePost } from "./types";
@@ -71,15 +71,14 @@ export const usePostsActions = () => {
   // Add new posts from WebSocket
   const onWatchForPosts = (token: string) => {
     const channel = ws(token);
-    //@ts-ignore
-    window.channel = channel
     channel.addEventListener('open', () => {
 
     })
     channel.addEventListener('message', (e) => {
       if (e.data) {
         const {data} = JSON.parse(e.data)
-        if (data) dispatch(postsSetNewPostsAvailable(true))
+        console.log(e.data)
+        if (data) dispatch(postsIncrementNewPosts())
       }
     })
   };

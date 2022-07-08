@@ -126,7 +126,7 @@ const EmailsPage = () => {
   const { editorPost, newPostsAvailable } = usePostsState();
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
-  const {token} = useUserState()
+  const { token } = useUserState();
   // Fetch posts
   const { onGetPosts, onWatchForPosts, onSetEditor } = usePostsActions();
   const { onGetKeywords } = useKeywordsActions();
@@ -136,8 +136,8 @@ const EmailsPage = () => {
     onGetKeywords();
   }, []);
   useEffect(() => {
-    if (token) onWatchForPosts(token)
-  }, [token])
+    if (token) onWatchForPosts(token);
+  }, [token]);
 
   const [modal, setModal] = useState<ModalType>(null);
   const [clientsFilter, setClientsFilter] = useState<FilterClient | null>(null);
@@ -223,12 +223,9 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {newPostsAvailable && (
-                  <NewPostsBtn
-                    color="orange"
-                    onClick={() => onGetPosts()}
-                  >
-                    New posts available...
+                {newPostsAvailable > 0 && (
+                  <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
+                    {`${newPostsAvailable} ${t('emails_new-available')}`}
                   </NewPostsBtn>
                 )}
                 {otherPostsFiltered.map((post, index) => (
@@ -251,12 +248,9 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title1")}</StyledTitle>
             <PostsContainer>
               <div>
-                {newPostsAvailable && (
-                  <NewPostsBtn
-                    color="orange"
-                    onClick={() => onGetPosts()}
-                  >
-                    New posts available...
+                {newPostsAvailable > 0 && (
+                  <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
+                    {`${newPostsAvailable} ${t('emails_new-available')}`}
                   </NewPostsBtn>
                 )}
                 {googleNewsFiltered.map((post, index) => (

@@ -14,14 +14,15 @@ import {
   postsSetGovStatistics,
   postsSetGovilData,
   postsSetGovilPdf,
-  postsSetNewPostsAvailable,
+  postsIncrementNewPosts,
+  postsResetNewPosts,
   successDeleted
 } from "./actions";
 import { IPostsState, IPost, IDeletePost } from "./types";
 
 const initialState: IPostsState = {
   editorPost: null,
-  newPostsAvailable: false,
+  newPostsAvailable: 0,
   govils: [],
   news: [],
   agendas: [],
@@ -141,10 +142,16 @@ const posts = createReducer(initialState, {
       ...action.payload
     }
   },
-  [postsSetNewPostsAvailable.type]: (state, action: { payload: boolean}) => {
+  [postsIncrementNewPosts.type]: (state) => {
     return {
       ...state,
-      newPostsAvailable: action.payload
+      newPostsAvailable: state.newPostsAvailable + 1
+    }
+  },
+  [postsResetNewPosts.type]: (state) => {
+    return {
+      ...state,
+      newPostsAvailable: 0
     }
   }
 });

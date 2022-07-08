@@ -57,4 +57,5 @@ export const successDeleted = createAction<{node: string}>("posts/successDeleteA
 
 
 //Set new posts available
-export const postsSetNewPostsAvailable = createAction<boolean>("posts/setNewPostsAvailable")
+export const postsIncrementNewPosts = createAction("posts/incrementNewPosts")
+export const postsResetNewPosts = createAction("posts/resetNewPosts")
