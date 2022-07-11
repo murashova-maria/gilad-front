@@ -13,6 +13,8 @@ import { PostKeyword } from "../components/PostKeyword";
 import { TextInput } from "../components/TextInput";
 import { IClient, useClientsActions, useClientsState } from "../store/clients";
 import { IClientsEditor } from "./types";
+import { Title } from "../components/Title";
+import { ButtonBox } from "../components/ButtonBox";
 
 const Editor = styled.div<{ isLoading: boolean }>`
   border-radius: 20px;
@@ -29,14 +31,6 @@ const Content = styled.div`
   padding: 40px 30px 30px;
 `;
 
-const Title = styled.h2`
-  text-align: center;
-  font-family: "Gilroy-B";
-  font-size: 36px;
-  line-height: 45px;
-  color: #253238;
-  margin: 10px 0 10px;
-`;
 
 const ClientsBox = styled.div`
   display: flex;
@@ -44,11 +38,11 @@ const ClientsBox = styled.div`
   gap: 20px;
 `;
 
-const StyledInput = styled(TextInput)<{ searchBtn?: boolean }>`
+const StyledInput = styled(TextInput)`
   margin-bottom: 20px;
   & input {
     padding: 10px 20px;
-    ${({ searchBtn }) => (searchBtn ? "padding-inline-start: 35px;" : "")}
+    
   }
   & input::placeholder {
     text-decoration: underline;
@@ -104,14 +98,6 @@ const StyledClient = styled(PostKeyword)<{
   ${({ isLoading }) => isLoading && "cursor: wait;"}
 `;
 
-const Buttons = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px 0;
-  background: #ffffff;
-  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);
-`;
 
 const StyledAction = styled(MainButton)`
   padding: 11px 0;
@@ -201,7 +187,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
         <ClientsBox>
           <StyledInput
             value={name}
-            onChange={(val) => setName(val)}
+            onChange={setName}
             placeholder={t("clients-editor_name-plhr")}
             label={t("clients-editor_name-label")}
           />
@@ -217,7 +203,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
         <Title>{t("clients-editor_title2")}</Title>
         <StyledInput
           value={search}
-          onChange={(val) => setSearch(val)}
+          onChange={setSearch}
           label={t("clients-editor_search-label")}
           searchBtn={true}
         />
@@ -235,7 +221,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
           ))}
         </Clients>
       </Content>
-      <Buttons>
+      <ButtonBox>
         <StyledAction
           onClick={handleEditClient}
           color="orange"
@@ -246,7 +232,7 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
         <StyledAction onClick={onClose} color="blue">
           {t("clients-editor_close")}
         </StyledAction>
-      </Buttons>
+      </ButtonBox>
     </Editor>
   );
 };

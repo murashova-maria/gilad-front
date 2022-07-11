@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import bg from "../assets/img/bg.png";
-import { ClientsEditor, EmailEditor, PostsCard } from "../views";
+import {
+  AddUser,
+  ClientsEditor,
+  EditUser,
+  EmailEditor,
+  PostsCard,
+} from "../views";
 import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
@@ -118,7 +124,17 @@ const NewPostsBtn = styled(MainButton)`
   margin: 30px auto;
 `;
 
-type ModalType = null | "email-editor" | "client-editor" | "keyword-editor";
+const UsersBtn = styled(MainButton)`
+  width: 186px;
+`;
+
+type ModalType =
+  | null
+  | "email-editor"
+  | "client-editor"
+  | "keyword-editor"
+  | "add-user"
+  | "edit-user";
 
 const EmailsPage = () => {
   const { t } = useTranslation();
@@ -287,6 +303,9 @@ const EmailsPage = () => {
             >
               {t("clients_edit-clients")}
             </MainButton>
+            <UsersBtn color="transparent" onClick={() => setModal("edit-user")}>
+              Users
+            </UsersBtn>
           </ClientsBox>
         </Clients>
       </Emails>
@@ -313,6 +332,16 @@ const EmailsPage = () => {
       {modal === "keyword-editor" && (
         <Modal onClose={onCloseModal}>
           <KeywordEditor onClose={onCloseModal} />
+        </Modal>
+      )}
+      {modal === "add-user" && (
+        <Modal onClose={onCloseModal}>
+          <AddUser onClose={onCloseModal} />
+        </Modal>
+      )}
+      {modal === "edit-user" && (
+        <Modal onClose={onCloseModal}>
+          <EditUser onClose={onCloseModal} />
         </Modal>
       )}
     </>

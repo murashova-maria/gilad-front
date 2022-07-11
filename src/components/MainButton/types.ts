@@ -1,5 +1,5 @@
 export interface IMainButton {
-    color: 'orange' | 'blue'
+    color: 'orange' | 'blue' | 'transparent'
     onClick: () => void
     disabled?: boolean
     children?: string

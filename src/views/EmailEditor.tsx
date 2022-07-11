@@ -13,6 +13,7 @@ import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
 import { usePostsActions } from "../store/posts/hooks";
 import { IEmailEditor } from "./types";
+import { selectCheckbox } from "../utilites/selectCheckbox";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -731,18 +732,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
 
-  // Add remove/clients using checkbox
-  const selectClient = (client: any) => {
-    if (selectedClients.includes(client.id)) {
-      const index = selectedClients.indexOf(client.id);
-      let newItems = [...selectedClients];
-      newItems.splice(index, 1);
-      setSelectedClients(newItems);
-    }
-    if (!selectedClients.includes(client.id)) {
-      setSelectedClients((prev) => [...prev, client.id]);
-    }
-  };
+
   //Handle template change with dropdown
   const handleChangeTemplate = (val: string) => {
     //@ts-ignore
@@ -1143,7 +1133,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
                 <ClientBox key={client.id}>
                   <Checkbox
                     checked={selectedClients.includes(client.id)}
-                    setIsCheckedCreate={() => selectClient(client)}
+                    setIsCheckedCreate={() => setSelectedClients(selectCheckbox(client.id, selectedClients))}
                   />
                   <ClientName>{client.name}</ClientName>
                 </ClientBox>

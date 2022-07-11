@@ -151,7 +151,30 @@
     "keyword-editor_title2": "מילות מפתח",
     "keyword-editor_search": "חישוב",
     "keyword-editor_save": "שמירה",
-    "keyword-editor_close": "סגירה"
+    "keyword-editor_close": "סגירה",
+
+
+    "add-user_title1": "Add new user",
+    "add-user_title2": "Users",
+    "add-user_login": "Login",
+    "add-user_password": "Password",
+    "add-user_email": "Email",
+    "add-user_email-password": "Email password",
+    "add-user_search": "Search",
+    "add-user_save": "שמירה",
+    "add-user_close": "סגירה",
+
+
+
+    "edit-user_title1": "User",
+    "edit-user_title2": "Connected clients",
+    "edit-user_title3": "Connected new clients",
+    "edit-user_users": "Users",
+    "edit-user_save": "שמירה",
+    "edit-user_close": "סגירה"
+
+
+
 
 
 
