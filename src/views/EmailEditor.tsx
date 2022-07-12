@@ -1081,18 +1081,6 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
 
           <StyledDropdown
             placeholder=""
-            onSelect={(index) => onSetEditor(posts[index])}
-            value={posts.findIndex(
-              (p) => p.id === post.id && post._sender === p._sender
-            )}
-            options={posts.map((p, index) => ({
-              item: p.title || p.name,
-              value: index,
-            }))}
-            label={t("emails_posts")}
-          />
-          <StyledDropdown
-            placeholder=""
             onSelect={(e) => handleChangeTemplate(e)}
             value={template}
             options={templates.options}
