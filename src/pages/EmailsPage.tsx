@@ -3,7 +3,6 @@ import bg from "../assets/img/bg.png";
 import {
   AddUser,
   ClientsEditor,
-  EditUser,
   EmailEditor,
   PostsCard,
 } from "../views";
@@ -32,6 +31,7 @@ import { useKeywordsActions } from "../store/keywords/hooks";
 import { Button } from "../components/Button";
 import { useUserState } from "../store/user/hooks";
 import { Preloader } from "../components/Preloader";
+import { useUsersActions } from "../store/users";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -128,13 +128,12 @@ const UsersBtn = styled(MainButton)`
   width: 186px;
 `;
 
-type ModalType =
+export type ModalType =
   | null
   | "email-editor"
   | "client-editor"
   | "keyword-editor"
   | "add-user"
-  | "edit-user";
 
 const EmailsPage = () => {
   const { t } = useTranslation();
@@ -147,10 +146,12 @@ const EmailsPage = () => {
   // Fetch posts
   const { onGetPosts, onWatchForPosts, onSetEditor } = usePostsActions();
   const { onGetKeywords } = useKeywordsActions();
+  const {onGetUsers, onSelectUser} = useUsersActions()
   useEffect(() => {
     onGetPosts();
     onGetClients();
     onGetKeywords();
+    onGetUsers();
   }, []);
   useEffect(() => {
     if (token) onWatchForPosts(token);
@@ -161,7 +162,8 @@ const EmailsPage = () => {
 
   const onCloseModal = () => {
     setModal(null);
-    onSetEditor(null);
+    onSetEditor(null)
+    onSelectUser(null)
   };
 
   const otherPostsFiltered: IPost[] = useMemo(() => {
@@ -303,8 +305,8 @@ const EmailsPage = () => {
             >
               {t("clients_edit-clients")}
             </MainButton>
-            <UsersBtn color="transparent" onClick={() => setModal("edit-user")}>
-              Users
+            <UsersBtn color="transparent" onClick={() => setModal("add-user")}>
+              {t('add-user_users')}
             </UsersBtn>
           </ClientsBox>
         </Clients>
@@ -337,11 +339,6 @@ const EmailsPage = () => {
       {modal === "add-user" && (
         <Modal onClose={onCloseModal}>
           <AddUser onClose={onCloseModal} />
-        </Modal>
-      )}
-      {modal === "edit-user" && (
-        <Modal onClose={onCloseModal}>
-          <EditUser onClose={onCloseModal} />
         </Modal>
       )}
     </>

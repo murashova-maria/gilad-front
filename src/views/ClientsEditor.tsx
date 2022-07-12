@@ -128,6 +128,8 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
   const [name, setName] = useState<string>("");
   const [emails, setEmails] = useState<CreatableEditableSelectOption[]>([]);
   const [search, setSearch] = useState<string>("");
+  const regex = new RegExp(search, "i");
+
 
   const handleAddClient = () => {
     setCurrentClient(null);
@@ -173,11 +175,10 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
   const clientElements = useMemo(() => {
     return search
       ? clients.filter((c) => {
-          const regex = new RegExp(search, "i");
           return regex.test(c.name);
         })
       : clients;
-  }, [clients, search]);
+  }, [clients, search, regex]);
 
   return (
     <Editor isLoading={isLoading}>
