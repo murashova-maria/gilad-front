@@ -11,6 +11,8 @@ import { useKeywordsActions, useKeywordsState } from "../store/keywords/hooks";
 import { useClientsState } from "../store/clients";
 import { IEditKeyword } from "../store/keywords";
 import { PostKeyword } from "../components/PostKeyword";
+import { Title } from "../components/Title";
+import { ButtonBox } from "../components/ButtonBox";
 
 const Editor = styled.div<{ isLoading: boolean }>`
   border-radius: 20px;
@@ -27,14 +29,6 @@ const Content = styled.div`
   padding: 40px 30px 30px;
 `;
 
-const Title = styled.h2`
-  text-align: center;
-  font-family: "Gilroy-B";
-  font-size: 36px;
-  line-height: 45px;
-  color: #253238;
-  margin-bottom: 10px;
-`;
 
 const KeywordsBox = styled.div`
   display: flex;
@@ -42,11 +36,10 @@ const KeywordsBox = styled.div`
   gap: 20px;
 `;
 
-const StyledInput = styled(TextInput)<{ searchBtn?: boolean }>`
+const StyledInput = styled(TextInput)`
   margin-bottom: 20px;
   & input {
     padding: 10px 20px;
-    ${({ searchBtn }) => (searchBtn ? "padding-inline-start: 35px;" : "")}
   }
   & input::placeholder {
     text-decoration: underline;
@@ -81,15 +74,6 @@ const StyledKeyword = styled(PostKeyword)<{
     );
   }}
   ${({ isLoading }) => isLoading && "cursor: wait;"}
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px 0;
-  background: #ffffff;
-  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.25);
 `;
 
 const StyledAction = styled(MainButton)`
@@ -182,13 +166,13 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         <KeywordsBox>
           <StyledInput
             value={keyword}
-            onChange={(val) => setKeyword(val)}
+            onChange={setKeyword}
             placeholder={t("keyword-editor_keyword-plhr")}
             label={t("keyword-editor_keyword-label")}
           />
           <Dropdown
             value={selectedClients}
-            onSelect={(e) => setSelectedClients(e)}
+            onSelect={setSelectedClients}
             options={clients.map((c) => ({ item: c.name, value: c.id }))}
             isMultiSelect={true}
             placeholder={t("keyword-editor_clients-plhr")}
@@ -199,7 +183,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         <Title>{t("keyword-editor_title2")}</Title>
         <StyledInput
           value={search}
-          onChange={(val) => setSearch(val)}
+          onChange={setSearch}
           label={t("keyword-editor_search")}
           searchBtn={true}
         />
@@ -217,7 +201,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
           ))}
         </Keywords>
       </Content>
-      <Buttons>
+      <ButtonBox>
         <StyledAction
           onClick={handleSave}
           color="orange"
@@ -228,7 +212,7 @@ const KeywordEditor = ({ onClose }: IKeywordEditor) => {
         <StyledAction onClick={handleClose} color="blue">
           {t("keyword-editor_close")}
         </StyledAction>
-      </Buttons>
+      </ButtonBox>
     </Editor>
   );
 };

@@ -3,7 +3,7 @@ import { IProps } from "./types"
 import bg from '../../assets/svg/add-plus.svg'
 import { colors } from "../../assets/styles/colors"
 
-const Btn = styled.button`
+const Btn = styled.button<{disabled: boolean | undefined}>`
 position: relative; 
     height: 40px;
     width: 40px;
@@ -31,6 +31,7 @@ position: relative;
     &:hover {
         opacity: .75;
     }
+    ${({disabled}) => disabled && 'opacity: .5 !important;'}
 `
 
 const AddButton = ({onClick, disabled, className}: IProps) => {

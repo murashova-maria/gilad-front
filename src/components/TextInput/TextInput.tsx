@@ -3,7 +3,8 @@ import { ITextInput } from "./types";
 import { colors } from "../../assets/styles/colors";
 import searchIco from '../../assets/svg/input-search.svg'
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+`;
 
 const Label = styled.label`
   margin-inline-start: 20px;
@@ -33,7 +34,7 @@ const Input = styled.input<{searchBtn: boolean | undefined}>`
   box-shadow: rgb(0 0 0 / 5%) 0px 4px 15px inset;
   border-radius: 125px;
   padding: 19px 20px;
-  ${({searchBtn}) => searchBtn ? 'padding-inline-start: 40px;' : ''}
+  ${({searchBtn}) => searchBtn ? 'padding-inline-start: 35px !important;' : ''}
   width: 100%;
   transition: all 0.25s ease 0s;
   font-style: normal;

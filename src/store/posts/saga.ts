@@ -1,63 +1,67 @@
-import { call, put, select, takeLatest } from "redux-saga/effects";
+import { call, fork, all, put, select, takeLatest } from "redux-saga/effects";
 import { handle } from "../../api";
 import { Posts } from "../../api/Posts";
 import { userSelector } from "../user/hooks";
 import { usePostsState } from "../posts/hooks";
 import {
-  postsGetGovils,
   postsSetGovils,
-  postsGetNews,
   postsSetNews,
-  postsGetAgendas,
   postsSetAgendas,
-  postsGetGoogleNews,
   postsSetGoogleNews,
-  postsGetCommittees,
   postsSetCommittees,
-  postsGetPlenums,
   postsSetPlenums,
-  postsGetPersons,
   postsSetPersons,
-  postsGetQueries,
   postsSetQueries,
-  postsGetBills,
   postsSetBills,
-  postsGetReleases,
   postsSetReleases,
-  postsGetGovStatistics,
   postsSetGovStatistics,
-  postsGetGovilData,
   postsSetGovilData,
-  postsGetGovilPdf,
   postsSetGovilPdf,
   postsSendEmail,
-  PostDelete, successDeleted
+  PostDelete,
+  postsGetAllPosts,
+  postsResetNewPosts,
+  postsSetIsFetching,
+  postsSetErrorMessage,
+  postsSetSuccessMessage,
 } from "./actions";
 
 import { IEmail, IPost, IDeletePost, IPostsState, node } from "./types";
 
 export function* postsWatcher() {
-  yield takeLatest(postsGetGovils, getGovils);
-  yield takeLatest(postsGetNews, getNews);
-  yield takeLatest(postsGetAgendas, getAgendas);
-  yield takeLatest(postsGetGoogleNews, getGoogleNews);
-  yield takeLatest(postsGetCommittees, getCommittees);
-  yield takeLatest(postsGetPlenums, getPlenums);
-  yield takeLatest(postsGetPersons, getPersons);
-  yield takeLatest(postsGetQueries, getQueries);
-  yield takeLatest(postsGetBills, getBills);
-  yield takeLatest(postsGetReleases, getReleases);
-  yield takeLatest(postsGetGovStatistics, getGovStatistics);
-  yield takeLatest(postsGetGovilData, getGovilData);
-  yield takeLatest(postsGetGovilPdf, getGovilPdf);
+  yield takeLatest(postsGetAllPosts, getAll);
   yield takeLatest(postsSendEmail, sendEmail);
   yield takeLatest(PostDelete, deletePost);
+}
+
+function* getAll(): any {
+  yield put(postsSetIsFetching(true))
+  yield all([
+    call(getGovils),
+    call(getNews),
+    call(getAgendas),
+    call(getGoogleNews),
+    call(getCommittees),
+    call(getPlenums),
+    call(getPersons),
+    call(getQueries),
+    call(getBills),
+    call(getReleases),
+    call(getGovStatistics),
+    call(getGovilData),
+    call(getGovilPdf),
+  ]);
+  yield put(postsSetIsFetching(false))
+  yield put(postsResetNewPosts());
 }
 
 function* getGovils(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovils(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getGovils(token)
+    );
     if (dataRes) {
       yield put(postsSetGovils(dataRes));
     }
@@ -70,7 +74,10 @@ function* getGovils(): any {
 function* getNews(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getNews(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getNews(token)
+    );
     if (dataRes) {
       yield put(postsSetNews(dataRes));
     }
@@ -83,7 +90,10 @@ function* getNews(): any {
 function* getAgendas(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getAgendas(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getAgendas(token)
+    );
     if (dataRes) {
       yield put(postsSetAgendas(dataRes));
     }
@@ -96,7 +106,10 @@ function* getAgendas(): any {
 function* getGoogleNews(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGoogleNews(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getGoogleNews(token)
+    );
     if (dataRes) {
       yield put(postsSetGoogleNews(dataRes));
     }
@@ -106,36 +119,45 @@ function* getGoogleNews(): any {
   }
 }
 
-function* getCommittees():any {
-    const { token } = yield select(userSelector);
-    if (token) {
-      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getCommittees(token));
-      if (dataRes) {
-        yield put(postsSetCommittees(dataRes));
-      }
-      if (dataErr) {
-        console.log(dataErr);
-      }
+function* getCommittees(): any {
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getCommittees(token)
+    );
+    if (dataRes) {
+      yield put(postsSetCommittees(dataRes));
     }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
 }
 
 function* getPlenums(): any {
-    const { token } = yield select(userSelector);
-    if (token) {
-      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getPlenums(token));
-      if (dataRes) {
-        yield put(postsSetPlenums(dataRes));
-      }
-      if (dataErr) {
-        console.log(dataErr);
-      }
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getPlenums(token)
+    );
+    if (dataRes) {
+      yield put(postsSetPlenums(dataRes));
     }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
 }
 
 function* getPersons(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getPersons(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getPersons(token)
+    );
     if (dataRes) {
       yield put(postsSetPersons(dataRes));
     }
@@ -146,35 +168,44 @@ function* getPersons(): any {
 }
 
 function* getQueries(): any {
-    const { token } = yield select(userSelector);
-    if (token) {
-      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getQueries(token));
-      if (dataRes) {
-        yield put(postsSetQueries(dataRes));
-      }
-      if (dataErr) {
-        console.log(dataErr);
-      }
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getQueries(token)
+    );
+    if (dataRes) {
+      yield put(postsSetQueries(dataRes));
     }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
 }
 
 function* getBills(): any {
-    const { token } = yield select(userSelector);
-    if (token) {
-      const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getBills(token));
-      if (dataRes) {
-        yield put(postsSetBills(dataRes));
-      }
-      if (dataErr) {
-        console.log(dataErr);
-      }
+  const { token } = yield select(userSelector);
+  if (token) {
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getBills(token)
+    );
+    if (dataRes) {
+      yield put(postsSetBills(dataRes));
     }
+    if (dataErr) {
+      console.log(dataErr);
+    }
+  }
 }
 
 function* getReleases(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getReleases(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getReleases(token)
+    );
     if (dataRes) {
       yield put(postsSetReleases(dataRes));
     }
@@ -184,11 +215,13 @@ function* getReleases(): any {
   }
 }
 
-
 function* getGovStatistics(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovStatistics(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getGovStatistics(token)
+    );
     if (dataRes) {
       yield put(postsSetGovStatistics(dataRes));
     }
@@ -201,7 +234,10 @@ function* getGovStatistics(): any {
 function* getGovilData(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovilData(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getGovilData(token)
+    );
     if (dataRes) {
       yield put(postsSetGovilData(dataRes));
     }
@@ -214,7 +250,10 @@ function* getGovilData(): any {
 function* getGovilPdf(): any {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(handle, Posts.getGovilPdf(token));
+    const [dataRes, dataErr]: [undefined | IPost[], any] = yield call(
+      handle,
+      Posts.getGovilPdf(token)
+    );
     if (dataRes) {
       yield put(postsSetGovilPdf(dataRes));
     }
@@ -224,46 +263,33 @@ function* getGovilPdf(): any {
   }
 }
 
-function* sendEmail({payload}: {payload: IEmail}) {
+function* sendEmail({ payload }: { payload: IEmail }) {
   const { token } = yield select(userSelector);
   if (token) {
-    const [dataRes, dataErr]: [any, any] = yield call(handle, Posts.sendEmail(payload, token));
-    if (dataRes) {
-      console.log(dataRes)
+    const [dataRes, dataErr]: [any, any] = yield call(
+      handle,
+      Posts.sendEmail(payload, token)
+    );
+    if (!dataErr) {
+      yield put(postsSetSuccessMessage('emails_send-success'))
     }
     if (dataErr) {
       console.log(dataErr);
+      yield put(postsSetErrorMessage(dataErr.error))
     }
   }
 }
 
-function* deletePost({payload}: {payload: IDeletePost}){
+function* deletePost({ payload }: { payload: IDeletePost }) {
   const { token } = yield select(userSelector);
   if (token) {
-    
-    const [dataRes, dataErr]: [any, any] = yield call(handle, Posts.deletePost(payload, token));
-    if (!dataErr){
-      const maper = {
-        "news":postsGetNews,
-        "govil":postsGetGovils,
-        "agendas":postsGetAgendas,
-        "google_news":postsGetGoogleNews,
-        "committee_session":postsGetCommittees,
-        "plenum_session":postsGetPlenums,
-        "query":postsGetQueries,
-        "bill":postsGetBills,
-        "press_release":postsGetReleases,
-        "gov_statisctics":postsGetGovStatistics,
-        "govil_data":postsGetGovilData,
-        "govil_pdf":postsGetGovilPdf
-      }
-      const keyTyped = payload.node as keyof typeof maper;
-      const value = maper[keyTyped];
-      // console.log(value)
-      yield put(value())
-      // yield put(successDeleted(payload))
-    }
-    else {
+    const [dataRes, dataErr]: [any, any] = yield call(
+      handle,
+      Posts.deletePost(payload, token)
+    );
+    if (!dataErr) {
+      yield put(postsGetAllPosts());
+    } else {
       console.log(dataErr);
     }
   }

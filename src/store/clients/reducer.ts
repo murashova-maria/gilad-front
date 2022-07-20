@@ -5,12 +5,14 @@ import {
   clientsAppendClient,
   clientsUpdateClient,
   clientsRemoveClient,
+  clientsSetErrorMessage,
 } from "./actions";
 import { IClient, IClientsState } from "./types";
 
 const initialState: IClientsState = {
   clients: [],
   isLoading: false,
+  errorMessage: null
 };
 
 const clients = createReducer(initialState, {
@@ -46,6 +48,12 @@ const clients = createReducer(initialState, {
     return {
       ...state,
       clients: withoutDeleted
+    };
+  },
+  [clientsSetErrorMessage.type]: (state, action: { payload: string | null }) => {
+    return {
+      ...state,
+      errorMessage: action.payload
     };
   },
 });

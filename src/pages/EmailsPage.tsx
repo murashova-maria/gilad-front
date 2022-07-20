@@ -1,11 +1,22 @@
 import styled from "styled-components";
 import bg from "../assets/img/bg.png";
-import { ClientsEditor, EmailEditor, PostsCard } from "../views";
+import {
+  AddUser,
+  ClientsEditor,
+  EmailEditor,
+  PostsCard,
+} from "../views";
 import { Title } from "../components/Title";
 import { Modal } from "../components/Modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { usePostsActions, usePostsState } from "../store/posts/hooks";
+import {
+  useAllPosts,
+  useGoogleNews,
+  useOtherPosts,
+  usePostsActions,
+  usePostsState,
+} from "../store/posts/hooks";
 import { useMemo } from "react";
 import { FilterClient, IPost } from "../store/posts/types";
 import { colors } from "../assets/styles/colors";
@@ -18,6 +29,9 @@ import { MainButton } from "../components/MainButton";
 import KeywordEditor from "../views/KeywordEditor";
 import { useKeywordsActions } from "../store/keywords/hooks";
 import { Button } from "../components/Button";
+import { useUserState } from "../store/user/hooks";
+import { Preloader } from "../components/Preloader";
+import { useUsersActions } from "../store/users";
 
 const Emails = styled.div`
   min-height: 100vh;
@@ -105,101 +119,75 @@ const FilterClearBtn = styled(Button)`
   cursor: pointer;
 `;
 
-type ModalType = null | "email-editor" | "client-editor" | "keyword-editor";
+const NewPostsBtn = styled(MainButton)`
+  display: block;
+  margin: 30px auto;
+`;
+
+const UsersBtn = styled(MainButton)`
+  width: 186px;
+`;
+
+export type ModalType =
+  | null
+  | "email-editor"
+  | "client-editor"
+  | "keyword-editor"
+  | "add-user"
 
 const EmailsPage = () => {
   const { t } = useTranslation();
-  const {
-    editorPost,
-    govils,
-    news,
-    agendas,
-    googleNews,
-    committees,
-    plenums,
-    queries,
-    bills,
-    govStatistics,
-    govilData,
-    govilPdf,
-    releases,
-    newPosts,
-  } = usePostsState();
+  const otherPosts = useOtherPosts();
+  const googleNews = useGoogleNews();
+  const { editorPost, newPostsAvailable, isFetching } = usePostsState();
   const { clients } = useClientsState();
   const { onGetClients } = useClientsActions();
+  const { token } = useUserState();
   // Fetch posts
-  const { onGetPosts, onWatchForPosts, onCloseWebSocket, onSetEditor } =
-    usePostsActions();
+  const { onGetPosts, onWatchForPosts, onSetEditor } = usePostsActions();
   const { onGetKeywords } = useKeywordsActions();
+  const {onGetUsers, onSelectUser} = useUsersActions()
   useEffect(() => {
     onGetPosts();
-    onWatchForPosts();
     onGetClients();
     onGetKeywords();
+    onGetUsers();
   }, []);
+  useEffect(() => {
+    if (token) onWatchForPosts(token);
+  }, [token]);
 
   const [modal, setModal] = useState<ModalType>(null);
   const [clientsFilter, setClientsFilter] = useState<FilterClient | null>(null);
 
   const onCloseModal = () => {
     setModal(null);
-    onSetEditor(null);
+    onSetEditor(null)
+    onSelectUser(null)
   };
 
-  const otherPosts: IPost[] = useMemo(() => {
-    const all = [
-      ...govils,
-      ...news,
-      ...agendas,
-      ...committees,
-      ...plenums,
-      ...queries,
-      ...bills,
-      ...govStatistics,
-      ...govilData,
-      ...govilPdf,
-      ...releases,
-    ];
+  const otherPostsFiltered: IPost[] = useMemo(() => {
+    return otherPosts.filter((post) => {
+      if (clientsFilter && !post.clients) return false;
+      if (clientsFilter && post.clients) {
+        return post.clients.some(
+          (client: IPostCardClient) => client.id === clientsFilter.id
+        );
+      }
+      if (!clientsFilter) return true;
+    });
+  }, [otherPosts, clientsFilter]);
 
-    return all
-      .sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
-      .filter((post) => {
-        if (clientsFilter && !post.clients) return false;
-        if (clientsFilter && post.clients) {
-          return post.clients.some(
-            (client: IPostCardClient) => client.id === clientsFilter.id
-          );
-        }
-        if (!clientsFilter) return true;
-      });
-  }, [
-    govils,
-    news,
-    agendas,
-    committees,
-    plenums,
-    queries,
-    bills,
-    govStatistics,
-    govilData,
-    govilPdf,
-    releases,
-    clientsFilter,
-  ]);
-
-  const allGoogleNews: IPost[] = useMemo(() => {
-    const all = [...googleNews];
-    return all
-      .sort((prev, next) => next.date_for_sorting - prev.date_for_sorting)
-      .filter((post) => {
-        if (clientsFilter && !post.clients) return false;
-        if (clientsFilter && post.clients) {
-          return post.clients.some((client: IPostCardClient) => {
-            return client.id === clientsFilter.id;
-          });
-        }
-        if (!clientsFilter) return true;
-      });
+  const googleNewsFiltered: IPost[] = useMemo(() => {
+    return googleNews.filter((post) => {
+      if (clientsFilter && !post.clients) return false;
+      if (clientsFilter && post.clients) {
+        return post.clients.some(
+          (client: IPostCardClient) => client.id === clientsFilter.id
+        );
+      }
+      if (!clientsFilter) return true;
+    });
   }, [googleNews, clientsFilter]);
 
   // Handle click on 'next' button
@@ -209,10 +197,10 @@ const EmailsPage = () => {
       typeof post._column_index === "number"
     ) {
       const index = post._column_index + 1;
-      if (otherPosts[index]) {
-        onSetEditor({ ...otherPosts[index], _column_index: index });
+      if (otherPostsFiltered[index]) {
+        onSetEditor({ ...otherPostsFiltered[index], _column_index: index });
       }
-      if (!otherPosts[index]) {
+      if (!otherPostsFiltered[index]) {
         onSetEditor(null);
         setModal(null);
       }
@@ -222,10 +210,10 @@ const EmailsPage = () => {
       typeof post._column_index === "number"
     ) {
       const index = post._column_index + 1;
-      if (allGoogleNews[index]) {
-        onSetEditor({ ...allGoogleNews[index], _column_index: index });
+      if (googleNewsFiltered[index]) {
+        onSetEditor({ ...googleNewsFiltered[index], _column_index: index });
       }
-      if (!allGoogleNews[index]) {
+      if (!googleNewsFiltered[index]) {
         onSetEditor(null);
         setModal(null);
       }
@@ -254,24 +242,13 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title2")}</StyledTitle>
             <PostsContainer>
               <div>
-                {
-                  // Posts from websocket
-                  newPosts
-                    .filter((post) => post._sender !== "google_news")
-                    .map((post, index) => (
-                      <PostsCard
-                        key={index}
-                        onSelectClient={handleSelectClient}
-                        selectedClient={clientsFilter}
-                        item={post}
-                        onEmail={() =>
-                          onSetEditor({ ...post, _column_index: index })
-                        }
-                        onOpenModal={() => setModal("email-editor")}
-                      />
-                    ))
-                }
-                {otherPosts.map((post, index) => (
+                {isFetching && <Preloader />}
+                {newPostsAvailable > 0 && !isFetching && (
+                  <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
+                    {`${newPostsAvailable} ${t("emails_new-available")}`}
+                  </NewPostsBtn>
+                )}
+                {otherPostsFiltered.map((post, index) => (
                   <PostsCard
                     key={index}
                     onSelectClient={handleSelectClient}
@@ -291,24 +268,13 @@ const EmailsPage = () => {
             <StyledTitle>{t("emails_title1")}</StyledTitle>
             <PostsContainer>
               <div>
-                {
-                  // Posts from websocket
-                  newPosts
-                    .filter((post) => post._sender === "google_news")
-                    .map((post, index) => (
-                      <PostsCard
-                        key={index}
-                        onSelectClient={handleSelectClient}
-                        selectedClient={clientsFilter}
-                        item={post}
-                        onEmail={() =>
-                          onSetEditor({ ...post, _column_index: index })
-                        }
-                        onOpenModal={() => setModal("email-editor")}
-                      />
-                    ))
-                }
-                {allGoogleNews.map((post, index) => (
+                {isFetching && <Preloader />}
+                {newPostsAvailable > 0 && !isFetching && (
+                  <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
+                    {`${newPostsAvailable} ${t("emails_new-available")}`}
+                  </NewPostsBtn>
+                )}
+                {googleNewsFiltered.map((post, index) => (
                   <PostsCard
                     key={index}
                     onSelectClient={handleSelectClient}
@@ -339,12 +305,25 @@ const EmailsPage = () => {
             >
               {t("clients_edit-clients")}
             </MainButton>
+            <UsersBtn color="transparent" onClick={() => setModal("add-user")}>
+              {t('add-user_users')}
+            </UsersBtn>
           </ClientsBox>
         </Clients>
       </Emails>
       {modal === "email-editor" && (
         <Modal onClose={onCloseModal}>
-          {editorPost && <EmailEditor post={editorPost} onNext={onNextPost} />}
+          {editorPost && (
+            <EmailEditor
+              posts={
+                editorPost._sender === "google_news"
+                  ? googleNewsFiltered
+                  : otherPostsFiltered
+              }
+              post={editorPost}
+              onNext={onNextPost}
+            />
+          )}
         </Modal>
       )}
       {modal === "client-editor" && (
@@ -355,6 +334,11 @@ const EmailsPage = () => {
       {modal === "keyword-editor" && (
         <Modal onClose={onCloseModal}>
           <KeywordEditor onClose={onCloseModal} />
+        </Modal>
+      )}
+      {modal === "add-user" && (
+        <Modal onClose={onCloseModal}>
+          <AddUser onClose={onCloseModal} />
         </Modal>
       )}
     </>

@@ -1,4 +1,4 @@
-import { FilterClient, node } from "../store/posts/types"
+import { FilterClient, IPost, node } from "../store/posts/types"
 export interface IPostCard {
     onEmail: ()=> void
     onOpenModal: ()=> void
@@ -14,3 +14,9 @@ export interface IClientsEditor {
 export interface IKeywordEditor {
     onClose: () => void
 }
+
+export interface IEmailEditor {
+    post: IPost;
+    posts: IPost[]
+    onNext: (post: IPost) => void;
+  }

@@ -4,6 +4,7 @@ import {
   clientsAddClient,
   clientsEditClient,
   clientsDeleteClient,
+  clientsSetErrorMessage,
 } from "./actions";
 import { IClient, IClientsState } from "./types";
 
@@ -19,10 +20,8 @@ export const useClientsActions = () => {
     dispatch(clientsGetClients());
   };
 
-  const onAddClient = (client: IClient) => {
-    if (client.name && client.email && client.email.length > 0) {
+  const onAddClient = (client: Omit<IClient, 'id'>) => {
       dispatch(clientsAddClient(client));
-    }
   };
 
   const onEditClient = (client: IClient) => {
@@ -33,10 +32,15 @@ export const useClientsActions = () => {
     dispatch(clientsDeleteClient(id));
   };
 
+  const onSetErrorMessage = (message: null | string) => {
+    dispatch(clientsSetErrorMessage(message))
+  }
+
   return {
     onGetClients,
     onEditClient,
     onAddClient,
     onDeleteClient,
+    onSetErrorMessage
   };
 };

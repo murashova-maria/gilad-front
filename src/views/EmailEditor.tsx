@@ -5,13 +5,18 @@ import { colors } from "../assets/styles/colors";
 import { Checkbox } from "../components/Checkbox";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
-import { IPost } from "../store/posts";
+import { IEmail, IPost } from "../store/posts";
 import React, { useEffect, useMemo, useState } from "react";
-import { useClientsState } from "../store/clients";
+import { IClient, useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
-import { usePostsActions } from "../store/posts/hooks";
+import { usePostsActions, usePostsState } from "../store/posts/hooks";
+import { IEmailEditor } from "./types";
+import { selectCheckbox } from "../utilites/selectCheckbox";
+import { Modal } from "../components/Modal";
+import successIcon from "../assets/svg/success-icon.svg";
+import errorIcon from "../assets/svg/error-icon.svg";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -32,7 +37,7 @@ const Container = styled.div`
   grid-template-columns: 1fr 2fr;
 `;
 
-const TemplatesDropdown = styled(Dropdown)`
+const StyledDropdown = styled(Dropdown)`
   margin: 0px 30px 10px;
   width: calc(100% - 60px);
   margin-top: 25px;
@@ -68,7 +73,7 @@ const ClientBox = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin: 0 10px 20px 0;
+  margin: 0 10px 15px 0;
 `;
 
 const ClientName = styled.p`
@@ -147,6 +152,27 @@ const FileLink = styled.a`
   display: block;
   word-break: break-all;
   margin-bottom: 5px;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  text-align: center;
+`;
+
+const SuccessMessage = styled.p`
+  color: green;
+  text-align: center;
+`;
+
+const MessageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: 20px;
+  padding: 30px;
+  background-color: #fff;
+  border: 1px solid #c2fffd;
+  box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
 `;
 
 //Templates
@@ -232,7 +258,9 @@ const template4 = (post: IPost) => {
 
 const template6 = (post: IPost) => {
   const tempUpdatedDate = post.last_updated_date
-    ? new Date(post.last_updated_date).toLocaleDateString('en-GB').replaceAll('/','-')
+    ? new Date(post.last_updated_date)
+        .toLocaleDateString("en-GB")
+        .replaceAll("/", "-")
     : dash;
   const tempTitle = post.title ? post.title : null;
   const tempInitiators = post.initiators
@@ -712,13 +740,11 @@ const emailTitles = {
   },
 };
 
-interface IProps {
-  post: IPost;
-  onNext: (post: IPost) => void;
-}
-
-const EmailEditor = ({ post, onNext }: IProps) => {
+const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   const { t } = useTranslation();
+  const { errorMessage, successMessage } = usePostsState();
+  // Store opened posts indices, in this modal(using dropdown)
+  const [openedPostsIndices, setOpenedPostsIndices] = useState<number[]>([]);
   //Templates Dropdown
   const [template, setTemplate] = useState("");
   //Email theme
@@ -730,18 +756,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
   const [clientsList, setClientsList] = useState("");
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
-  // Add remove/clients using checkbox
-  const selectClient = (client: any) => {
-    if (selectedClients.includes(client.id)) {
-      const index = selectedClients.indexOf(client.id);
-      let newItems = [...selectedClients];
-      newItems.splice(index, 1);
-      setSelectedClients(newItems);
-    }
-    if (!selectedClients.includes(client.id)) {
-      setSelectedClients((prev) => [...prev, client.id]);
-    }
-  };
+
   //Handle template change with dropdown
   const handleChangeTemplate = (val: string) => {
     //@ts-ignore
@@ -762,18 +777,25 @@ const EmailEditor = ({ post, onNext }: IProps) => {
   };
 
   //Handle send email (btn click)
-  const { onSendEmail } = usePostsActions();
+  const { onSendEmail, onSetEditor, onClearMessages } = usePostsActions();
   const handleSendEmail = () => {
+    const items: { [key: string]: number[] } = {};
+    openedPostsIndices.forEach((postIndex) => {
+      const _sender = posts[postIndex]._sender;
+      if (items[_sender]) items[_sender].push(posts[postIndex].id);
+      if (!items[_sender]) items[_sender] = [posts[postIndex].id];
+    });
+    /////////////////////////////
     let checkboxClients = clientsList.split(", ");
     if (checkboxClients[0] === "") checkboxClients = [];
     //@ts-ignore
     checkboxClients = checkboxClients.map((id) => parseInt(id, 10));
+    ///////////////////////////
     const emailData = {
       subject: emailTitle,
       html: text,
       recipients_ids: [...checkboxClients, ...selectedClients],
-      id: post.id,
-      sender: post._sender,
+      items: items,
     };
     onSendEmail(emailData);
   };
@@ -783,18 +805,44 @@ const EmailEditor = ({ post, onNext }: IProps) => {
     selectAccordingTemplate();
   }, []);
 
-  //Clients dropdown
-
-  const clientsOptions = useMemo(() => {
-    let filtered: any = [];
-    if (clients && clients.length > 0 && post.clients) {
-      filtered = clients.map((c) => ({ item: c.name, value: c.id }));
-      filtered = filtered.filter((option: any) =>
-        post.clients.every((client: any) => client.id !== option.value)
-      );
+  //Add opened posts
+  useEffect(() => {
+    const index = posts.findIndex(
+      (p) => p.id === post.id && p._sender === post._sender
+    );
+    if (!openedPostsIndices.includes(index)) {
+      setOpenedPostsIndices((prev) => [...prev, index]);
     }
-    return filtered;
-  }, [clients, post]);
+  }, [post]);
+
+  //Clients dropdown
+  const clientsOptions = useMemo(() => {
+    let options = clients.map((c) => ({ item: c.name, value: c.id }));
+    openedPostsIndices.forEach((postIndex) => {
+      if (clients && clients.length > 0 && posts[postIndex].clients) {
+        options = options.filter((option: any) =>
+          posts[postIndex].clients.every(
+            (client: any) => client.id !== option.value
+          )
+        );
+      }
+    });
+    return options;
+  }, [clients, openedPostsIndices]);
+
+  //Clients checkboxes
+  const suggestedClients = useMemo(() => {
+    let clients: Array<{ id: number; name: string }> = [];
+    openedPostsIndices.forEach((postIndex) => {
+      if (posts[postIndex].clients?.length > 0) {
+        posts[postIndex].clients.forEach((client: IClient) => {
+          if (clients.every((c) => c.id !== client.id))
+            clients.push({ id: client.id, name: client.name });
+        });
+      }
+    });
+    return clients;
+  }, [openedPostsIndices]);
 
   const keys = Object.keys(post);
   return (
@@ -802,7 +850,6 @@ const EmailEditor = ({ post, onNext }: IProps) => {
       <Container>
         <InitialPost>
           <StyledTitle>{t("emails_data-from-db")}</StyledTitle>
-
           {keys.map((key) => {
             // don't need to show this values(endpoint name, index in column...)
             if (key[0] === "_") {
@@ -864,7 +911,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                   {elements}
                 </PostItem>
               ) : (
-                "null"
+                <PostItem>{t("emails_data-no-data")}</PostItem>
               );
             }
 
@@ -876,7 +923,9 @@ const EmailEditor = ({ post, onNext }: IProps) => {
             //Return cases when key is last_updated_date
             if (post[key] && key === "last_updated_date") {
               let rawDate = new Date(post[key]);
-              let date = rawDate.toLocaleDateString('en-GB').replaceAll('/','-')
+              let date = rawDate
+                .toLocaleDateString("en-GB")
+                .replaceAll("/", "-");
               let time = rawDate.getHours() + ":" + rawDate.getMinutes();
               let formatedDate = time + " " + date;
 
@@ -966,11 +1015,13 @@ const EmailEditor = ({ post, onNext }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {post[key].length > 0
-                    ? post[key].map((item: any, index: number) => (
-                        <PostValue key={index}>{item.name}</PostValue>
-                      ))
-                    : "null"}
+                  {post[key].length > 0 ? (
+                    post[key].map((item: any, index: number) => (
+                      <PostValue key={index}>{item.name}</PostValue>
+                    ))
+                  ) : (
+                    <>{t("emails_data-no-data")}</>
+                  )}
                 </PostItem>
               );
             }
@@ -980,11 +1031,13 @@ const EmailEditor = ({ post, onNext }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {post[key].length > 0
-                    ? post[key].map((item: any, index: number) => (
-                        <PostValue key={index}>{item.name}</PostValue>
-                      ))
-                    : "null"}
+                  {post[key].length > 0 ? (
+                    post[key].map((item: any, index: number) => (
+                      <PostValue key={index}>{item.name}</PostValue>
+                    ))
+                  ) : (
+                    <>{t("emails_data-no-data")}</>
+                  )}
                 </PostItem>
               );
             }
@@ -1017,7 +1070,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
               return (
                 <Initiators key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  {list.length > 0 ? list : "null"}
+                  {list.length > 0 ? list : <>{t("emails_data-no-data")}</>}
                 </Initiators>
               );
             }
@@ -1040,7 +1093,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
               return (
                 <PostItem key={key}>
                   <PostKey>{t(key)}</PostKey>
-                  <PostValue>null</PostValue>
+                  <PostValue>{t("emails_data-no-data")}</PostValue>
                 </PostItem>
               );
             }
@@ -1050,7 +1103,7 @@ const EmailEditor = ({ post, onNext }: IProps) => {
         <div>
           <StyledTitle>{t("emails_edit-title")}</StyledTitle>
 
-          <TemplatesDropdown
+          <StyledDropdown
             placeholder=""
             onSelect={(e) => handleChangeTemplate(e)}
             value={template}
@@ -1078,27 +1131,30 @@ const EmailEditor = ({ post, onNext }: IProps) => {
                 ["bold", "underline", "list", "align", "fontSize", "font"],
                 ["link"],
               ],
-              font: ['Arial', 'Verdana', 'Georgia', 'Times New Roman']
+              font: ["Arial", "Verdana", "Georgia", "Times New Roman"],
             }}
           />
 
           <Selector>
             <SelectorTitle>{t("emails_select-clients")}</SelectorTitle>
-            {post.clients && post.clients.length > 0 && (
+            {suggestedClients.length > 0 && (
               <SelectorLabel>{t("emails_suggested-clients")}</SelectorLabel>
             )}
-            {post.clients &&
-              post.clients.map((client: any) => {
-                return (
-                  <ClientBox key={client.id}>
-                    <Checkbox
-                      checked={selectedClients.includes(client.id)}
-                      setIsCheckedCreate={() => selectClient(client)}
-                    />
-                    <ClientName>{client.name}</ClientName>
-                  </ClientBox>
-                );
-              })}
+            {suggestedClients.map((client: any) => {
+              return (
+                <ClientBox key={client.id}>
+                  <Checkbox
+                    checked={selectedClients.includes(client.id)}
+                    setIsCheckedCreate={() =>
+                      setSelectedClients(
+                        selectCheckbox(client.id, selectedClients)
+                      )
+                    }
+                  />
+                  <ClientName>{client.name}</ClientName>
+                </ClientBox>
+              );
+            })}
             <ClientDropdown
               placeholder=""
               isMultiSelect={true}
@@ -1108,6 +1164,27 @@ const EmailEditor = ({ post, onNext }: IProps) => {
               label={t("emails_clients-label")}
               isReversed={true}
             />
+
+            {successMessage && (
+              <Modal onClose={onClearMessages}>
+                <MessageWrapper>
+                  <img src={successIcon} />
+                  <SuccessMessage>{t("emails_send-success")}</SuccessMessage>
+                </MessageWrapper>
+              </Modal>
+            )}
+            {errorMessage && (
+              <Modal onClose={onClearMessages}>
+                <MessageWrapper>
+                  <img src={errorIcon} />
+                  <div>
+                    <ErrorMessage>{t("emails_send-error")}</ErrorMessage>
+                    <ErrorMessage>{errorMessage}</ErrorMessage>
+                  </div>
+                </MessageWrapper>
+              </Modal>
+            )}
+
             <BtnBox>
               <MainButton onClick={() => onNext(post)} color="blue">
                 {t("emails_edit-next")}

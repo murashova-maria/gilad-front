@@ -105,6 +105,7 @@
     "emails_selected-filter": "לקוח נבחר:",
     "emails_selected-clear": "נקה בחירה",
     "post-card_sort-date": "תאריך עדכון",
+    "emails_new-available": "פרסומים חדשים עלו לאתר",
 
 
     "emails_data-from-db": "נתוני העדכון",
@@ -112,11 +113,15 @@
     "emails_edit-title": "עריכה",
     "emails_direct-link": "לינק ישיר",
     "emails_content-formats": "טמפלייטים",
+    "emails_posts": "Posts",
     "emails_select-clients": "בחר לקוחות נוספים",
     "emails_suggested-clients": "ממלצים לעדכון זה",
     "emails_clients-label": "לקוחות",
     "emails_edit-next": "הבא",
     "emails_edit-send": "לשלוח",
+    "emails_send-error": "מייל  לא נשלח - נא לבדוק תקינות המיילים של הלוקוחות הנבחרים",
+    "emails_send-success": "מייל נשלח בהצלה",
+    
 
 
     "btn_email": "מייל",
@@ -139,16 +144,32 @@
     "clients-editor_save": "שמירה",
     "clients-editor_close": "סגירה",
     "clients-editor_title2": "לקוחות",
+    "clients_name-email-empty": "שם הלקוח ומייל - שדות חובה. נא למלא גם שם הלקוח וגם להוסיף לו לפחות מייל אחד",
 
     "keyword-editor_title1": "עריכת מילות מפתח",
-    "keyword-editor_keyword-plhr": "מילות מפתח",
+    "keyword-editor_keyword-plhr": "הוסף כאן מילת חיפוש",
     "keyword-editor_keyword-label": "מילת מפתח",
     "keyword-editor_clients-plhr": "הוסף כאן מילת חיפוש",
     "keyword-editor_clients-label": "לקוחות",
     "keyword-editor_title2": "מילות מפתח",
     "keyword-editor_search": "חישוב",
     "keyword-editor_save": "שמירה",
-    "keyword-editor_close": "סגירה"
+    "keyword-editor_close": "סגירה",
+
+
+    "add-user_users": "Users",
+    "add-user_title1": "הוספת משתמש חדש",
+    "add-user_title2": "משתמשים",
+    "add-user_login": "שם משתמש",
+    "add-user_password": "סיסמה",
+    "add-user_email": "דואל",
+    "add-user_email-password": "Email password",
+    "add-user_search": "חיפוש",
+    "add-user_save": "שמירה",
+    "add-user_close": "סגירה",
+    "add-user_staff": "האם משתמש אדמין?",
+    "add-user_active": "האם משתמש אקטיבי?"
+
 
 
 

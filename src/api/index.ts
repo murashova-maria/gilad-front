@@ -6,7 +6,9 @@ export const axiosInstance = axios.create({
     baseURL: apiUrl
 })
 
-export const ws = new WebSocket("wss://gilad.stoi.co/ws/");
+export const ws = (token: string) => {
+    return new WebSocket(`ws://gilad.stoi.co/ws/?token=${token}`)
+}
 
 export const handle = (promise: Promise<AxiosResponse<any>>) => {
     return promise

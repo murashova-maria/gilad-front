@@ -12,15 +12,23 @@ import {
   postsSetReleases,
   postsSetEditor,
   postsSetGovStatistics,
-  postsAddNewPost,
   postsSetGovilData,
   postsSetGovilPdf,
-  successDeleted
+  postsIncrementNewPosts,
+  postsResetNewPosts,
+  postsSetIsFetching,
+  successDeleted,
+  postsSetErrorMessage,
+  postsSetSuccessMessage
 } from "./actions";
 import { IPostsState, IPost, IDeletePost } from "./types";
 
 const initialState: IPostsState = {
   editorPost: null,
+  newPostsAvailable: 0,
+  isFetching: false,
+  errorMessage: null,
+  successMessage: null,
   govils: [],
   news: [],
   agendas: [],
@@ -34,7 +42,6 @@ const initialState: IPostsState = {
   govStatistics: [],
   govilData: [],
   govilPdf: [],
-  newPosts: [],
 };
 
 const posts = createReducer(initialState, {
@@ -135,16 +142,40 @@ const posts = createReducer(initialState, {
       govilPdf: newPosts
     };
   },
-  [postsAddNewPost.type]: (state, action: {payload: IPost }) => {
-   return {
-    ...state,
-    newPosts: [action.payload, ...state.newPosts]
-   }
-  },
   [successDeleted.type]: (state, action: { payload: IPostsState}) => {
     return {
       ...state,
       ...action.payload
+    }
+  },
+  [postsIncrementNewPosts.type]: (state) => {
+    return {
+      ...state,
+      newPostsAvailable: state.newPostsAvailable + 1
+    }
+  },
+  [postsResetNewPosts.type]: (state) => {
+    return {
+      ...state,
+      newPostsAvailable: 0
+    }
+  },
+  [postsSetIsFetching.type]: (state, action: {payload: boolean}) => {
+    return {
+      ...state,
+      isFetching: action.payload
+    }
+  },
+  [postsSetErrorMessage.type]: (state, action: {payload: string | null}) => {
+    return {
+      ...state,
+      errorMessage: action.payload
+    }
+  },
+  [postsSetSuccessMessage.type]: (state, action: {payload: string | null}) => {
+    return {
+      ...state,
+      successMessage: action.payload
     }
   }
 });

@@ -6,10 +6,17 @@ export interface IEmail {
     subject: string
     html: string
     recipients_ids: Array<string | number>
+    items: {
+        [key: string] : number[]
+    }
 }
 
 export interface IPostsState {
     editorPost: IPost | null
+    newPostsAvailable: number
+    isFetching: boolean
+    errorMessage: string | null
+    successMessage: string | null
     govils: IPost[]
     news: IPost[]
     agendas: IPost[]
@@ -23,8 +30,6 @@ export interface IPostsState {
     govStatistics: IPost[]
     govilData: IPost[]
     govilPdf: IPost[]
-    newPosts: IPost[]
-
 }
 
 export interface IDeletePost {
