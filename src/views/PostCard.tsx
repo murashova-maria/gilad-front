@@ -9,6 +9,26 @@ import { usePostsActions, usePostsState } from "../store/posts/hooks";
 import { IPostCardClient } from "../store/clients";
 import { useEffect, useMemo, useState } from "react";
 
+//Format Date
+function padTo2Digits(num: number) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDate(date: Date) {
+  return (
+    [
+      padTo2Digits(date.getHours()),
+      padTo2Digits(date.getMinutes()),
+    ].join(':') +
+    ' ' +
+    [
+      padTo2Digits(date.getMonth() + 1),
+      padTo2Digits(date.getDate()),
+      date.getFullYear(),
+    ].join('-')
+  );
+}
+
 const Card = styled.div`
   width: 540px;
   display: flex;
@@ -122,7 +142,7 @@ const PostCard = ({
     source_name,
     _sender,
     date_for_sorting,
-    date_added_to_db
+    date_added_to_db,
   },
 }: IPostCard) => {
   const { t } = useTranslation();
@@ -133,28 +153,13 @@ const PostCard = ({
     onOpenModal();
   };
 
-
-  /*
-
   const sortDate = useMemo(() => {
     if (date_for_sorting) {
-      const data = new Date(new Date().toLocaleString("en-US", {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
-    })).toLocaleString('en-GB').split(', ')
-    const date = data[0].replaceAll('/', '.')
-    const time = data[1].slice(0,5)
-      return`${time} ${date}`
+      var d = new Date(date_for_sorting * 1000);
+      return formatDate(d)
     }
     if (!date_for_sorting) return null;
   }, [date_for_sorting]);
-
-  */
 
   return (
     <Card>
@@ -191,7 +196,7 @@ const PostCard = ({
             onClick={() => onDeletePost({ node: _sender, postId: id })}
           />
         </Btns>
-        {date_added_to_db&& <StyledDate>{date_added_to_db}</StyledDate>}
+        {sortDate && <StyledDate>{sortDate}</StyledDate>}
       </Content>
       <Clients>
         {clients &&
