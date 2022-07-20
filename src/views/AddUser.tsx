@@ -75,6 +75,7 @@ const StyledClear = styled(MainButton)`
   width: 150px;
   margin-inline-start: auto;
   align-self: flex-end;
+  margin-inline-end: 15px ;
 `;
 
 const StyledAction = styled(MainButton)`

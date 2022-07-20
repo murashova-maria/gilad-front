@@ -11,9 +11,12 @@ import { IClient, useClientsState } from "../store/clients";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { TextInput } from "../components/TextInput";
-import { usePostsActions } from "../store/posts/hooks";
+import { usePostsActions, usePostsState } from "../store/posts/hooks";
 import { IEmailEditor } from "./types";
 import { selectCheckbox } from "../utilites/selectCheckbox";
+import { Modal } from "../components/Modal";
+import successIcon from "../assets/svg/success-icon.svg";
+import errorIcon from "../assets/svg/error-icon.svg";
 
 const StyledModal = styled.div`
   border-radius: 20px;
@@ -149,6 +152,27 @@ const FileLink = styled.a`
   display: block;
   word-break: break-all;
   margin-bottom: 5px;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  text-align: center;
+`;
+
+const SuccessMessage = styled.p`
+  color: green;
+  text-align: center;
+`;
+
+const MessageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: 20px;
+  padding: 30px;
+  background-color: #fff;
+  border: 1px solid #c2fffd;
+  box-shadow: 0px 8px 25px rgb(0 0 0 / 5%);
 `;
 
 //Templates
@@ -718,6 +742,7 @@ const emailTitles = {
 
 const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   const { t } = useTranslation();
+  const { errorMessage, successMessage } = usePostsState();
   // Store opened posts indices, in this modal(using dropdown)
   const [openedPostsIndices, setOpenedPostsIndices] = useState<number[]>([]);
   //Templates Dropdown
@@ -731,7 +756,6 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   const [clientsList, setClientsList] = useState("");
   //Selected clients (checkboxes)
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
-
 
   //Handle template change with dropdown
   const handleChangeTemplate = (val: string) => {
@@ -753,7 +777,7 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
   };
 
   //Handle send email (btn click)
-  const { onSendEmail, onSetEditor } = usePostsActions();
+  const { onSendEmail, onSetEditor, onClearMessages } = usePostsActions();
   const handleSendEmail = () => {
     const items: { [key: string]: number[] } = {};
     openedPostsIndices.forEach((postIndex) => {
@@ -1121,7 +1145,11 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
                 <ClientBox key={client.id}>
                   <Checkbox
                     checked={selectedClients.includes(client.id)}
-                    setIsCheckedCreate={() => setSelectedClients(selectCheckbox(client.id, selectedClients))}
+                    setIsCheckedCreate={() =>
+                      setSelectedClients(
+                        selectCheckbox(client.id, selectedClients)
+                      )
+                    }
                   />
                   <ClientName>{client.name}</ClientName>
                 </ClientBox>
@@ -1136,6 +1164,27 @@ const EmailEditor = ({ post, posts, onNext }: IEmailEditor) => {
               label={t("emails_clients-label")}
               isReversed={true}
             />
+
+            {successMessage && (
+              <Modal onClose={onClearMessages}>
+                <MessageWrapper>
+                  <img src={successIcon} />
+                  <SuccessMessage>{t("emails_send-success")}</SuccessMessage>
+                </MessageWrapper>
+              </Modal>
+            )}
+            {errorMessage && (
+              <Modal onClose={onClearMessages}>
+                <MessageWrapper>
+                  <img src={errorIcon} />
+                  <div>
+                    <ErrorMessage>{t("emails_send-error")}</ErrorMessage>
+                    <ErrorMessage>{errorMessage}</ErrorMessage>
+                  </div>
+                </MessageWrapper>
+              </Modal>
+            )}
+
             <BtnBox>
               <MainButton onClick={() => onNext(post)} color="blue">
                 {t("emails_edit-next")}

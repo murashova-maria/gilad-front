@@ -17,7 +17,9 @@ import {
   postsIncrementNewPosts,
   postsResetNewPosts,
   postsSetIsFetching,
-  successDeleted
+  successDeleted,
+  postsSetErrorMessage,
+  postsSetSuccessMessage
 } from "./actions";
 import { IPostsState, IPost, IDeletePost } from "./types";
 
@@ -25,6 +27,8 @@ const initialState: IPostsState = {
   editorPost: null,
   newPostsAvailable: 0,
   isFetching: false,
+  errorMessage: null,
+  successMessage: null,
   govils: [],
   news: [],
   agendas: [],
@@ -160,6 +164,18 @@ const posts = createReducer(initialState, {
     return {
       ...state,
       isFetching: action.payload
+    }
+  },
+  [postsSetErrorMessage.type]: (state, action: {payload: string | null}) => {
+    return {
+      ...state,
+      errorMessage: action.payload
+    }
+  },
+  [postsSetSuccessMessage.type]: (state, action: {payload: string | null}) => {
+    return {
+      ...state,
+      successMessage: action.payload
     }
   }
 });

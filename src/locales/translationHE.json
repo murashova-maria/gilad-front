@@ -119,6 +119,9 @@
     "emails_clients-label": "לקוחות",
     "emails_edit-next": "הבא",
     "emails_edit-send": "לשלוח",
+    "emails_send-error": "מייל  לא נשלח - נא לבדוק תקינות המיילים של הלוקוחות הנבחרים",
+    "emails_send-success": "מייל נשלח בהצלה",
+    
 
 
     "btn_email": "מייל",

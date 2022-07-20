@@ -62,3 +62,7 @@ export const postsResetNewPosts = createAction("posts/resetNewPosts")
 
 //Set is fetching
 export const postsSetIsFetching = createAction<boolean>("posts/setIsFetching")
+
+export const postsSetErrorMessage = createAction<string | null>('posts/setErrorMessage')
+export const postsSetSuccessMessage = createAction<string | null>('posts/setSuccessMessage')
+

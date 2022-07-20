@@ -15,6 +15,8 @@ export interface IPostsState {
     editorPost: IPost | null
     newPostsAvailable: number
     isFetching: boolean
+    errorMessage: string | null
+    successMessage: string | null
     govils: IPost[]
     news: IPost[]
     agendas: IPost[]

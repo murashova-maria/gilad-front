@@ -22,6 +22,8 @@ import {
   postsGetAllPosts,
   postsResetNewPosts,
   postsSetIsFetching,
+  postsSetErrorMessage,
+  postsSetSuccessMessage,
 } from "./actions";
 
 import { IEmail, IPost, IDeletePost, IPostsState, node } from "./types";
@@ -268,11 +270,12 @@ function* sendEmail({ payload }: { payload: IEmail }) {
       handle,
       Posts.sendEmail(payload, token)
     );
-    if (dataRes) {
-      console.log(dataRes);
+    if (!dataErr) {
+      yield put(postsSetSuccessMessage('emails_send-success'))
     }
     if (dataErr) {
       console.log(dataErr);
+      yield put(postsSetErrorMessage(dataErr.error))
     }
   }
 }

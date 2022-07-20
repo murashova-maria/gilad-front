@@ -6,6 +6,8 @@ import {
   PostDelete,
   postsIncrementNewPosts,
   postsGetAllPosts,
+  postsSetErrorMessage,
+  postsSetSuccessMessage,
 } from "./actions";
 import { IEmail, IPost, IPostsState, IDeletePost } from "./types";
 import { ws } from "../../api";
@@ -72,7 +74,7 @@ export const usePostsActions = () => {
   const onWatchForPosts = (token: string) => {
     const channel = ws(token);
     channel.addEventListener('open', () => {
-
+      console.log('ws-connected')
     })
     channel.addEventListener('message', (e) => {
       if (e.data) {
@@ -95,11 +97,17 @@ export const usePostsActions = () => {
     dispatch(PostDelete(payload));
   };
 
+  const onClearMessages = () => {
+    dispatch(postsSetErrorMessage(null))
+    dispatch(postsSetSuccessMessage(null))
+  }
+
   return {
     onGetPosts,
     onDeletePost,
     onWatchForPosts,
     onSetEditor,
     onSendEmail,
+    onClearMessages,
   };
 };

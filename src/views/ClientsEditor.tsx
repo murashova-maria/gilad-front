@@ -116,13 +116,6 @@ const ClientsEditor = ({ onClose }: IClientsEditor) => {
   const { t } = useTranslation();
   const { clients, isLoading, errorMessage } = useClientsState();
   const { onAddClient, onEditClient, onDeleteClient, onSetErrorMessage } = useClientsActions();
-  //test clients
-  const cl = [
-    { id: 1, name: "Edward", email: "Edvaa@mail.ru" },
-    { id: 2, name: "Edik", email: "Edvaa@mail.ru" },
-    { id: 3, name: "Elon Musk", email: "Edvaa@mail.ru" },
-    { id: 4, name: "Rihanna", email: "Edvaa@mail.ru" },
-  ];
 
   const [currentClient, setCurrentClient] = useState<number | null>(null);
   const [name, setName] = useState<string>("");
