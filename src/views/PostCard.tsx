@@ -122,6 +122,7 @@ const PostCard = ({
     source_name,
     _sender,
     date_for_sorting,
+    date_added_to_db
   },
 }: IPostCard) => {
   const { t } = useTranslation();
@@ -131,6 +132,9 @@ const PostCard = ({
     onEmail();
     onOpenModal();
   };
+
+
+  /*
 
   const sortDate = useMemo(() => {
     if (date_for_sorting) {
@@ -149,6 +153,8 @@ const PostCard = ({
     }
     if (!date_for_sorting) return null;
   }, [date_for_sorting]);
+
+  */
 
   return (
     <Card>
@@ -185,11 +191,7 @@ const PostCard = ({
             onClick={() => onDeletePost({ node: _sender, postId: id })}
           />
         </Btns>
-        {sortDate && (
-          <StyledDate>
-            {t("post-card_sort-date")} {sortDate}
-          </StyledDate>
-        )}
+        {date_added_to_db&& <StyledDate>{date_added_to_db}</StyledDate>}
       </Content>
       <Clients>
         {clients &&
