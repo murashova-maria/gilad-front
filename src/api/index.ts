@@ -7,7 +7,7 @@ export const axiosInstance = axios.create({
 })
 
 export const ws = (token: string) => {
-    return new WebSocket(`ws://gilad.stoi.co/ws/?token=${token}`)
+    return new WebSocket(`wss://gilad.stoi.co/ws/?token=${token}`)
 }
 
 export const handle = (promise: Promise<AxiosResponse<any>>) => {
