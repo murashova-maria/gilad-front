@@ -196,7 +196,7 @@ const PostCard = ({
             onClick={() => onDeletePost({ node: _sender, postId: id })}
           />
         </Btns>
-        {sortDate && <StyledDate>{sortDate}</StyledDate>}
+        {sortDate && <StyledDate>{t('post-card_sort-date')} {sortDate}</StyledDate>}
       </Content>
       <Clients>
         {clients &&
