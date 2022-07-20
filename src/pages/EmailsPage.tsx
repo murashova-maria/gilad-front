@@ -245,7 +245,7 @@ const EmailsPage = () => {
                 {isFetching && <Preloader />}
                 {newPostsAvailable > 0 && !isFetching && (
                   <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
-                    {`${newPostsAvailable} ${t("emails_new-available")}`}
+                    {`${t("emails_new-available")}`}
                   </NewPostsBtn>
                 )}
                 {otherPostsFiltered.map((post, index) => (
@@ -271,7 +271,7 @@ const EmailsPage = () => {
                 {isFetching && <Preloader />}
                 {newPostsAvailable > 0 && !isFetching && (
                   <NewPostsBtn color="orange" onClick={() => onGetPosts()}>
-                    {`${newPostsAvailable} ${t("emails_new-available")}`}
+                    {`${t("emails_new-available")}`}
                   </NewPostsBtn>
                 )}
                 {googleNewsFiltered.map((post, index) => (
