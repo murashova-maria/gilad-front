@@ -272,6 +272,7 @@ function* sendEmail({ payload }: { payload: IEmail }) {
     );
     if (!dataErr) {
       yield put(postsSetSuccessMessage('emails_send-success'))
+      yield put(postsGetAllPosts())
     }
     if (dataErr) {
       console.log(dataErr);
